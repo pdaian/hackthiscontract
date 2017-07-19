@@ -1,1 +1,2 @@
-challenges = ["source_tricks", "ERC20_reentrancy", "coinflip-reentrancy-hashlimit", "ERC20-modifier-frontrun"]
+challenges = ["naive_programmer", "ERC20", "coinflip", "lost_ether"]
+db_path = "/home/ubuntu/database/" # include trailing /

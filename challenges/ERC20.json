@@ -4,6 +4,6 @@
     "level" : "3",
     "on_deploy": [{
         "method": "deposit",
-        "value": "500000000000000000"
+        "value": "50000000000000000"
     }]
 }

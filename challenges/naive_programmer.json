@@ -1,0 +1,5 @@
+{
+    "name": "Naive Programmer",
+    "description": "A simple commit-reveal election contract with a subtle vulnerability. A naive user has created the contract with two choices for the election. Your attack will have succeeded when choice 1 always wins the election.",
+    "level": "1"
+}

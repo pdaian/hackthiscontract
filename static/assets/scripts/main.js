@@ -2,12 +2,6 @@ jQuery(document).ready(function($) {
 
     'use-strict';
 
-    function RYLsmoothScroll() {
-        if (navigator.appVersion.indexOf("Mac") == -1) {
-            $('body').append("<script src='static/vendors/smooth-scroll/SmoothScroll.js'></script>");
-        }
-    }
-    RYLsmoothScroll();
 
     //useful var
     var $window = $(window);
