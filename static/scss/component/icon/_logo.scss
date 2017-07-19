@@ -1,0 +1,17 @@
+$logo-size: 40px, 83px, 109px;
+
+@for $i from 1 to 4 {
+    .ryl-madrin-logo-#{$i} {
+        @include square(nth($logo-size, $i));
+        background-image: url("../images/logo.svg");
+        background-size: 100% 100%;
+        background-position: center;
+    }
+
+    .ryl-madrin-logo-dark-#{$i} {
+        @include square(nth($logo-size, $i));
+        background-image: url("../images/dark-logo.svg");
+        background-size: 100% 100%;
+        background-position: center;
+    }
+}

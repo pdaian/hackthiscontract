@@ -1,0 +1,348 @@
+.ryl-process-wrapper {
+    overflow: hidden;
+    @include clearfix;
+}
+
+.ryl-process-style-1 {
+    .ryl-process-item {
+        position: relative;
+        display: block;
+        float: left;
+        text-align: center;
+
+        .ryl-content {
+            padding: 20px 15px 0;
+            border: 1px solid $dark-color3;
+        }
+
+        .ryl-line {
+            position: relative;
+            background-color: $gray-color2;
+
+            &:before {
+                content: " ";
+                @include square(21px);
+                position: relative;
+                display: block;
+                background-color: $light-color;
+                border-radius: 50%;
+                border: 1px solid $gray-color2;
+            }
+        }
+
+        .ryl-icon {
+            position: relative;
+
+            &:before {
+                @include easing-animation;
+                position: absolute;
+                display: block;
+                content: " ";
+                background-color: $dark-color3;
+                @include square(15px);
+                border-radius: 50%;
+            }
+        }
+
+        &.active {
+            .ryl-icon {
+                border-color: $main-color;
+
+                &:before {
+                    background-color: $main-color;
+                }
+
+                i {
+                    border-color: $main-color;
+
+                    &:after {
+                        background-color: $main-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Responsive process */
+@include breakpointMin($screen-md-min) {
+    .ryl-process-style-1 {
+        margin-left: -15px;
+        margin-right: -15px;
+
+        .ryl-process-item {
+            width: 25%;
+
+            .ryl-content {
+                margin: 0 15px 30px;
+            }
+
+            .ryl-line {
+                top: 10px;
+                width: 100%;
+                height: 3px;
+
+                &:before {
+                    top: -10px;
+                    left: 50%;
+                    margin-left: -11px;
+                }
+            }
+
+            .ryl-icon {
+                padding-top: 40px;
+
+                &:before {
+                    top: 0px;
+                    left: 50%;
+                    margin-left: -8px;
+                }
+            }
+        }
+    }
+}
+
+
+@include breakpointMax($screen-md-min) {
+    .ryl-process-style-1 {
+        margin-top: -30px;
+
+        .ryl-process-item {
+            width: 100%;
+
+            .ryl-content {
+                margin-left: 160px;
+                margin-top: 30px;
+            }
+
+            .ryl-line {
+                position: absolute;
+                top: 0;
+                left: 130px;
+                width: 3px;
+                height: 100%;
+
+                &:before {
+                    top: 50%;
+                    left: 50%;
+                    margin-left: -11px;
+                    margin-top: 0px;
+                }
+            }
+
+            .ryl-icon {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                margin-top: -41px;
+
+                &:before {
+                    top: 50%;
+                    right: -33px;
+                    margin-top: -9px;
+                }
+            }
+        }
+    }
+}
+
+
+@include breakpointMax($screen-xs-min) {
+    .ryl-process-style-1 {
+        .ryl-process-item {
+            width: 100%;
+
+            .ryl-content {
+                margin-left: 0;
+            }
+
+            .ryl-line {
+                display: none;
+            }
+
+            .ryl-icon {
+                display: none;
+            }
+        }
+    }
+}
+
+
+.ryl-process-style-2 {
+    .ryl-process-item {
+        position: relative;
+        display: block;
+        float: left;
+        text-align: center;
+
+        .ryl-content {
+            padding: 20px 15px 0;
+            border: 1px solid $dark-color3;
+        }
+
+        .ryl-line {
+            position: relative;
+            background-color: $gray-color2;
+
+            &:before {
+                content: " ";
+                @include square(21px);
+                position: relative;
+                display: block;
+                background-color: $light-color;
+                border-radius: 50%;
+                border: 1px solid $gray-color2;
+            }
+        }
+
+        .ryl-icon {
+            position: relative;
+
+            i {
+                background-color: $dark-color3;
+
+                &:after {
+                    border-top-color: $dark-color3;
+                    @include easing-animation;
+                }
+            }
+
+            &:before {
+                @include easing-animation;
+                position: absolute;
+                display: block;
+                content: " ";
+                background-color: $dark-color3;
+                @include square(15px);
+                border-radius: 50%;
+                z-index: 9;
+            }
+        }
+
+        &.active {
+            .ryl-icon {
+                border-color: $main-color;
+
+                &:before {
+                    background-color: $main-color;
+                }
+
+                i {
+                    background-color: $main-color;
+
+                    &:after {
+                        border-top-color: $main-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Responsive process */
+@include breakpointMin($screen-md-min) {
+    .ryl-process-style-2 {
+        margin-left: -15px;
+        margin-right: -15px;
+
+        .ryl-process-item {
+            width: 25%;
+
+            .ryl-content {
+                margin: 30px 15px 0;
+            }
+
+            .ryl-line {
+                top: -8px;
+                width: 100%;
+                height: 3px;
+
+                &:before {
+                    top: -10px;
+                    left: 50%;
+                    margin-left: -11px;
+                }
+            }
+
+            .ryl-icon {
+                height: 150px;
+                padding-bottom: 50px;
+
+                &:before {
+                    bottom: 0px;
+                    left: 50%;
+                    margin-left: -8px;
+                }
+            }
+        }
+    }
+}
+
+
+@include breakpointMax($screen-md-min) {
+    .ryl-process-style-2 {
+        margin-top: -30px;
+
+        .ryl-process-item {
+            width: 100%;
+
+            .ryl-content {
+                margin-left: 160px;
+                margin-top: 30px;
+            }
+
+            .ryl-line {
+                position: absolute;
+                top: 0;
+                left: 130px;
+                width: 3px;
+                height: 100%;
+
+                &:before {
+                    top: 50%;
+                    left: 50%;
+                    margin-left: -11px;
+                    margin-top: -6px;
+                }
+            }
+
+            .ryl-icon {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                margin-top: -45px;
+
+                i {
+                    @include arrow-right(0);
+                }
+
+                &:before {
+                    top: 50%;
+                    right: -38.5px;
+                    margin-top: -8.5px;
+                }
+            }
+        }
+    }
+}
+
+
+@include breakpointMax($screen-xs-min) {
+    .ryl-process-style-2 {
+        .ryl-process-item {
+            width: 100%;
+
+            .ryl-content {
+                margin-left: 0;
+            }
+
+            .ryl-line {
+                display: none;
+            }
+
+            .ryl-icon {
+                display: none;
+            }
+        }
+    }
+}

@@ -1,0 +1,92 @@
+$main-color: #FFDD3A;
+$trans-main-color: rgba(255, 217, 71, 0.9);
+$trans-main-color2: rgba(255, 217, 71, 0.7);
+
+$light-color: #FFFFFF;
+$trans-light-color1: rgba(255, 255, 255, 0.7);
+$trans-light-color2: rgba(255, 255, 255, 0.8);
+
+$dark-color1: #222222;
+$dark-color2: #444444;
+$dark-color3: #666666;
+$dark-color4: #888888;
+$dark-color: $dark-color2;
+
+$trans-dark-color1: rgba(0, 0, 0, 0.5);
+$trans-dark-color2: rgba(68, 68, 68, 0.9);
+
+$gray-color1: #BBBBBB;
+$gray-color2: #CCCCCC;
+$gray-color3: #DDDDDD;
+
+$lightgray-color: #F6F6F6;
+
+.ryl-color-main {
+    color: $main-color;
+}
+
+.ryl-color-dark {
+    color: $dark-color;
+}
+
+.ryl-color-light {
+    color: $light-color;
+}
+
+.ryl-color-trans-light {
+    color: $trans-light-color1;
+}
+
+.ryl-border-color-main {
+    border-color: $main-color;
+}
+
+.ryl-border-color-dark {
+    border-color: $dark-color;
+}
+
+.ryl-border-color-light {
+    border-color: $light-color;
+}
+
+.ryl-border-color-trans-light {
+    border-color: $trans-light-color1;
+}
+
+.ryl-bg-light {
+    background-color: $light-color;
+}
+
+.ryl-bg-main {
+    background-color: $main-color;
+}
+
+.ryl-bg-dark {
+    background-color: $dark-color;
+}
+
+.ryl-bg-gray {
+    background-color: $lightgray-color;
+}
+
+.ryl-bg-trans {
+    background-color: transparent;
+}
+
+.ryl-bg-trans-main {
+    background-color: $trans-main-color;
+}
+
+.ryl-bg-trans-dark-1 {
+    background-color: $trans-dark-color1;
+}
+
+.ryl-bg-trans-dark-2 {
+    background-color: $trans-dark-color2;
+}
+
+.ryl-bg-dots {
+    background-image: url("../images/overlay.png");
+    background-repeat: repeat;
+    background-size: 4px;
+}

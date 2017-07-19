@@ -1,0 +1,302 @@
+.ryl-home-content-wrapper {
+    position: relative;
+    height: 100%;
+}
+
+.ryl-home-header-right-side {
+    padding-top: 40px;
+    text-align: right;
+
+    h3 {
+        margin-bottom: 10px;
+        font-size: 30px;
+    }
+
+    p {
+        font-weight: 500;
+    }
+
+    a {
+        margin-left: 8px;
+    }
+}
+
+.ryl-madrin-brand {
+    display: block;
+    width: 200px;
+    @include center-block;
+    padding-top: 40px;
+    padding-bottom: 20px;
+
+    .ryl-madrin-logo-2 {
+        margin-bottom: 15px;
+    }
+}
+
+.ryl-home-header-style-1 {
+    .ryl-home-nav {
+        border-top: 1px solid $light-color;
+        border-bottom: 1px solid $light-color;
+        font-size: $font-size-5;
+        text-align: center;
+
+        ul {
+            li {
+                &:not(:first-child):before {
+                    content: "/";
+                }
+
+                a {
+                    line-height: 80px;
+                    margin-left: 15px;
+                    margin-right: 15px;
+                    font-weight: 500;
+                    @include easing-animation;
+
+                    &:hover {
+                        color: $main-color;
+                    }
+                }
+            }
+        }
+    }
+
+    .ryl-madrin-brand {
+        display: block;
+        text-align: center;
+
+        .ryl-madrin-logo-2 {
+            @include center-block;
+        }
+    }
+}
+
+.ryl-home-header-style-2 {
+    .ryl-madrin-brand {
+        .ryl-madrin-logo-2 {
+            margin-left: 38px;
+        }
+    }
+
+    .ryl-home-header-right-side {
+        padding-top: 70px;
+    }
+}
+
+.ryl-home-content-style-2 {
+    hr {
+        width: 160px;
+    }
+
+    .ryl-fs-4 {
+        margin-bottom: 40px;
+    }
+
+    .ryl-play-popup-video {
+        padding: 2px;
+        font-size: 74px;
+        opacity: 0.7;
+        margin-bottom: 100px;
+        @include easing-animation;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .ryl-next-section {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        margin-left: -40px;
+        font-size: 40px;
+        @include square(80px);
+    }
+}
+
+#ryl-home-slider.ryl-caption-slider {
+    padding-top: 10px;
+    padding-bottom: 30px;
+
+    .ryl-caption-slider-item {
+        padding-top: 20px;
+        padding-bottom: 80px;
+        @include clearfix;
+
+        .ryl-caption {
+            opacity: 0;
+        }
+
+        hr {
+            width: 260px;
+            margin-top: 35px;
+            margin-bottom: 35px;
+        }
+
+        .ryl-fs-super {
+            line-height: 1;
+        }
+    }
+}
+
+/* Responsive home */
+
+@include breakpointMin($screen-md-min) {
+    .ryl-home-header-style-2 .ryl-madrin-brand {
+        float: left;
+    }
+}
+
+
+@include breakpointMax(1440) {
+    .ryl-home-nav {
+        display: none;
+    }
+
+    #ryl-home-slider.ryl-caption-slider {
+        .ryl-caption-slider-item {
+            padding-top: 20px;
+            padding-bottom: 60px;
+
+            hr {
+                width: 260px;
+                margin-top: 30px;
+                margin-bottom: 30px;
+            }
+        }
+    }
+}
+
+
+@include breakpointMax($screen-lg-min) {
+    #ryl-home-slider.ryl-caption-slider {
+        .ryl-caption-slider-item {
+            padding-top: 20px;
+            padding-bottom: 40px;
+
+            hr {
+                width: 200px;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+
+            .ryl-fs-super {
+                font-size: 70px;
+            }
+
+            .ryl-fs-3 {
+                font-size: 24px;
+            }
+        }
+    }
+}
+
+
+@include breakpointMax($screen-md-min) {
+    #ryl-home-slider.ryl-caption-slider {
+        .ryl-caption-slider-item {
+            padding-top: 20px;
+            padding-bottom: 40px;
+
+            hr {
+                width: 160px;
+            }
+
+            .ryl-fs-super {
+                font-size: 60px;
+            }
+
+            .ryl-fs-3 {
+                font-size: 18px;
+            }
+        }
+    }
+
+    .ryl-home-header-style-2 {
+        .ryl-madrin-brand {
+            text-align: center;
+
+            .ryl-madrin-logo-2 {
+                @include center-block;
+            }
+        }
+    }
+}
+
+
+@include breakpointMax($screen-sm-min) {
+    #ryl-home-slider.ryl-caption-slider {
+        .ryl-caption-slider-item {
+            padding-top: 20px;
+            padding-bottom: 20px;
+
+            hr {
+                width: 160px;
+            }
+
+            .ryl-fs-super {
+                font-size: 40px;
+            }
+
+            .ryl-fs-3 {
+                font-size: 16px;
+            }
+        }
+    }
+
+    .ryl-home-content-style-2 {
+        .ryl-fs-1 {
+            font-size: 36px;
+        }
+
+        .ryl-fs-4 {
+            font-size: 18px;
+            margin-bottom: 0;
+        }
+
+        .ryl-play-popup-video {
+            margin-bottom: 40px;
+            @include easing-animation;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        .ryl-next-section {
+            display: none;
+        }
+    }
+}
+
+
+@include breakpointMax($screen-xs-min) {
+    .ryl-madrin-brand {
+        padding-top: 15px;
+        padding-bottom: 20px;
+
+        .ryl-madrin-logo-2 {
+            margin-bottom: 10px;
+            @include center-block;
+        }
+    }
+
+    #ryl-home-slider.ryl-caption-slider {
+        .ryl-caption-slider-item {
+            padding-top: 20px;
+            padding-bottom: 10px;
+
+            hr {
+                width: 160px;
+            }
+
+            .ryl-fs-super {
+                font-size: 24px;
+            }
+
+            .ryl-fs-3 {
+                font-size: 14px;
+            }
+        }
+    }
+}

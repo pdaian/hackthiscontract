@@ -1,0 +1,47 @@
+$button-font-size: $font-size-5;
+$button-font-weight: 700;
+$button-line-height: $base-line-height;
+$button-padding-v: 12px;
+$button-padding-h: 35px;
+$button-radius: $button-font-size * $button-line-height / 2 + $button-padding-v;
+
+@mixin button-form($font-size, $font-weight, $line-height, $padding-h, $padding-v, $border, $border-opt, $radius) {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    font-size: $font-size;
+    font-weight: $font-weight;
+    line-height: $line-height;
+
+    @if $border {
+        padding: ($padding-h - $border) ($padding-v - $border);
+        border: $border $border-opt;
+    }
+
+    @else {
+        padding: $padding-h $padding-v;
+        border: none;
+    }
+    border-radius: $radius;
+    cursor: pointer;
+}
+
+.ryl-btn-1 {
+    @include button-form($button-font-size, $button-font-weight, $button-line-height, $button-padding-v, $button-padding-h, 2px, solid $light-color, $button-radius);
+    color: $light-color;
+    @include hover($dark-color, $light-color, false);
+}
+
+.ryl-btn-2 {
+    @include button-form($button-font-size, $button-font-weight, $button-line-height, $button-padding-v, $button-padding-h, false, false, $button-radius);
+    color: $light-color;
+    background-color: $dark-color1;
+    font-weight: 600;
+    @include hover($light-color, $main-color, false);
+}
+
+.ryl-btn-trans-1 {
+    @include button-form($button-font-size, $button-font-weight, $button-line-height, $button-padding-v - 1px, $button-padding-h, 2px, solid $trans-light-color1, $button-radius);
+    color: $trans-light-color1;
+    @include hover($dark-color, $light-color, false);
+}

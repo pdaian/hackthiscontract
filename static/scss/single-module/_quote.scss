@@ -1,0 +1,39 @@
+.ryl-quote-item {
+    position: relative;
+
+    q {
+        position: relative;
+        display: block;
+    }
+}
+
+/* Responsive ryl-quote-item */
+@include breakpointMin($screen-lg-min) {
+    .ryl-quote-item {
+        q {
+            position: relative;
+            display: block;
+            float: left;
+            margin-right: 250px;
+        }
+
+        a {
+            float: right;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}
+
+
+@include breakpointMax($screen-lg-min) {
+    .ryl-quote-item {
+        text-align: center;
+
+        q {
+            margin-bottom: $section-space - 20px;
+        }
+    }
+}

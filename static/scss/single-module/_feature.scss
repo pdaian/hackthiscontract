@@ -1,0 +1,19 @@
+.ryl-feature-item-style-1 {
+    .ryl-icon-circle-1 {
+        float: left;
+    }
+
+    header {
+        margin-left: 55px;
+        margin-bottom: 20px;
+        @include clearfix;
+
+        h6 {
+            margin-bottom: 5px;
+        }
+    }
+
+    p:last-child {
+        margin-bottom: 0;
+    }
+}

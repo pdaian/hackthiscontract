@@ -1,0 +1,149 @@
+.ryl-team-member-style-1 {
+    text-align: center;
+    position: relative;
+    display: block;
+    max-width: 260px;
+    cursor: pointer;
+    @include center-block;
+
+    header {
+        margin-bottom: 40px;
+
+        h5 {
+            margin-bottom: 0;
+        }
+    }
+
+    .ryl-image {
+        position: relative;
+
+        .ryl-overlay {
+            opacity: 0;
+            @include easing-animation;
+        }
+    }
+
+    > p {
+        padding-top: 20px;
+        color: $dark-color3;
+    }
+
+    .ryl-social {
+        color: $dark-color4;
+        @include clearfix;
+        padding: 20px 0;
+        border-top: 1px solid $gray-color3;
+        border-bottom: 1px solid $gray-color3;
+        @include easing-animation;
+
+        li {
+            position: relative;
+            display: block;
+            float: left;
+            width: 20%;
+
+            a {
+                @include easing-animation;
+                @include hover-color($main-color);
+
+                i {
+                    font-size: 22px;
+                }
+            }
+        }
+    }
+
+    &:hover {
+        .ryl-image {
+            .ryl-overlay {
+                opacity: 1;
+            }
+        }
+
+        > p {
+            padding-top: 20px;
+            color: $dark-color3;
+        }
+
+        .ryl-social {
+            background-color: $dark-color;
+
+            a {
+                color: $light-color;
+            }
+        }
+    }
+}
+
+.ryl-team-member-style-2 {
+    text-align: center;
+    position: relative;
+    display: block;
+    max-width: 260px;
+    cursor: pointer;
+    @include center-block;
+
+    header {
+        margin-bottom: 40px;
+        @include arrow-bottom(16px, $main-color);
+
+        &:after {
+            @include easing-animation;
+            opacity: 0;
+        }
+
+        h5 {
+            margin-bottom: 0;
+        }
+    }
+
+    > p {
+        padding-top: 20px;
+        color: $dark-color3;
+    }
+
+    .ryl-social {
+        color: $dark-color4;
+        @include clearfix;
+        padding: 20px 0;
+        border-top: 1px solid $gray-color3;
+        border-bottom: 1px solid $gray-color3;
+        @include easing-animation;
+
+        li {
+            position: relative;
+            display: block;
+            float: left;
+            width: 20%;
+
+            a {
+                @include easing-animation;
+                @include hover-color($main-color);
+
+                i {
+                    font-size: 22px;
+                }
+            }
+        }
+    }
+
+    &:hover {
+        header:after {
+            bottom: -12px;
+            opacity: 1;
+        }
+
+        > p {
+            padding-top: 20px;
+            color: $dark-color3;
+        }
+
+        .ryl-social {
+            background-color: $dark-color;
+
+            a {
+                color: $light-color;
+            }
+        }
+    }
+}

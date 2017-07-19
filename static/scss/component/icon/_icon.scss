@@ -1,0 +1,149 @@
+@import "logo";
+
+@mixin icon-form($font-size, $size, $radius, $border, $border-opt) {
+    @if $border {
+        @include square($size);
+        line-height: $size - $border * 2;
+        border: $border $border-opt;
+    }
+
+    @else {
+        @include square($size);
+        line-height: $size;
+    }
+    font-size: $font-size;
+    cursor: pointer;
+
+    @if $radius {
+        border-radius: 50%;
+    }
+    z-index: 9;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+
+    &:before {
+        display: block;
+    }
+}
+
+.ryl-icon-inline-text {
+    position: relative;
+    top: 2px;
+    margin-right: 3px;
+}
+
+.ryl-icon-circle-1 {
+    @include icon-form(22px, 42px, true, false, false);
+    background-color: $main-color;
+    color: $light-color;
+}
+
+.ryl-icon-circle-border-1 {
+    @include icon-form(16px, 32px, true, 1px, solid $trans-light-color1);
+    color: $trans-light-color1;
+    @include easing-animation;
+
+    &:hover {
+        color: $main-color;
+        border-color: $main-color;
+        animation: swing 0.4s;
+    }
+}
+
+.ryl-icon-circle-border-2 {
+    @include icon-form(22px, 46px, true, 2px, solid $trans-light-color1);
+    color: $trans-light-color1;
+    @include easing-animation;
+
+    &:hover {
+        color: $main-color;
+        border-color: $main-color;
+        animation: swing 0.4s;
+    }
+}
+
+.ryl-icon-circle-border-3 {
+    @include icon-form(24px, 50px, true, 1px, solid $trans-light-color1);
+    color: $trans-light-color1;
+    @include easing-animation;
+
+    &:hover {
+        color: $main-color;
+        border-color: $main-color;
+        animation: swing 0.4s;
+    }
+}
+
+.ryl-icon-super-circle-1 {
+    position: relative;
+    @include icon-form(60px, 106px, true, 1px, solid $dark-color);
+    color: $light-color;
+    @include easing-animation;
+
+    &:after {
+        @include easing-animation;
+        content: " ";
+        position: absolute;
+        left: 3px;
+        top: 3px;
+        @include square(98px);
+        background-color: $dark-color;
+        border-radius: 50%;
+        z-index: -1;
+    }
+}
+
+.ryl-icon-super-circle-2 {
+    position: relative;
+    @include icon-form(60px, 111px, true, 2px, solid $main-color);
+    color: $light-color;
+    @include easing-animation;
+
+    &:after {
+        @include easing-animation;
+        content: " ";
+        position: absolute;
+        left: 3px;
+        top: 3px;
+        @include square(101px);
+        background-color: $main-color;
+        border-radius: 50%;
+        z-index: -1;
+    }
+}
+
+.ryl-icon-super-square-1 {
+    position: relative;
+    @include icon-form(60px, 100px, false, false, false);
+    background-color: $main-color;
+    color: $light-color;
+    @include easing-animation;
+    @include arrow-bottom(18px, $main-color);
+}
+
+.ryl-icon-separator-wrapper {
+    position: relative;
+    float: left;
+    height: 80px;
+    width: 100%;
+    margin-top: -40px;
+    margin-bottom: -40px;
+    line-height: 80px;
+    text-align: center;
+
+    .ryl-icon-separator {
+        @include square(80px);
+        font-size: 26px;
+        color: $light-color;
+        background: url("../images/diamond.svg");
+        background-position: center;
+        background-size: 100% 100%;
+        position: relative;
+        z-index: 9;
+    }
+}

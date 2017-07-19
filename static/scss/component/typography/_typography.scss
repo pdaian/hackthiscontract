@@ -1,0 +1,98 @@
+@import url("http://fonts.googleapis.com/css?family=Raleway:400,200,300,500,600,700");
+
+@import url("../fonts/styles.css");
+
+$font-size-1: 60px;
+$font-size-2: 45px;
+$font-size-3: 36px;
+$font-size-4: 24px;
+$font-size-5: 18px;
+$font-size-6: 14px;
+$base-font-size: $font-size-6;
+$base-line-height: 1.6;
+$text-block-margin-bottom: 20px;
+
+$font-size-list: $font-size-1, $font-size-2, $font-size-3, $font-size-4, $font-size-5, $font-size-6;
+
+body {
+    font-family: "Raleway", sans-serif;
+    font-size: $base-font-size;
+    font-weight: 400;
+    line-height: $base-line-height;
+    color: $dark-color2;
+    -webkit-font-smoothing: antialiased;
+    //this is very important to make font weight on mac good
+}
+
+@for $i from 1 to 7 {
+    h#{$i} {
+        font-size: nth($font-size-list, $i);
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1;
+    font-weight: 600;
+    margin: 0;
+    margin-bottom: $text-block-margin-bottom;
+
+    &.ryl-bold-heading {
+        font-weight: 700;
+    }
+
+    &.ryl-light-heading {
+        font-weight: 500;
+    }
+}
+
+p {
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    margin-bottom: $text-block-margin-bottom;
+}
+
+q {
+    &:before {
+        content: "“";
+    }
+
+    &:after {
+        content: "”";
+    }
+}
+
+.ryl-fw-bold {
+    font-weight: 700;
+}
+
+.ryl-fw-semibold {
+    font-weight: 600;
+}
+
+.ryl-fw-medium {
+    font-weight: 500;
+}
+
+.ryl-fw-normal {
+    font-weight: 400;
+}
+
+.ryl-fw-light {
+    font-weight: 300;
+}
+
+@for $i from 1 to 7 {
+    .ryl-fs-#{$i} {
+        font-size: nth($font-size-list, $i);
+    }
+}
+
+.ryl-fs-super {
+    font-size: 90px;
+}
+
+::selection {
+    background: $main-color;
+    color: $light-color;
+}

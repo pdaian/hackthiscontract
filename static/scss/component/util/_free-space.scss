@@ -1,0 +1,11 @@
+@for $i from 1 to 21 {
+    @each $var in top, bottom, left, right {
+        .ryl-margin-#{$var}-#{$i * 5} {
+            margin-#{$var}: $i * 5px;
+        }
+
+        .ryl-padding-#{$var}-#{$i * 5} {
+            padding-#{$var}: $i * 5px;
+        }
+    }
+}

@@ -1,0 +1,26 @@
+.ryl-skill-item {
+    text-align: center;
+
+    .ryl-chart {
+        position: relative;
+        display: block;
+        margin-bottom: 40px;
+        height: 160px;
+        @include clearfix;
+
+        canvas {
+            @include center-block;
+        }
+
+        .ryl-percent {
+            @include ab-center;
+            font-size: $font-size-2;
+
+            &:after {
+                content: "%";
+                position: relative;
+                display: inline-block;
+            }
+        }
+    }
+}

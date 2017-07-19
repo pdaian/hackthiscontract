@@ -1,0 +1,45 @@
+$screen-lg-min: 1200;
+$screen-md-min: 992;
+$screen-sm-min: 768;
+$screen-xs-min: 480;
+
+@mixin breakpointMin($point) {
+    @media (min-width: #{$point}px) {
+        @content;
+    }
+}
+
+@mixin breakpointMax($point) {
+    @media (max-width: #{$point - 1}px) {
+        @content;
+    }
+}
+
+@mixin breakpointIn($point1, $point2) {
+    @media (min-width: #{$point1}px) and (max-width: #{$point2 - 1}px) {
+        @content;
+    }
+}
+
+@mixin breakpointHMin($point) {
+    @media (min-height: #{$point}px) {
+        @content;
+    }
+}
+
+@mixin breakpointHMax($point) {
+    @media (max-height: #{$point + 1}px) {
+        @content;
+    }
+}
+
+@mixin breakpointHIn($point1, $point2) {
+    @media (min-height: #{$point1}px) and (max-height: #{$point2 + 1}px) {
+        @content;
+    }
+}
+
+@mixin common-padding {
+    padding-bottom: 50px;
+    padding-top: 50px;
+}

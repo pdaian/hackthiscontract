@@ -1,0 +1,52 @@
+$duration-time: 0.3s;
+$duration-longtime: 0.7s;
+
+@mixin easing-animation {
+    transition: all $duration-time ease-in-out;
+}
+
+@mixin easing-animation-long {
+    transition: all $duration-longtime ease-in-out;
+}
+
+@mixin hover($color, $bg, $border) {
+    @include easing-animation;
+
+    &:hover {
+        @if $color {
+            color: $color;
+        }
+
+        @if $bg {
+            background-color: $bg;
+        }
+
+        @if $border {
+            border-color: $border;
+        }
+    }
+}
+
+@mixin hover-color($thiscolor) {
+    @include easing-animation;
+
+    &:hover {
+        color: $thiscolor;
+    }
+}
+
+@mixin hover-bg($thiscolor) {
+    @include easing-animation;
+
+    &:hover {
+        background: $thiscolor;
+    }
+}
+
+@mixin hover-border($thiscolor) {
+    @include easing-animation;
+
+    &:hover {
+        border: $thiscolor;
+    }
+}

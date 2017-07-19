@@ -1,0 +1,94 @@
+input, textarea {
+    outline: none;
+    resize: none;
+}
+
+.ryl-form-input-style-1 {
+    input:not([type="submit"]), textarea {
+        position: relative;
+        display: block;
+        float: left;
+        background-color: $trans-light-color2;
+        border: none;
+        width: 100%;
+        padding: 19px;
+        margin-bottom: 35px;
+        color: $dark-color;
+        font-weight: 700;
+        @include easing-animation;
+    }
+
+    .ryl-submit {
+        padding-top: 20px;
+    }
+
+    textarea {
+        height: 250px;
+    }
+
+    ::-webkit-input-placeholder {
+        color: $dark-color;
+    }
+
+    :-moz-placeholder {
+        /* Firefox 18- */
+        color: $dark-color;
+    }
+
+    ::-moz-placeholder {
+        /* Firefox 19+ */
+        color: $dark-color;
+    }
+
+    :-ms-input-placeholder {
+        color: $dark-color;
+    }
+}
+
+.ryl-form-input-style-2 {
+    input, textarea {
+        position: relative;
+        display: block;
+        float: left;
+        background-color: $trans-light-color2;
+        border: none;
+        border-bottom: 1px solid $gray-color3;
+        width: 100%;
+        padding: 19px 0;
+        margin-bottom: 10px;
+        color: $dark-color;
+        @include easing-animation;
+        font-size: 18px;
+    }
+
+    textarea {
+        height: 220px;
+    }
+
+    .ryl-submit {
+        padding-top: 50px;
+        float: left;
+    }
+
+    ::-webkit-input-placeholder {
+        color: $dark-color;
+    }
+
+    :-moz-placeholder {
+        /* Firefox 18- */
+        color: $dark-color;
+    }
+
+    ::-moz-placeholder {
+        /* Firefox 19+ */
+        color: $dark-color;
+    }
+
+    :-ms-input-placeholder {
+        color: $dark-color;
+    }
+}
+
+.placeholder {
+    color: $dark-color;
+}

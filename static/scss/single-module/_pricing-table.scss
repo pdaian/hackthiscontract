@@ -1,0 +1,130 @@
+$pricing-active-add: 20px;
+
+.ryl-pricing-table {
+    position: relative;
+    display: block;
+    float: left;
+    width: 100%;
+    min-width: 700px;
+    padding-left: 1px;
+    @include clearfix;
+}
+
+.ryl-pricing-table-item {
+    position: relative;
+    display: block;
+    float: left;
+    width: 25%;
+    margin-left: -1px;
+    text-align: center;
+    border: 1px solid $gray-color3;
+    cursor: pointer;
+    @include clearfix;
+
+    .ryl-title {
+        font-weight: 700;
+    }
+
+    .ryl-price {
+        background-color: $dark-color1;
+        color: $light-color;
+        @include easing-animation;
+    }
+
+    ul {
+        padding-left: 10px;
+        padding-right: 10px;
+
+        li {
+            border-bottom: 1px solid $gray-color3;
+            border-bottom: 1px solid $gray-color3;
+        }
+    }
+
+    &.ryl-active, &:hover {
+        .ryl-price {
+            background-color: $main-color;
+        }
+
+        .ryl-purchase {
+            background-color: $main-color;
+        }
+    }
+
+    &.ryl-active {
+        margin-top: 0;
+    }
+}
+
+/* Responsive-pricing-table */
+@include breakpointMin($screen-md-min) {
+    .ryl-pricing-table-item {
+        margin-top: $pricing-active-add;
+
+        .ryl-title {
+            font-size: 30px;
+            line-height: 100px;
+        }
+
+        .ryl-price {
+            font-size: 40px;
+            line-height: 80px;
+        }
+
+        ul {
+            li {
+                line-height: 70px;
+                font-size: $font-size-5;
+            }
+        }
+
+        .ryl-purchase {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        &.ryl-active {
+            margin-top: 0;
+
+            .ryl-title {
+                line-height: 100px + $pricing-active-add;
+            }
+
+            .ryl-purchase {
+                margin-bottom: 30px + $pricing-active-add;
+            }
+        }
+    }
+}
+
+
+@include breakpointMax($screen-md-min) {
+    .ryl-pricing-table-item {
+        .ryl-title {
+            font-size: 20px;
+            line-height: 60px;
+        }
+
+        .ryl-price {
+            font-size: $font-size-4;
+            line-height: 70px;
+        }
+
+        ul {
+            li {
+                line-height: 50px;
+                font-size: $font-size-5 - 3px;
+            }
+        }
+
+        .ryl-purchase {
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+    }
+}
+
+
+.ryl-pricing-table-wrapper {
+    overflow-x: auto;
+}

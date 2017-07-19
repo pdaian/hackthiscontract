@@ -1,0 +1,134 @@
+#ryl-main-hamburger {
+    @include size(50px, 40px);
+    position: fixed;
+    display: none;
+    right: 20px;
+    top: 40px;
+    text-align: center;
+    line-height: 40px;
+    background: $light-color;
+    border: 1px solid $dark-color;
+    border-radius: 4px;
+    z-index: 999;
+    cursor: pointer;
+
+    i {
+        display: inline-block;
+        font-size: 40px;
+    }
+
+    &.ryl-hamburger-appear-onhome {
+        background-color: transparent;
+        color: $light-color;
+        border-color: $light-color;
+    }
+
+    &:hover {
+        border-color: $main-color;
+        color: $main-color;
+    }
+
+    &.ryl-hamburger-appear {
+        display: block;
+    }
+}
+
+$nav-right-width: 300px;
+
+.ryl-nav-right {
+    width: $nav-right-width;
+    position: fixed;
+    right: -$nav-right-width;
+    z-index: 999;
+    color: $light-color;
+    background: $dark-color1;
+    height: 100%;
+    overflow-y: scroll;
+
+    .ryl-nav-right-content-wrapper {
+        @include center-block;
+        padding: 40px 0;
+        position: relative;
+        width: 220px;
+    }
+
+    header {
+        @include clearfix;
+        @include center-block;
+
+        h4, .ryl-madrin-logo-1 {
+            position: relative;
+            float: left;
+            margin-bottom: 40px;
+            line-height: 40px;
+        }
+
+        .ryl-madrin-logo-1 {
+            margin-right: 10px;
+        }
+    }
+
+    ul.ryl-nav-right-content {
+        margin-bottom: 40px;
+        padding-left: 15px;
+
+        li {
+            padding: 10px 0;
+
+            a {
+                @include easing-animation;
+                font-weight: 600;
+
+                &.active, &:hover {
+                    color: $main-color;
+                }
+            }
+        }
+    }
+
+    footer {
+        ul.ryl-list-inline-block {
+            li:not(:first-child) {
+                margin-left: 6px;
+            }
+        }
+    }
+
+    &::-webkit-scrollbar {
+        width: 3px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: $dark-color1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $main-color;
+    }
+}
+
+.ryl-close-nav-right {
+    position: absolute;
+    top: 41px;
+    right: -28px;
+
+    i {
+        font-size: 20px;
+    }
+}
+
+body {
+    background-color: $light-color;
+}
+
+#ryl-main {
+    z-index: 9;
+}
+
+#ryl-main, .ryl-hamburger, .ryl-nav-right {
+    @include easing-animation;
+
+    &.ryl-nav-right-appear {
+        transform: translateX(-$nav-right-width);
+    }
+}

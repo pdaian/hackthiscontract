@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Hack This Contract - A Solidity / Smart Contract Exploit Training Course</title>
+    <link rel="shortcut icon" href="static/favicon.png">
+    <meta name="description" content="Training course for developers and other parties interested in learning about hands-on smart contract security.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/assets/styles/main.css">
+    <script src="static/vendors/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+<script>
+// Set the date we're counting down to
+var countDownDate = new Date("Sep 5, 2017 15:37:25").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get todays date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now an the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+
+  // If the count down is finished, write some text
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+</script>
+
+  </head>
+  <body><!--[if lt IE 8]>
+    <p class="browsehappy">
+      You are using an <strong>outdated</strong> browser.
+      Please <a href="http://browsehappy.com/">upgrade your browser</a>
+      to improve your experience.
+    </p><![endif]-->
+
+    <div id="ryl-main">
+      <header id="home" class="ryl-bg-dots ryl-color-light">
+        <div data-stellar-background-ratio="0.25" class="ryl-overlay-bg ryl-home-parallax-background-style-2 ryl-parallax-bg"></div>
+        <header id="ryl-home-header" class="clearfix ryl-home-header-style-2">
+          <div class="container-fluid">
+            <div class="row"></div>
+            <div class="col-md-4"><a href="index.html" class="ryl-madrin-brand">
+                <h4 class="ryl-light-heading" style="margin-left: 8px; width:500px;">HACK THIS CONTRACT</h4></a></div>
+            <div class="ryl-home-header-right-side col-md-8 visible-md visible-lg">
+              <ul class="ryl-list-inline-block">
+              </ul>
+            </div>
+          </div>
+        </header>
+        {% block body %}
+      <footer class="ryl-footer-style-2">
+        <div class="container">
+          <ul class="ryl-list-inline-block ryl-footer-social">
+            <li><a href="index.html#"><i class="ryl-icon-circle-border-3 icon-email29"></i></a></li>
+            <li><a href="index.html#"><i class="ryl-icon-circle-border-3 icon-linkedin"></i></a></li>
+            <li><a href="index.html#"><i class="ryl-icon-circle-border-3 icon-facebook"></i></a></li>
+            <li><a href="index.html#"><i class="ryl-icon-circle-border-3 icon-twitter"></i></a></li>
+          </ul>
+          <div class="ryl-footer-content">Never© 2017 <a href=index.html">Hack This Contract</a></div>
+        </div>
+      </footer>
+    </div>
+    <script src="static/vendors/jquery/jquery-1.11.0.min.js"></script>
+    <script src="static/vendors/html5shiv/html5shiv.min.js"></script>
+    <script src="static/vendors/jquery-easing/jquery.easing-1.3.min.js"></script>
+    <script src="static/vendors/owl.carousel2/owl.carousel.min.js"></script>
+    <script src="static/vendors/easy.piechart/jquery.easypiechart.min.js"></script>
+    <script src="static/vendors/stellar/jquery.stellar.min.js"></script>
+    <script src="static/vendors/jquery.placeholder/jquery.placeholder.js"></script>
+    <script src="static/vendors/countdown/jquery.plugin.min.js"></script>
+    <script src="static/vendors/countdown/jquery.countdown.min.js"></script>
+    <script src="static/vendors/skrollr/skrollr.min.js"></script>
+    <script src="static/vendors/bootstrap-3.3/js/bootstrap.min.js"></script>
+    <script src="static/assets/scripts/main.js"></script>
+    <!-- GA Code -->
+    <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-57387972-1', 'auto');ga('send', 'pageview');</script>
+    <!-- GA Code End -->
+  </body>
+</html>

@@ -1,0 +1,154 @@
+/*Theme Name : Madrin Law
+Theme URI    : http://themeforest.net/user/themeroyal
+Author       : THEMEROYAL
+Author URI   : http://themeforest.net/user/themeroyal
+Version      : 1.0
+Text Domain  : progression
+/*-------------------------------------------------------*/
+
+/* Import module */
+@import url("../../vendors/bootstrap-3.3/css/bootstrap.min.css");
+
+/*
+* Component module
+
+____Special div
+____Typography
+____Section
+____Icon
+____Button
+____Input
+
+*/
+/*
+* Plugins custom
+
+____Animate.css
+____Owl slider
+
+*/
+/*
+* Common module
+
+____Prallax background
+____Nav
+____Video
+____Modal
+____Carousel
+____Caption Slider
+
+*/
+/*
+* Single module
+
+____Home
+____Team - Lawyer
+____Service
+____Quote
+____Feature
+____Skill
+____News
+____Testimonial
+____Pricing Table
+____Twitter
+____Contact
+____Process
+____Footer
+____Pages
+*/
+
+/*
+* Component module
+*/
+/* Special div */
+@import "component/util/util";
+
+/* Typography */
+@import "component/typography/typography";
+
+/* Section */
+@import "component/section/section";
+
+/* Icon */
+@import "component/icon/icon";
+
+/* Button */
+@import "component/button/button";
+
+/* Input */
+@import "component/input/input";
+
+/*
+* Plugins custom
+*/
+/* Animate.css */
+@import "plugins/animate/animate";
+
+/* Owl slider */
+@import "plugins/owl-carousel";
+
+/*
+* Common module
+*/
+/* Prallax background */
+@import "common-module/parallax-bg";
+
+/* Nav */
+@import "common-module/nav";
+
+/* Video */
+@import "common-module/video";
+
+/* Modal */
+@import "common-module/modal";
+
+/* Carousel */
+@import "common-module/carousel";
+
+/* Caption Slider */
+@import "common-module/caption-slider.scss";
+
+/*
+* Single module
+*/
+/* Home */
+@import "single-module/home";
+
+/* Team - Lawyer */
+@import "single-module/team";
+
+/* Service */
+@import "single-module/service";
+
+/* Quote */
+@import "single-module/quote";
+
+/* Feature */
+@import "single-module/feature";
+
+/* Skill */
+@import "single-module/skill";
+
+/* News */
+@import "single-module/news";
+
+/* Testimonial */
+@import "single-module/testimonial";
+
+/* Pricing Table */
+@import "single-module/pricing-table";
+
+/* Twitter */
+@import "single-module/twitter";
+
+/* Contact */
+@import "single-module/contact";
+
+/* Process */
+@import "single-module/process";
+
+/* Footer */
+@import "single-module/footer";
+
+/* Pages */
+@import "single-module/page";

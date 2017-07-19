@@ -1,0 +1,13 @@
+.ryl-service-item {
+    text-align: center;
+    cursor: pointer;
+
+    .ryl-service-icon {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    p:last-child {
+        margin-bottom: 0;
+    }
+}

@@ -1,0 +1,47 @@
+.ryl-text-carousel.owl-theme {
+    &.has-index:before {
+        content: attr(data-index);
+        position: relative;
+        display: block;
+        width: 60px;
+        text-align: center;
+        background-color: $main-color;
+        padding: 14px 5px;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .owl-dots {
+        @include square(0);
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .owl-nav {
+        text-align: right;
+    }
+}
+
+.ryl-text-carousel-item {
+    .ryl-text-carousel-content {
+        @include clearfix;
+        padding: 30px 30px 10px;
+        font-size: 18px;
+        background-color: $light-color;
+    }
+}
+
+.ryl-text-fadeIn.active {
+    animation: fadeInDown 0.3s;
+}
+
+.ryl-text-fadeOut:not(.active) {
+    animation: fadeOutDown 0.3s;
+}
+
+.ryl-fullwidth-carousel.owl-theme.has-nav {
+    .owl-nav {
+        padding-top: 50px;
+    }
+}

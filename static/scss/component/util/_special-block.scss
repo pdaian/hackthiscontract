@@ -1,0 +1,135 @@
+//The div wrapper of relative block
+.ryl-relative {
+    position: relative;
+}
+
+.ryl-absolute {
+    position: absolute;
+}
+
+.ryl-fixed {
+    position: fixed;
+}
+
+@mixin overlay($z-index) {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: $z-index;
+}
+
+.ryl-overlay {
+    @include overlay(512);
+}
+
+.ryl-overlay-bg {
+    @include overlay(-1);
+}
+
+@mixin nopadding {
+    padding: 0;
+}
+
+.ryl-nopadding {
+    padding: 0 !important;
+}
+
+@mixin col-nopadding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.ryl-col-nopadding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+@mixin center-block {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.ryl-center-block {
+    @include center-block;
+}
+
+//middle using table cell
+.ryl-cell-vertical-wrapper {
+    display: table;
+
+    .ryl-cell-middle {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .ryl-cell-bottom {
+        display: table-cell;
+        vertical-align: bottom;
+    }
+
+    .ryl-cell-top {
+        display: table-cell;
+        vertical-align: top;
+    }
+}
+
+@mixin middle {
+    position: relative;
+    display: block;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.ryl-middle {
+    @include middle;
+}
+
+.ryl-center-block {
+    @include center-block;
+}
+
+@mixin center {
+    @include middle;
+    @include center-block;
+}
+
+.ryl-center {
+    @include center;
+}
+
+@mixin bottom {
+    position: relative;
+    display: block;
+    top: 100%;
+    transform: translateY(-100%);
+}
+
+.ryl-bottom {
+    @include bottom;
+}
+
+@mixin ab-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    @include clearfix;
+}
+
+.ryl-ab-center {
+    @include ab-center;
+}
+
+@mixin ab-bottom {
+    position: absolute;
+    top: 100%;
+    transform: translateY(-100%);
+    @include clearfix;
+}
+
+.ryl-ab-bottom {
+    @include ab-bottom;
+}

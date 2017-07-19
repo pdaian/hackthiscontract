@@ -1,0 +1,88 @@
+
+.owl-theme {
+	.owl-nav {
+
+		position: relative;
+		-webkit-tap-highlight-color: transparent;
+		text-align: center;
+
+		.owl-next , .owl-prev{
+			position: relative;
+			display: inline-block;
+			width: $owl-nav-size;
+			height: $owl-nav-size;
+			line-height: $owl-nav-size;
+			background: $owl-nav-bg;
+			color: $owl-nav-color;
+			font-size: 0;
+			text-align: center;
+			@include easing-animation;
+			&:hover{
+				background-color: lighten($owl-nav-bg, 10%)
+			}
+			&:before{
+				font-family:"madrin" !important;
+				font-size: $owl-nav-font-size;
+			}
+		}
+
+		.owl-next{
+			&:before{
+				content: "\e116";
+				font-weight: normal;
+			}
+		}
+		.owl-prev{
+			&:before{
+				content: "\e117";
+			}
+		}
+		.disabled {
+			opacity: $nav-disabled-opacity;
+			cursor: default;
+		}
+	}
+
+	// Styling dots
+	.owl-nav.disabled + .owl-dots {
+		margin-top: 10px;
+	}
+	.owl-dots {
+		margin-top: 35px;
+		padding: 5px;
+		text-align: center;
+		-webkit-tap-highlight-color: transparent;
+
+		.owl-dot {
+			display: inline-block;
+			zoom: 1;
+			*display: inline;
+			span {
+				position: relative;
+				display: block;
+				background: transparent;
+				width: $dot-width + ($dot-border-space * 2);
+				height: $dot-height + ($dot-border-space * 2);
+				margin: $dot-margin;
+				border-radius: 50%;
+				border: $dot-border-width solid $dot-background;
+				transition-duration: $duration-time;
+				-webkit-backface-visibility: visible;
+			}
+
+			&.active,
+			&:hover {
+				span {
+					background-color: $dot-background;
+				}
+			}
+		}
+	}
+}
+
+.dots-in.owl-theme{
+	.owl-dots{
+		margin-top: -50px;
+		padding-bottom: 16px;
+	}
+}

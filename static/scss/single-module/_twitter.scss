@@ -1,0 +1,41 @@
+.ryl-twitter-rss-item {
+    text-align: center;
+    max-width: 1040px;
+    padding-left: 15px;
+    padding-right: 15px;
+    @include center-block;
+    @include clearfix;
+
+    a {
+        color: $main-color;
+    }
+
+    .ryl-logo {
+        margin-bottom: 50px;
+
+        i.icon-twitter {
+            @include icon-form(42px, 73px, true, false, false);
+            color: $light-color;
+            background: $trans-main-color;
+        }
+    }
+
+    .ryl-content {
+        p {
+            font-weight: 500;
+            font-size: $font-size-4;
+        }
+    }
+
+    .ryl-info {
+        font-size: 16px;
+
+        .ryl-time {
+            font-weight: 200;
+        }
+
+        a {
+            font-weight: 600;
+        }
+    }
+}

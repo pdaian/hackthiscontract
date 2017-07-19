@@ -1,0 +1,18 @@
+.ryl-contact-info {
+    text-align: center;
+    margin-top: -20px;
+
+    span.ryl-info-item {
+        position: relative;
+        display: inline-block;
+        margin-left: 30px;
+        margin-right: 30px;
+        font-size: $font-size-5;
+        font-weight: 600;
+        line-height: 50px;
+
+        i {
+            color: $main-color;
+        }
+    }
+}

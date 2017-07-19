@@ -1,0 +1,21 @@
+
+//nav
+
+$owl-nav-font-size:30px;
+$owl-nav-size:50px;
+$owl-nav-bg: $gray-color2;
+$owl-nav-color: $dark-color;
+$nav-disabled-opacity : 0.5;
+
+//dots
+
+$dot-width        : 14px;
+$dot-height       : $dot-width;
+$dot-rounded      : 30px;
+$dot-margin       : 0px 3px;
+$dot-background   : $light-color;
+$dot-border-space : 1px;
+$dot-border-width : 1px;
+
+@import 'mixins';
+@import 'theme';

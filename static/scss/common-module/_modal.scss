@@ -1,0 +1,173 @@
+.modal-open .modal {
+    height: 100%;
+    overflow: auto;
+}
+
+.ryl-modal-dialog {
+    @include easing-animation;
+    transform: translate(0, -50%);
+    height: auto;
+}
+
+.modal-backdrop.in {
+    opacity: 0.8;
+}
+
+.in .ryl-modal-dialog {
+    transform: translate(0, 0);
+}
+
+.ryl-dismiss-modal {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 24px;
+    color: $light-color;
+    z-index: 1040;
+}
+
+.ryl-modal-search {
+    padding: 80px 30px 60px;
+
+    .ryl-search-wrapper {
+        @include center-block;
+        @include clearfix;
+        position: relative;
+        width: 100%;
+        font-size: 24px;
+        color: $light-color;
+        background-color: transparent;
+        border-bottom: 1px solid $trans-light-color1;
+        max-width: 1140px;
+    }
+
+    input[type="search"] {
+        border: 0;
+        outline: none;
+        display: block;
+        float: left;
+        width: 100%;
+        padding-right: 60px;
+        padding-left: 20px;
+        background-color: transparent;
+    }
+
+    button {
+        position: absolute;
+        display: block;
+        color: $gray-color1;
+        bottom: 0;
+        right: 0;
+        line-height: 30px;
+        border: 0;
+        outline: none;
+        font-size: 30px;
+        background-color: transparent;
+    }
+}
+
+.ryl-modal-blog-article {
+    .container {
+        padding-right: 40px;
+        padding-left: 70px;
+    }
+
+    article {
+        padding: 60px;
+        position: relative;
+
+        .ryl-blog-article-time {
+            position: absolute;
+            top: 0;
+            left: -70px;
+            width: 70px;
+            padding: 5px 12px;
+            background-color: $main-color;
+            text-align: center;
+            font-size: $font-size-4;
+            font-weight: 700;
+
+            .ryl-day {
+                border-bottom: 1px solid $dark-color3;
+            }
+        }
+
+        img {
+            margin-bottom: 60px;
+        }
+
+        h3 {
+            font-size: 30px;
+            font-weight: 500;
+            margin-bottom: 40px;
+        }
+
+        .ryl-blog-article-detail {
+            margin-bottom: 40px;
+        }
+
+        .ryl-blog-article-tag {
+            margin-bottom: 40px;
+
+            a {
+                border: 1px solid $gray-color1;
+                background-color: $lightgray-color;
+                margin-right: 6px;
+                padding: 5px 10px;
+                border-radius: 15px;
+            }
+        }
+
+        .ryl-blog-article-share {
+            @include clearfix;
+            border-top: 1px solid $gray-color2;
+            border-bottom: 1px solid $gray-color2;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            margin-bottom: 60px;
+
+            span {
+                float: left;
+                font-size: 18px;
+            }
+
+            ul {
+                float: right;
+
+                a {
+                    color: $dark-color3;
+                    font-size: 16px;
+                    margin-left: 12px;
+                    @include hover-color($main-color);
+                }
+            }
+        }
+
+        .ryl-blog-article-comment {
+            h4 {
+                margin-bottom: 40px;
+            }
+        }
+    }
+}
+
+.ryl-modal-video {
+    height: 100%;
+
+    .ryl-cell-vertical-wrapper {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@include breakpointMax($screen-sm-min) {
+    .ryl-modal-blog-article {
+        .container {
+            padding-left: 0;
+        }
+
+        article {
+            padding: 30px;
+        }
+    }
+}

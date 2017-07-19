@@ -1,0 +1,105 @@
+.news-item {
+    cursor: pointer;
+    max-width: 360px;
+    @include center-block;
+
+    .ryl-images {
+        position: relative;
+        display: block;
+
+        .ryl-overlay {
+            opacity: 0;
+            @include easing-animation;
+        }
+    }
+
+    .ryl-article {
+        position: relative;
+        display: block;
+        padding: 25px 15px 0;
+
+        a {
+            @include hover-color($main-color);
+        }
+    }
+
+    .ryl-detail {
+        padding: 20px 20px;
+        @include easing-animation;
+
+        .ryl-time {
+            float: left;
+        }
+
+        .ryl-comment {
+            float: right;
+        }
+    }
+
+    &:hover {
+        .ryl-images .ryl-overlay {
+            opacity: 1;
+        }
+
+        .ryl-detail {
+            background-color: $trans-dark-color2;
+        }
+    }
+}
+
+.ryl-news-style-2-carousel.owl-theme {
+    .owl-nav {
+        text-align: left;
+    }
+}
+
+.ryl-news-style-2-content {
+    margin-right: 80px;
+    position: relative;
+
+    .ryl-news-time {
+        position: absolute;
+        top: 0;
+        right: -80px;
+        width: 80px;
+        padding: 5px 12px;
+        background-color: $main-color;
+        text-align: center;
+        font-size: $font-size-4;
+        font-weight: 700;
+
+        .ryl-day {
+            border-bottom: 1px solid $dark-color3;
+        }
+    }
+
+    a.ryl-readmore {
+        float: right;
+        color: $main-color;
+        margin-bottom: 30px;
+        margin-top: 10px;
+        cursor: pointer;
+
+        &:before {
+            position: relative;
+            display: inline-block;
+            bottom: 5px;
+            content: " ";
+            width: 20px;
+            margin-right: 10px;
+            border-bottom: 1px solid #BBBBBB;
+        }
+    }
+}
+
+@include breakpointMax($screen-sm-min) {
+    .ryl-news-style-2-content {
+        margin-right: 0px;
+        margin-top: 90px;
+
+        .ryl-news-time {
+            top: -90px;
+            height: 90px;
+        }
+    }
+}

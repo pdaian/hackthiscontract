@@ -1,0 +1,179 @@
+.ryl-404-wrapper {
+    vertical-align: middle;
+
+    .ryl-404-side {
+        text-align: right;
+        border-right: 1px solid $light-color;
+        height: 100%;
+
+        h1 {
+            font-size: 250px;
+        }
+    }
+
+    .ryl-text-side {
+        padding-top: 35px;
+    }
+
+    p {
+        margin-bottom: 30px;
+    }
+}
+
+.ryl-underconstruction-wrapper {
+    text-align: center;
+
+    .ryl-title {
+        margin-bottom: 60px;
+
+        p {
+            font-size: 24px;
+        }
+    }
+}
+
+.ryl-countdown-clock.is-countdown {
+    .countdown-section {
+        display: inline-block;
+
+        .countdown-amount, .countdown-period {
+            display: block;
+            margin: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .countdown-amount {
+            width: 80px;
+            height: 80px;
+            line-height: 74px;
+            border: 3px solid $trans-light-color1;
+            border-radius: 40px;
+            font-size: 45px;
+        }
+
+        .countdown-period {
+            font-size: 18px;
+        }
+    }
+}
+
+.ryl-demo-select-header {
+    margin-bottom: -160px;
+
+    .ryl-madrin-brand {
+        text-align: center;
+        margin-bottom: 20px;
+
+        .ryl-madrin-logo-3 {
+            @include square(114px);
+            @include center-block;
+        }
+
+        .ryl-title {
+            font-size: 30px;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+    }
+
+    .ryl-demo-select-header-content {
+        text-align: center;
+        margin-bottom: 280px;
+
+        .ryl-title {
+            font-size: 45px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+    }
+}
+
+.ryl-demo-select-content {
+    .ryl-demo-select-item {
+        position: relative;
+        display: block;
+        max-width: 480px;
+        @include center-block;
+
+        img {
+            width: 100%;
+        }
+
+        .ryl-overlay {
+            padding: 3.8% 3.8%;
+
+            .ryl-item-inner {
+                position: relative;
+
+                .ryl-overlay {
+                    opacity: 0;
+                    background-color: $trans-dark-color1;
+                    @include easing-animation;
+
+                    .ryl-btn-1 {
+                        @include ab-center;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            .ryl-overlay {
+                .ryl-item-inner {
+                    .ryl-overlay {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@include breakpointMax($screen-lg-min) {
+    .ryl-404-wrapper {
+        .ryl-text-side {
+            padding-top: 0px;
+        }
+
+        .ryl-404-side {
+            h1 {
+                font-size: 180px;
+            }
+        }
+    }
+}
+
+
+@include breakpointMax($screen-sm-min) {
+    .ryl-404-wrapper {
+        text-align: center;
+
+        .ryl-404-side {
+            text-align: center;
+            border-right: none;
+            border-bottom: 2;
+
+            h1 {
+                font-size: 120px;
+            }
+        }
+    }
+
+    .ryl-underconstruction-wrapper {
+        .ryl-title {
+            margin-bottom: 30px;
+
+            h1 {
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+        }
+    }
+}
