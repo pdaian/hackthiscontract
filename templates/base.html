@@ -24,7 +24,11 @@
         <header id="ryl-home-header" class="clearfix ryl-home-header-style-2">
           <div class="container-fluid">
             <div class="row"></div>
+            {% if address %}
+            <div class="col-md-4"><a href="/dashboard?address={{address}}" class="ryl-madrin-brand">
+            {% else %}
             <div class="col-md-4"><a href="/" class="ryl-madrin-brand">
+            {% endif %}
                 <h4 class="ryl-light-heading" style="margin-left: 8px; width:300px; text-align: center; padding: 8px; background-color:rgba(0, 0, 0, 0.2); color:white;"><b>HACK THIS CONTRACT</b></h4></a></div>
             <div class="ryl-home-header-right-side col-md-8 visible-md visible-lg">
               <ul class="ryl-list-inline-block">
@@ -40,7 +44,7 @@
             <li><a href="https://github.com/pdaian/bootcamp-security"><i class="ryl-icon-circle-border-3 icon-github"></i></a></li>
             <li><a href="https://twitter.com/SwiftOnSecurity"><i class="ryl-icon-circle-border-3 icon-twitter"></i></a></li>
           </ul>
-          <div class="ryl-footer-content">Never© 2017 <a href=index.html">Hack This Contract</a></div>
+          <div class="ryl-footer-content">Never© 2017 <a href="/">Hack This Contract</a></div>
         </div>
       </footer>
     </div>
@@ -55,8 +59,5 @@
     <script src="/static/vendors/skrollr/skrollr.min.js"></script>
     <script src="/static/vendors/bootstrap-3.3/js/bootstrap.min.js"></script>
     <script src="/static/assets/scripts/main.js"></script>
-    <!-- GA Code -->
-    <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-57387972-1', 'auto');ga('send', 'pageview');</script>
-    <!-- GA Code End -->
   </body>
 </html>

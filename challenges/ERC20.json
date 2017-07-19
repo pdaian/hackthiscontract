@@ -5,5 +5,8 @@
     "on_deploy": [{
         "method": "deposit",
         "value": "50000000000000000"
+    }],
+    "post_check": [{
+        "balance_lt" : "50000000000000000"
     }]
 }

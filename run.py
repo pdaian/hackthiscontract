@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import config, util
 import json
 import ethereum
@@ -46,10 +46,28 @@ def done(address, contract):
 def deploy(address, contract):
     status = util.get_status(address, contract)
     if "not started" in status[0].lower():
-        return render_template('deploy.html', done=False, address=address, contract=contract)
+        return render_template('deploy.html', deployed=False, address=address, contract=contract)
     else:
         contract_code = open("challenges/" + contract + ".sol").read().strip()
-        return render_template('deploy.html', done=True, contract_addr=status[2], address=address, contract=contract, contract_code=contract_code)
+        contract_desc = json.loads(open("challenges/" + contract + ".json").read().strip())["description"]
+        return render_template('deploy.html', deployed=True, done=("done" in status[0].lower()), status=status, address=address, contract=contract, contract_code=contract_code, contract_desc=contract_desc)
+
+@app.route("/update/<string:address>/<string:contract>")
+def update(address, contract):
+    contract_addr = util.get_status(address, contract)[2].strip()
+    checks = json.loads(open("challenges/" + contract + ".json").read().strip()).get("post_check", [])
+    contract_bal = ethereum.EasyWeb3().balance(contract_addr)
+    for check in checks:
+        print 50000000000000000,  contract_bal, int(check["balance_lt"])
+        print type(int(check["balance_lt"])), type(contract_bal)
+        if "balance_lt" in check:
+            if int(check["balance_lt"]) <= int(contract_bal):
+                print 50000000000000000,  contract_bal, int(check["balance_lt"])
+                return redirect(request.referrer)
+                #return redirect("/dashboard?address=" + address)
+    util.mark_finished(address, contract)
+    return redirect(request.referrer)
+    #return redirect("/dashboard?address=" + address)
 
 if __name__ == "__main__":
     app.config['TEMPLATES_AUTO_RELOAD'] = True

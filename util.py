@@ -15,8 +15,11 @@ def get_status(user, challenge):
     if len(deployed_addr) == 0:
         return ("Error (redeploy)", "red")
     if os.path.isfile(config.db_path + user + "/" + challenge + ".done"):
-        return ("Done!" + deployed_addr, "green", deployed_addr)
-    return ("Deployed", "black", deployed_addr)
+        return ("Done!", "green", deployed_addr)
+    return ("Deployed / Unfinished", "black", deployed_addr)
 
 def write_address(user, challenge, address):
     open(config.db_path + user + "/" + challenge, 'w').write(address)
+
+def mark_finished(user, challenge):
+    open(config.db_path + user + "/" + challenge + '.done', 'w').write("")

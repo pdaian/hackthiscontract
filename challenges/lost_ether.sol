@@ -24,7 +24,9 @@ contract TestToken {
         }
     }
 
-    function TestToken(uint256 _value) {
+    //function TestToken(uint256 _value) {
+    function TestToken() {
+        uint256 _value = 31337;
         total = 0;  
         bonustime = now + 2 minutes;
         bonuscap = _value;

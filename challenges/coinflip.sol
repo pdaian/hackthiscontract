@@ -14,9 +14,10 @@ contract CoinFlip {
     uint256 balance;
     bool gameover;
     
-    function CoinFlip(address p1, address p2) {
-        player1 = p1;
-        player2 = p2;
+    //function CoinFlip(address p1, address p2) {
+    function CoinFlip() {
+        player1 = 0x0; //p1;
+        player2 = 0x1; //p2;
         mintoextend = 0.005 ether;
         captoadd = 0.01 ether;
         gameover = false;

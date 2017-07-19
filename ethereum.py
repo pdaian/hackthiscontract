@@ -73,11 +73,15 @@ class EasyWeb3:
 
 	def deploy_named_solidity_contract(self, name, timeout=90):
 		def wrapper():
-			try:
-				self._deploy_named_solidity_contract(name, timeout=timeout)
-			except Exception as ex:
-				with self._lock:
-					self._status = 'EXCEPTION: {}'.format(ex)
+		#	try:
+			self._deploy_named_solidity_contract(name, timeout=timeout)
+		#	except Exception as ex:
+		#		print 'Exception in ethereum.py'
+		#		print ex
+		#		import traceback
+		#		traceback.print_exc()
+		#		with self._lock:
+		#			self._status = 'EXCEPTION: {}'.format(ex)
 		t = threading.Thread(
 			target=wrapper,
 			args=()
@@ -102,7 +106,7 @@ class EasyWeb3:
 			return self._status, self._deployed_address
 
 	def _deploy_solidity_contract(self, code, deploy_actions=[], timeout=90):
-		'''Deploys the solidity contract given by code. Uses nasty6
+		'''Deploys the solidity contract given by code. Uses nasty
 		polling loop to give you the illusion of a synchronous call.
 		timeout is
 		in seconds and specifies how long to keep polling in the
@@ -124,7 +128,7 @@ class EasyWeb3:
 				contract_address = receipt['contractAddress']
 				break
 			# nasty polling loop 
-			time.sleep(0.1)
+			time.sleep(0.2)
 		else:
 			raise Exception("Deployment timed out.")
 
@@ -141,7 +145,7 @@ class EasyWeb3:
 			while time.time() - t0 < timeout:
 				if web3.eth.getTransactionReceipt(tx_receipt):
 					break
-				time.sleep(0.1)
+				time.sleep(0.2)
 			else:
 				raise Exception("Deployment actions timed out.")
 			with self._lock:
