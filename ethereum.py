@@ -5,9 +5,9 @@ import time
 
 import web3
 
-CHALLENGE_DIR = '/home/ubuntu/hackthiscontract/challenges'
-GETH_DATADIR = '/home/ubuntu/geth_rinkeby'
-SOLC_PATH = '/usr/bin/solc'
+CHALLENGE_DIR = '/home/benji/Desktop/test/hackthiscontract/challenges'
+GETH_DATADIR = '/home/benji/.ethereum/rinkeby'
+SOLC_PATH = '/home/benji/Desktop/test/solidity/build/solc/solc'
 
 def newWeb3():
 	'''Return new IPC-based web3 instance'''
@@ -55,11 +55,11 @@ class EasyWeb3:
 			stdout=subprocess.PIPE, 
 			stdin=subprocess.PIPE, 
 			stderr=subprocess.PIPE)
-		(out_json, err) = solc.communicate(input=json.dumps(input))
+		(out_json, err) = solc.communicate(input=json.dumps(input).encode('utf-8'))
 		if solc.returncode != 0:
 			raise Exception('solc crashed. returncode: {} errormsg: {}'.format(
 				solc.returncode, err))
-		out = json.loads(out_json)
+		out = json.loads(out_json.decode('utf-8'))
 		for error in out.get('errors', []):
 			if error['severity'] == 'error':
 				raise Exception('solc compilation failed: {}'.format(error['message']))
@@ -68,7 +68,7 @@ class EasyWeb3:
 			raise Exception('solc output contains no contract')
 		if len(contracts) > 1:
 			raise Exception('solc compiled multiple contracts. Which one is the right one?')
-		contract = contracts[contracts.keys()[0]]	
+		contract = contracts[list(contracts.keys())[0]]	
 		return contract['evm']['bytecode']['object'], contract['abi']
 
 	def deploy_named_solidity_contract(self, name, timeout=90):
@@ -118,6 +118,8 @@ class EasyWeb3:
 		bytecode, abi = self.compile_solidity(code)
 		with self._lock:
 			self._status = "compiled and processing"
+		print(abi)
+		print(bytecode)
 		contract = web3.eth.contract(abi=abi, bytecode=bytecode)
 		contract_address = None
 		tx_receipt = contract.deploy()
@@ -180,6 +182,6 @@ contract SimpleStorage {
 	eweb3 = EasyWeb3()
 	eweb3.unlockCoinbase()
 	a = eweb3.deploy_named_solidity_contract('ERC20')
-	print a
-	print eweb3.balance(a)
-	print eweb3.balance(newWeb3().eth.coinbase)
+	print(a)
+	print(eweb3.balance(a))
+	print(eweb3.balance(newWeb3().eth.coinbase))
