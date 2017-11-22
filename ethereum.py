@@ -8,6 +8,8 @@ import web3
 CHALLENGE_DIR = '/home/benji/Desktop/test/hackthiscontract/challenges'
 GETH_DATADIR = '/home/benji/.ethereum/rinkeby'
 SOLC_PATH = '/home/benji/Desktop/test/solidity/build/solc/solc'
+DEPLOY_FROM_ADDRESS = '0xc464ba5d3cec41d567b742545abce42840c872e8'
+DEPLOY_GAS_PRICE = 1000000000 
 
 def newWeb3():
 	'''Return new IPC-based web3 instance'''
@@ -118,11 +120,10 @@ class EasyWeb3:
 		bytecode, abi = self.compile_solidity(code)
 		with self._lock:
 			self._status = "compiled and processing"
-		print(abi)
-		print(bytecode)
 		contract = web3.eth.contract(abi=abi, bytecode=bytecode)
 		contract_address = None
-		tx_receipt = contract.deploy()
+		tx_receipt = contract.deploy(transaction={'from': DEPLOY_FROM_ADDRESS, 
+                                                          'gasPrice': DEPLOY_GAS_PRICE})
 		t0 = time.time()
 		while time.time() - t0 < timeout:
 			receipt = web3.eth.getTransactionReceipt(tx_receipt)

@@ -1,2 +1,2 @@
 flask
--e git+https://github.com/ethereum/web3.py.git@v4.0.0-beta.2#egg=web3.py
+-e git+https://github.com/ethereum/web3.py.git@v3.16.3#egg=web3.py
