@@ -5,17 +5,17 @@ import time
 
 import web3
 
-import config
+import config as constants
 
 
-def newWeb3():
+def new_web3():
     '''Return new IPC-based web3 instance'''
-    return web3.Web3(web3.IPCProvider(config.GETH_DATADIR + '/geth.ipc'))
+    return web3.Web3(web3.IPCProvider(constants.GETH_DATADIR + '/geth.ipc'))
 
 
 class EasyWeb3:
     def __init__(self):
-        self._web3 = newWeb3()
+        self._web3 = new_web3()
         self._lock = threading.Lock()
         self._status = None
         self._deployed_address = None
@@ -48,10 +48,10 @@ class EasyWeb3:
                     }
                 }
             }
-        }
+        }  # TODO: Can this be externalised?
 
         solc = subprocess.Popen(
-            [config.SOLC_PATH, '--standard-json'],
+            [constants.SOLC_PATH, '--standard-json'],
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE)
@@ -92,9 +92,9 @@ class EasyWeb3:
     def _deploy_named_solidity_contract(self, name, timeout=90):
         '''Like deploy_solidity_contract, but reads the contract
         file and deploy_actions for you.'''
-        with open('{}/{}.json'.format(config.CHALLENGE_DIR, name), 'r') as fd:
+        with open('{}/{}.json'.format(constants.CHALLENGE_DIR, name), 'r') as fd:
             config = json.load(fd)
-        with open('{}/{}.sol'.format(config.CHALLENGE_DIR, name), 'r') as fd:
+        with open('{}/{}.sol'.format(constants.CHALLENGE_DIR, name), 'r') as fd:
             return self._deploy_solidity_contract(
                 fd.read(),
                 deploy_actions=config.get('on_deploy', []),
@@ -118,9 +118,9 @@ class EasyWeb3:
         with self._lock:
             self._status = "compiled and processing"
         contract = web3.eth.contract(abi=abi, bytecode=bytecode)
-        contract_address = None
-        tx_receipt = contract.deploy(transaction={'from': config.DEPLOY_FROM_ADDRESS,
-                                                  'gasPrice': config.DEPLOY_GAS_PRICE})
+        contract_address = None  # TODO: Why is this here?
+        tx_receipt = contract.deploy(transaction={'from': constants.DEPLOY_FROM_ADDRESS,
+                                                  'gasPrice': constants.DEPLOY_GAS_PRICE})
         t0 = time.time()
         while time.time() - t0 < timeout:
             receipt = web3.eth.getTransactionReceipt(tx_receipt)
@@ -155,8 +155,7 @@ class EasyWeb3:
             self._status = "deployed"
 
     def balance(self, address):
-        '''Returns the balance of address.
-        '''
+        '''Returns the balance of address.'''
         return self._web3.eth.getBalance(address)
 
 
@@ -182,4 +181,4 @@ contract SimpleStorage {
     a = eweb3.deploy_named_solidity_contract('ERC20')
     print(a)
     print(eweb3.balance(a))
-    print(eweb3.balance(newWeb3().eth.coinbase))
+    print(eweb3.balance(new_web3().eth.coinbase))
