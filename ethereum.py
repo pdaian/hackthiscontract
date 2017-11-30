@@ -140,7 +140,7 @@ class EasyWeb3:
             tx_receipt = getattr(contract.transact({
                 'from': self._web3.eth.coinbase,
                 'to': contract_address,
-                'value': action['value']
+                'value': int(action['value'])
             }), action['method'])()
             while time.time() - t0 < timeout:
                 if web3.eth.getTransactionReceipt(tx_receipt):
