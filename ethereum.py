@@ -48,7 +48,7 @@ class EasyWeb3:
                     }
                 }
             }
-        }  # TODO: Can this be externalised?
+        }
 
         solc = subprocess.Popen(
             [constants.SOLC_PATH, '--standard-json'],
@@ -118,7 +118,7 @@ class EasyWeb3:
         with self._lock:
             self._status = "compiled and processing"
         contract = web3.eth.contract(abi=abi, bytecode=bytecode)
-        contract_address = None  # TODO: Why is this here?
+        contract_address = None
         tx_receipt = contract.deploy(transaction={'from': constants.DEPLOY_FROM_ADDRESS,
                                                   'gasPrice': constants.DEPLOY_GAS_PRICE})
         t0 = time.time()
