@@ -30,10 +30,10 @@ A JSON descriptor looks like this:
 ```
 
 | Key           | Description                                         | Required |
-| ------------- |-----------------------------------------------------|----------|
-| name          | The name that will be displayed on the website      | [x]      |
-| description   | The description to show on the website              | [x]      |
-| level         | Difficulty on a scale of 1 to 10                    | [x]      |
-| on_deploy     | An array of actions to be executed after deployment | [ ]      |
-| method        | The action to take. Currently only deposit          | [ ]      |
-| value         | Parameter for method                                | [ ]      |
+| ------------- | --------------------------------------------------- | -------- |
+| name          | The name that will be displayed on the website      | Yes      |
+| description   | The description to show on the website              | Yes      |
+| level         | Difficulty on a scale of 1 to 10                    | Yes      |
+| on_deploy     | An array of actions to be executed after deployment | No       |
+| method        | The action to take. Currently only deposit          | No       |
+| value         | Parameter for method                                | No       |
