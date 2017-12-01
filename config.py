@@ -16,6 +16,9 @@ def find_challenges():
     for s in json:
         if s in sol:
             challenges.append(s)
+    challenges = sorted(challenges)
+    for i in range(0, len(challenges)):
+        challenges[i] = str(challenges[i])
     return challenges
 
 
