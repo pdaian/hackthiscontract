@@ -1,4 +1,7 @@
+import importlib.machinery
+import importlib.util
 import json
+import types
 
 from flask import Flask, render_template, request, redirect
 
@@ -71,17 +74,24 @@ def deploy(address, contract):
 @app.route("/update/<string:address>/<string:contract>")
 def update(address, contract):
     contract_addr = util.get_status(address, contract)[2].strip()
-    checks = json.loads(open("challenges/" + contract + ".json").read().strip()).get("post_check", [])
-    contract_bal = ethereum.EasyWeb3().balance(contract_addr)
-    for check in checks:
-        print(50000000000000000, contract_bal, int(check["balance_lt"]))
-        print(type(int(check["balance_lt"])), type(contract_bal))
-        if "balance_lt" in check:
-            if int(check["balance_lt"]) <= int(contract_bal):
-                print(50000000000000000, contract_bal, int(check["balance_lt"]))
-                return redirect(request.referrer)
-                # return redirect("/dashboard?address=" + address)
-    util.mark_finished(address, contract)
+
+    loader = importlib.machinery.SourceFileLoader("validator", "challenges/" + contract + ".py")
+    module = types.ModuleType(loader.name)
+
+    loader.exec_module(module)
+
+    # Setup
+    validator = module.ValidatorImpl()
+    validator.contract_address = contract_addr
+    validator.user_address = address
+
+    # Validate
+    validator.perform_validation()
+
+    # Post-validate
+    if validator.is_hacked():
+        util.mark_finished(address, contract)
+
     return redirect(request.referrer)
     # return redirect("/dashboard?address=" + address)
 
