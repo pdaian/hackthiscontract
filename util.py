@@ -1,5 +1,7 @@
 import os
 
+from web3.utils import validation
+
 import config as constants
 
 
@@ -31,3 +33,7 @@ def write_address(user, challenge, address):
 
 def mark_finished(user, challenge):
     open(constants.DB_PATH + user + "/" + challenge + '.done', 'w').write("")
+
+
+def is_valid_address(address):
+    return validation.is_address(address)

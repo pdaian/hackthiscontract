@@ -19,8 +19,8 @@ def hello():
 @app.route("/dashboard")
 def dashboard():
     address = request.args.get("address", None).strip()
-    if "|" in address:
-        return "Error"  # todo full validation
+    if not util.is_valid_address(address):
+        return "Invalid address!"  # todo full validation
     challenges = {}
     for challenge_id in constants.CHALLENGES:
         challenges[challenge_id] = json.loads(open("challenges/" + challenge_id + ".json").read().strip())
