@@ -1,6 +1,7 @@
 import importlib.machinery
 import importlib.util
 import json
+import os
 import types
 
 from flask import Flask, render_template, request, redirect
@@ -73,9 +74,13 @@ def deploy(address, contract):
 
 @app.route("/update/<string:address>/<string:contract>")
 def update(address, contract):
+    file_name = "challenges/" + contract + ".py"
     contract_addr = util.get_status(address, contract)[2].strip()
+    if not os.path.exists(file_name) or not os.path.isfile(file_name):
+        print("Challenge validator not found for contract: " + contract)
+        return redirect(request.referrer)
 
-    loader = importlib.machinery.SourceFileLoader("validator", "challenges/" + contract + ".py")
+    loader = importlib.machinery.SourceFileLoader("validator", file_name)
     module = types.ModuleType(loader.name)
 
     loader.exec_module(module)
