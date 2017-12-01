@@ -13,14 +13,17 @@ deployers = {}
 
 @app.route("/")
 def hello():
-    return render_template('index.html')
+    if request.args.get("error", None) is None:
+        return render_template('index.html')
+    else:
+        return render_template('index.html', error=request.args.get("error", None))
 
 
 @app.route("/dashboard")
 def dashboard():
     address = request.args.get("address", None).strip()
     if not util.is_valid_address(address):
-        return "Invalid address!"  # todo full validation
+        return redirect("/?error=Invalid%20address")
     challenges = {}
     for challenge_id in constants.CHALLENGES:
         challenges[challenge_id] = json.loads(open("challenges/" + challenge_id + ".json").read().strip())
@@ -70,7 +73,6 @@ def update(address, contract):
     contract_addr = util.get_status(address, contract)[2].strip()
     checks = json.loads(open("challenges/" + contract + ".json").read().strip()).get("post_check", [])
     contract_bal = ethereum.EasyWeb3().balance(contract_addr)
-    contract_finished = False
     for check in checks:
         print(50000000000000000, contract_bal, int(check["balance_lt"]))
         print(type(int(check["balance_lt"])), type(contract_bal))

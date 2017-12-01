@@ -1,22 +1,50 @@
 {% extends "base.html" %}
 {% block body %}
-        <div id="ryl-home-content" class="container-fluid ryl-cell-vertical-wrapper ryl-home-content-style-2" style="margin-top:0px;">
-          <div class="ryl-cell-middle text-center"><div style="background-color:rgba(0, 0, 0, 0.7); padding: 30px 30px 8px 30px;"><b class="ryl-fs-1">TEST YOUR H4CKING SKILLZZ</b>
-            <p class="ryl-fs-4 ryl-fw-medium">Enter your <a href="https://www.rinkeby.io/" style="text-decoration:underline;">Rinkeby address</a> to get started:<form action="/dashboard" method="get"><input type="text" name="address" size=60 style="margin-top:-20px;"></input></form><br>(or keep scrolling for information)</p></div>
-          </div>
-        </div>
-      </header>
-      <section id="about" class="ryl-bg-gray" >
-        <header class="ryl-section-header-style-2 ryl-bg-gray" style="padding-bottom:20px; margin-bottom:20px;">
-          <div class="container ryl-padding-top-20">
+<div id="ryl-home-content" class="container-fluid ryl-cell-vertical-wrapper ryl-home-content-style-2"
+     style="margin-top:0px;">
+    <div class="ryl-cell-middle text-center">
+        <div style="background-color:rgba(0, 0, 0, 0.7); padding: 30px 30px 8px 30px;"><b class="ryl-fs-1">TEST YOUR
+            H4CKING SKILLZZ</b>
+            <p class="ryl-fs-4 ryl-fw-medium">Enter your <a href="https://www.rinkeby.io/"
+                                                            style="text-decoration:underline;">Rinkeby address</a> to
+                get started:
+                {% if error %}
+            <div style="background-color: red; padding: 5px; width: 75%; margin: 0 auto 25px auto; font-size: 1.5em;">
+                {{error}}
+            </div>
+            {% endif %}
+            <form action="/dashboard" method="get"><input type="text" name="address" size=60
+                                                          style="margin-top:-20px;"/>
+            </form>
+            <br>(or keep scrolling for information)</p></div>
+    </div>
+</div>
+</header>
+<section id="about" class="ryl-bg-gray">
+    <header class="ryl-section-header-style-2 ryl-bg-gray" style="padding-bottom:20px; margin-bottom:20px;">
+        <div class="container ryl-padding-top-20">
             <h4 class="ryl-margin-bottom-30">WHAT IS THIS?</h4>
-            <p class="ryl-margin-bottom-30"> 
-                <p><b>Hack This Contract</b> is an experimental new site to allow Solidity developers, auditors, and designers to better understand how to write secure contracts (and exploit insecure contracts).
-                We provide a series of example, vulnerable contracts on the Rinkeby testnet, and encourage developers to exploit their vulnerabilities with their own contracts or techniques.  We also provide a leaderboard for developers to rank themselves across the broader security community.</p>
-                <p>Developers should familiarize themselves with Rinkeby <a href="https://www.rinkeby.io/" style="text-decoration:underline;">through the tutorial provided on their official website.</a></p>
-                <p><b>We are always soliciting more examples of contracts to add to our challenge database, and encourage contributions to the back-end as well on <a href="https://github.com/pdaian/hackthiscontract" class="underline">Github</a></b>.
-                <br><br><p><i>Hack This Contract was developed with <span style="color:red;"> &hearts;&hearts;&hearts;</span> at <a class="underline" href="http://www.initc3.org/events/2017-07-13-IC3-Ethereum-Crypto-Boot-Camp-at-Cornell-University.html">IC3 Boot Camp</a> by the <a class="underline" href="https://github.com/pdaian/bootcamp-security/">smart contract security</a> team, and is partially inspired by <a href="https://www.hackthissite.org/" class="underline">Hack This Site</a>.</i></p>
-          </div>
-        </header>
-      </section>
+            <p class="ryl-margin-bottom-30">
+            <p><b>Hack This Contract</b> is an experimental new site to allow Solidity developers, auditors, and
+                designers to better understand how to write secure contracts (and exploit insecure contracts).
+                We provide a series of example, vulnerable contracts on the Rinkeby testnet, and encourage developers to
+                exploit their vulnerabilities with their own contracts or techniques. We also provide a leaderboard for
+                developers to rank themselves across the broader security community.</p>
+            <p>Developers should familiarize themselves with Rinkeby <a href="https://www.rinkeby.io/"
+                                                                        style="text-decoration:underline;">through the
+                tutorial provided on their official website.</a></p>
+            <p><b>We are always soliciting more examples of contracts to add to our challenge database, and encourage
+                contributions to the back-end as well on <a href="https://github.com/pdaian/hackthiscontract"
+                                                            class="underline">Github</a></b>.
+                <br><br>
+            <p><i>Hack This Contract was developed with <span style="color:red;"> &hearts;&hearts;&hearts;</span> at <a
+                    class="underline"
+                    href="http://www.initc3.org/events/2017-07-13-IC3-Ethereum-Crypto-Boot-Camp-at-Cornell-University.html">IC3
+                Boot Camp</a> by the <a class="underline" href="https://github.com/pdaian/bootcamp-security/">smart
+                contract security</a> team, and is partially inspired by <a href="https://www.hackthissite.org/"
+                                                                            class="underline">Hack This Site</a>.</i>
+            </p>
+        </div>
+    </header>
+</section>
 {% endblock %}
