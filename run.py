@@ -80,6 +80,7 @@ def update(address, contract):
         print("Challenge validator not found for contract: " + contract)
         return redirect(request.referrer)
 
+    # Load the file
     loader = importlib.machinery.SourceFileLoader("validator", file_name)
     module = types.ModuleType(loader.name)
 
@@ -91,10 +92,7 @@ def update(address, contract):
     validator.user_address = address
 
     # Validate
-    validator.perform_validation()
-
-    # Post-validate
-    if validator.is_hacked():
+    if validator.has_been_hacked():
         util.mark_finished(address, contract)
 
     return redirect(request.referrer)

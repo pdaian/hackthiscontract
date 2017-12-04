@@ -3,9 +3,9 @@ import validator
 
 
 class ValidatorImpl(validator.Validator):
-    def perform_validation(self):
+    def has_been_hacked(self):
         contract_bal = ethereum.EasyWeb3().balance(self.contract_address)
-        if 50000000000000000 > int(contract_bal):
-            self.set_hacked()
+        if int(contract_bal) < 50000000000000000:
+            return True
         else:
-            self.set_not_hacked()
+            return False

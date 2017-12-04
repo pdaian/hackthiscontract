@@ -1,19 +1,7 @@
 # Adding new contracts
-1. Put the contract in a .sol file in this directory (name must be ##_Name.ending)
-2. Create a JSON file describing the contract, copy & modify one that already exists
-3. Create a Python file which checks whether the contract has been hacked (copy & modify)
-
-## Writing a validator
-A minimal validator looks like this:
-```python
-import validator
-
-class ValidatorImpl(validator.Validator):
-    def perform_validation(self):
-            self.set_hacked()
-```
-The class **must** be called `ValidatorImpl`, **must** extend `Validator` and **must** implement the `perform_validation` method.
-`perform_validation` **must** call either `set_hacked` or `set_not_hacked`.
+1. Put the contract in a .sol file in this directory (name must be ##_contract_name.ending)
+2. Create a JSON file describing the contract
+3. Create a Python file which checks whether the contract has been hacked 
 
 ## Writing a JSON descriptor
 A JSON descriptor looks like this:
@@ -37,3 +25,16 @@ A JSON descriptor looks like this:
 | on_deploy     | An array of actions to be executed after deployment | No       |
 | method        | The action to take. Currently only deposit          | No       |
 | value         | Parameter for method                                | No       |
+
+
+## Writing a validator
+A minimal validator looks like this:
+```python
+import validator
+
+class ValidatorImpl(validator.Validator):
+    def perform_validation(self):
+            self.set_hacked()
+```
+The class **must** be called `ValidatorImpl`, **must** extend `Validator` and **must** implement the `has_been_hacked` method.
+`has_been_hacked` **must** return `True` if the contact has been hacked, `False` otherwise..
