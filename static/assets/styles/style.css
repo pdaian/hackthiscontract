@@ -1,0 +1,11 @@
+@charset "UTF-8";
+.img-avatar {
+    border-radius: 100%;
+    width: 100px;
+    margin-bottom: 10px;
+}
+
+i.icon-black.ryl-icon-circle-border-3 {
+    color: black;
+    border-color: black;
+}

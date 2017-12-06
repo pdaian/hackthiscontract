@@ -28,6 +28,8 @@ def get_status(user, challenge):
 
 
 def write_address(user, challenge, address):
+    if not os.path.exists(constants.DB_PATH):
+        os.mkdir(constants.DB_PATH)  # TODO: Is this working?
     open(constants.DB_PATH + user + "/" + challenge, 'w').write(address)
 
 

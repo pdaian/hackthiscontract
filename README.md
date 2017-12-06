@@ -5,6 +5,7 @@
 1. `geth --rinkeby (starts ethereum node on the rinkeby test network)`
 2. `source hackthiscontractenv/bin/activate (starts virtualenv)`
 3. `python3 run.py`
+4. geth --rinkeby --rpc --rpccorsdomain "https://remix.ethereum.org"
 
 ## Dependencies
 * python3
