@@ -5,7 +5,9 @@
     <header class="ryl-section-header-style-2 ryl-bg-gray" style="padding-bottom:20px; margin-bottom:20px;">
         <div class="container ryl-padding-top-20">
             <p class="ryl-margin-bottom-30">
-                <span style="font-size: 32px;"><b>{% if exists %}Welcome back{%else%}Welcome{%endif%}, {{address}}!</b></span>
+                <span style="font-size: 32px;"><b>{% if exists %}Welcome back{%else%}Welcome{%endif%}, <a
+                        href="http://rinkeby.etherscan.io/address/{{address}}"
+                        class="underline">{{address}}!</a></b></span>
                 <button class="copy btn" title="Copy" data-clipboard-text="{{address}}"><i class="icon-clipboard"></i>
                 </button>
                 <a href="/">
