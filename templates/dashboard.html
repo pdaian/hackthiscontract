@@ -1,33 +1,54 @@
 {% extends "base.html" %}
-   {% block body %}
-      </header>
-      <section id="about" class="ryl-bg-gray" >
-        <header class="ryl-section-header-style-2 ryl-bg-gray" style="padding-bottom:20px; margin-bottom:20px;">
-          <div class="container ryl-padding-top-20">
-            <p class="ryl-margin-bottom-30"><span style="font-size: 32px;"><b>{% if exists %}Welcome back{%else%}Welcome{%endif%}, {{address}}!</b></span> <a href="/"><tiny><br>[Logout]</tiny></a></p>
+{% block body %}
+</header>
+<section id="about" class="ryl-bg-gray">
+    <header class="ryl-section-header-style-2 ryl-bg-gray" style="padding-bottom:20px; margin-bottom:20px;">
+        <div class="container ryl-padding-top-20">
             <p class="ryl-margin-bottom-30">
-                <p><b>To get started, select a challenge below</b><br> (you may require Rinkeby Ether to complete some challenges, which can be obtained from <a href="https://www.rinkeby.io" class="underline">the faucet</a>)<br><br><br>
+                <span style="font-size: 32px;"><b>{% if exists %}Welcome back{%else%}Welcome{%endif%}, {{address}}!</b></span>
+                <button class="copy btn" title="Copy" data-clipboard-text="{{address}}"><i class="icon-clipboard"></i>
+                </button>
+                <a href="/">
+                    <tiny><br>[Logout]</tiny>
+                </a></p>
+            <p class="ryl-margin-bottom-30">
+            <p><b>To get started, select a challenge below</b><br> (you may require Rinkeby Ether to complete some
+                challenges, which can be obtained from <a href="https://www.rinkeby.io" class="underline">the faucet</a>)<br><br><br>
                 {% for challenge in challenge_ids %}
-                    <div><p style="text-align:right;"><b><span style="float: left; text-align:left; width:200px; display:inline-block;">{{ challenges[challenge]['name'] }}</span></b> <span style="display:inline-block;"><i>Level {{ challenges[challenge]['level'] }} / 10</i> <a href="" onclick="myFunction('{{challenges[challenge]['name']}}'); return false;">[ Show Code ]</a> <span style="color:{{challenges[challenge]['status'][1]}}">[ {{ challenges[challenge]['status'][0] }} ]</span> <a href="/deploy/{{ address }}/{{ challenge }}" style="color:green;">[ Deploy New ]</a> {% if challenges[challenge]['deployed'] %}<a href="/update/{{address}}/{{ challenge }}">[Update Status]{% endif %}</a></span> </p>
-                    {% if challenges[challenge]['deployed'] %}<p> Deployed at address <b><a href="http://rinkeby.etherscan.io/address/{{challenges[challenge]['status'][2]}}" class="underline">{{ challenges[challenge]['status'][2] }}</a></b> </p>{% endif %}
-                    <p style="font-size:18px;"><i>{{ challenges[challenge]['description'] }}</i></p>
-                    </div>
-                    <div id="{{challenges[challenge]['name']}}" style="display: none; text-align:left;">
-                        <pre>{{ challenges[challenge]['code'] }}</pre>
-                    </div><br><br>
-
-                {% endfor %}
-<script>
-function myFunction(x) {
-    var x = document.getElementById(x);
-    if (x.style.display === 'none') {
-        x.style.display = 'block';
-    } else {
-        x.style.display = 'none';
-    }
-}
-</script>
-          </div>
-        </header>
-      </section>
-   {% endblock %}
+                <div>
+            <p style="text-align:right;"><b><span
+                    style="float: left; text-align:left; width:200px; display:inline-block;">{{ challenges[challenge]['name'] }}</span></b>
+                <span style="display:inline-block;"><i>Level {{ challenges[challenge]['level'] }} / 10</i> <a href=""
+                                                                                                              onclick="myFunction('{{challenges[challenge]['name']}}'); return false;">[ Show Code ]</a> <span
+                        style="color:{{challenges[challenge]['status'][1]}}">[ {{ challenges[challenge]['status'][0] }} ]</span> <a
+                        href="/deploy/{{ address }}/{{ challenge }}" style="color:green;">[ Deploy New ]</a> {% if challenges[challenge]['deployed'] %}<a
+                        href="/update/{{address}}/{{ challenge }}">[Update Status]{% endif %}</a></span></p>
+            {% if challenges[challenge]['deployed'] %}
+            <p> Deployed at address <b><a
+                    href="http://rinkeby.etherscan.io/address/{{challenges[challenge]['status'][2]}}" class="underline">{{
+                challenges[challenge]['status'][2] }}</a></b>
+                <button class="copy btn" title="Copy" data-clipboard-text="{{
+            challenges[challenge]['status'][2] }}"><i class="icon-clipboard"></i></button>
+            </p>
+            {% endif %}
+            <p style="font-size:18px;"><i>{{ challenges[challenge]['description'] }}</i></p>
+        </div>
+        <div id="{{challenges[challenge]['name']}}" style="display: none; text-align:left;">
+            <pre>{{ challenges[challenge]['code'] }}</pre>
+        </div>
+        <br><br>
+        {% endfor %}
+        <script>
+            function myFunction(x) {
+                var x = document.getElementById(x);
+                if (x.style.display === 'none') {
+                    x.style.display = 'block';
+                } else {
+                    x.style.display = 'none';
+                }
+            }
+        </script>
+        </div>
+    </header>
+</section>
+{% endblock %}

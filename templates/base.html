@@ -1,64 +1,74 @@
 <!DOCTYPE html>
 <html class="no-js">
-  <head>
+<head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Hack This Contract - A Solidity / Smart Contract Exploit Training Course</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hack This Contract - A Solidity / Smart Contract Exploit Training Course</title>
     <link rel="shortcut icon" href="/static/favicon.png">
-    <meta name="description" content="Training course for developers and other parties interested in learning about hands-on smart contract security.">
+    <meta name="description"
+          content="Training course for developers and other parties interested in learning about hands-on smart contract security.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/assets/styles/main.css">
-      <link rel="stylesheet" href="/static/assets/styles/style.css">
+    <link rel="stylesheet" href="/static/assets/styles/style.css">
     <script src='/static/vendors/smooth-scroll/SmoothScroll.js'></script>
     <script src="/static/vendors/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <script src="/static/vendors/jquery/jquery-1.11.0.min.js"></script>
-  </head>
-  <body><!--[if lt IE 8]>
-    <p class="browsehappy">
-      You are using an <strong>outdated</strong> browser.
-      Please <a href="http://browsehappy.com/">upgrade your browser</a>
-      to improve your experience.
-    </p><![endif]-->
+</head>
+<body><!--[if lt IE 8]>
+<p class="browsehappy">
+    You are using an <strong>outdated</strong> browser.
+    Please <a href="http://browsehappy.com/">upgrade your browser</a>
+    to improve your experience.
+</p><![endif]-->
 
-    <div id="ryl-main">
-      <header id="home" class="ryl-bg-dots ryl-color-light">
-        <div data-stellar-background-ratio="0.25" class="ryl-overlay-bg ryl-home-parallax-background-style-2 ryl-parallax-bg"></div>
+<div id="ryl-main">
+    <header id="home" class="ryl-bg-dots ryl-color-light">
+        <div data-stellar-background-ratio="0.25"
+             class="ryl-overlay-bg ryl-home-parallax-background-style-2 ryl-parallax-bg"></div>
         <header id="ryl-home-header" class="clearfix ryl-home-header-style-2">
-          <div class="container-fluid">
-            <div class="row"></div>
-            {% if address %}
-            <div class="col-md-4"><a href="/dashboard?address={{address}}" class="ryl-madrin-brand">
-            {% else %}
-            <div class="col-md-4"><a href="/" class="ryl-madrin-brand">
-            {% endif %}
-                <h4 class="ryl-light-heading" style="margin-left: 8px; width:300px; text-align: center; padding: 8px; background-color:rgba(0, 0, 0, 0.2); color:white;"><b>HACK THIS CONTRACT</b></h4></a></div>
-            <div class="ryl-home-header-right-side col-md-8 visible-md visible-lg">
-              <ul class="ryl-list-inline-block">
-              </ul>
-            </div>
-            </div>
+            <div class="container-fluid">
+                <div class="row"></div>
+                {% if address %}
+                <div class="col-md-4"><a href="/dashboard?address={{address}}" class="ryl-madrin-brand">
+                    {% else %}
+                    <div class="col-md-4"><a href="/" class="ryl-madrin-brand">
+                        {% endif %}
+                        <h4 class="ryl-light-heading"
+                            style="margin-left: 8px; width:300px; text-align: center; padding: 8px; background-color:rgba(0, 0, 0, 0.2); color:white;">
+                            <b>HACK THIS CONTRACT</b></h4></a></div>
+                    <div class="ryl-home-header-right-side col-md-8 visible-md visible-lg">
+                        <ul class="ryl-list-inline-block">
+                        </ul>
+                    </div>
+                </div>
         </header>
         {% block body %} {% endblock %}
-      <footer class="ryl-footer-style-2">
-        <div class="container">
-          <ul class="ryl-list-inline-block ryl-footer-social">
-            <li><a href="mailto:h4xx0r@hackthiscontract.io"><i class="ryl-icon-circle-border-3 icon-email29"></i></a></li>
-            <li><a href="https://github.com/pdaian/bootcamp-security"><i class="ryl-icon-circle-border-3 icon-github"></i></a></li>
-            <li><a href="https://twitter.com/SwiftOnSecurity"><i class="ryl-icon-circle-border-3 icon-twitter"></i></a></li>
-          </ul>
-            <div class="ryl-footer-content">Never © 2017 <a href="/">Hack This Contract</a></div>
-        </div>
-      </footer>
-    </div>
-    <script src="/static/vendors/html5shiv/html5shiv.min.js"></script>
-    <script src="/static/vendors/jquery-easing/jquery.easing-1.3.min.js"></script>
-    <script src="/static/vendors/owl.carousel2/owl.carousel.min.js"></script>
-    <script src="/static/vendors/easy.piechart/jquery.easypiechart.min.js"></script>
-    <script src="/static/vendors/stellar/jquery.stellar.min.js"></script>
-    <script src="/static/vendors/jquery.placeholder/jquery.placeholder.js"></script>
-    <script src="/static/vendors/countdown/jquery.plugin.min.js"></script>
-    <script src="/static/vendors/countdown/jquery.countdown.min.js"></script>
-    <script src="/static/vendors/skrollr/skrollr.min.js"></script>
-    <script src="/static/vendors/bootstrap-3.3/js/bootstrap.min.js"></script>
-    <script src="/static/assets/scripts/main.js"></script>
-  </body>
+        <footer class="ryl-footer-style-2">
+            <div class="container">
+                <ul class="ryl-list-inline-block ryl-footer-social">
+                    <li><a href="mailto:h4xx0r@hackthiscontract.io"><i
+                            class="ryl-icon-circle-border-3 icon-email29"></i></a></li>
+                    <li><a href="https://github.com/pdaian/bootcamp-security"><i
+                            class="ryl-icon-circle-border-3 icon-github"></i></a></li>
+                    <li><a href="https://twitter.com/SwiftOnSecurity"><i
+                            class="ryl-icon-circle-border-3 icon-twitter"></i></a></li>
+                </ul>
+                <div class="ryl-footer-content">Never © 2017 <a href="/">Hack This Contract</a></div>
+            </div>
+        </footer>
+</div>
+<script src="/static/vendors/html5shiv/html5shiv.min.js"></script>
+<script src="/static/vendors/jquery-easing/jquery.easing-1.3.min.js"></script>
+<script src="/static/vendors/owl.carousel2/owl.carousel.min.js"></script>
+<script src="/static/vendors/easy.piechart/jquery.easypiechart.min.js"></script>
+<script src="/static/vendors/stellar/jquery.stellar.min.js"></script>
+<script src="/static/vendors/jquery.placeholder/jquery.placeholder.js"></script>
+<script src="/static/vendors/countdown/jquery.plugin.min.js"></script>
+<script src="/static/vendors/countdown/jquery.countdown.min.js"></script>
+<script src="/static/vendors/skrollr/skrollr.min.js"></script>
+<script src="/static/vendors/bootstrap-3.3/js/bootstrap.min.js"></script>
+<script src="/static/assets/scripts/main.js"></script>
+<script src="/static/assets/scripts/clipboard.js"></script>
+</body>
 </html>

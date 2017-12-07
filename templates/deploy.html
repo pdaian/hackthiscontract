@@ -1,38 +1,52 @@
 {% extends "base.html" %}
-   {% block body %}
-      </header>
-      <section id="about" class="ryl-bg-light" >
-        <header class="ryl-section-header-style-2 ryl-bg-light" style="padding-bottom:20px; margin-bottom:20px;">
-          <div class="container ryl-padding-top-20">
+{% block body %}
+</header>
+<section id="about" class="ryl-bg-light">
+    <header class="ryl-section-header-style-2 ryl-bg-light" style="padding-bottom:20px; margin-bottom:20px;">
+        <p class="container ryl-padding-top-20">
             {% if not deployed %}
-            <h4 class="ryl-margin-bottom-30">Your contract is <span id="status">initializing</span>!  Please wait!</h4>
-            <p class="ryl-margin-bottom-30">
-                <p><i>(you will be redirected automagically...)</i></p><br><br>
-                <img src="/static/assets/images/loading.gif" />
-<script>
-function go() {
-    $.ajax({
-        url: '/done/{{address}}/{{contract}}',
-        success: function(response) {
-            $("#status").text(response);
-            if (response.includes("deployed")) {
-                location.reload();
+        <h4 class="ryl-margin-bottom-30">Your contract is <span id="status">initializing</span>! Please wait!</h4>
+        <p class="ryl-margin-bottom-30">
+        <p><i>(you will be redirected automagically...)</i></p><br><br>
+        <img src="/static/assets/images/loading.gif"/>
+        <script>
+            function go() {
+                $.ajax({
+                    url: '/done/{{address}}/{{contract}}',
+                    success: function (response) {
+                        $("#status").text(response);
+                        if (response.includes("deployed")) {
+                            location.reload();
+                        }
+                    }
+                });
+                setTimeout(go, 2000);
             }
-        }
-    });
-    setTimeout(go, 2000);
-}
-go();
-</script>
-          {% else %}
-            <h4 class="ryl-margin-bottom-30">Your contract is <span style="color:green;">deployed</span> at address <a class="underline" href="http://rinkeby.etherscan.io/address/{{status[2]}}">{{ status[2] }}</a>!<br><br>The status of this task is "<span style="color:{{status[1]}};">{{status[0]}}</span>"</h4>
+
+            go();
+        </script>
+        {% else %}
+        <div class="container ryl-padding-top-20">
+            <h4 class="ryl-margin-bottom-30">Your contract is <span style="color:green;">deployed</span> at address <a
+                    class="underline" href="http://rinkeby.etherscan.io/address/{{status[2]}}">{{ status[2] }}</a>!
+                <button class="copy btn" title="Copy" data-clipboard-text="{{status[2]}}"><i class="icon-clipboard"></i>
+                </button>
+                <br><br>The status of this task is "<span style="color:{{status[1]}};">{{status[0]}}</span>"
+            </h4>
             <p>Your task: <i>{{ contract_desc }}</i><br><br>
-                {% if not done %}When you are finished, <a href="/update/{{address}}/{{contract}}" class="underline">click here</a> to update your task status (or do it from the <a href="/dashboard?address={{address}}" class="underline">dashboard</a>).<br><br> <b>Happy hacking!</b> {% else %}<b>Congrats on finding the problem!</b>{% endif %}
+                {% if not done %}When you are finished, <a href="/update/{{address}}/{{contract}}" class="underline">click
+                    here</a> to update your task status (or do it from the <a href="/dashboard?address={{address}}"
+                                                                              class="underline">dashboard</a>).<br><br>
+                <b>Happy hacking!</b> {% else %}<b>Congrats on finding the problem!</b>{% endif %}
             </p>
             <p class="ryl-margin-bottom-30">
+            <div style="text-align: right;">
+                <button class="copy btn" title="Copy" data-clipboard-text="{{contract_code}}">Copy code<i
+                        class="icon-clipboard"></i></button>
+            </div>
             <pre style="text-align:left;">{{contract_code}}</pre>
-          {% endif %}
-          </div>
-        </header>
-      </section>
-   {% endblock %}
+            {% endif %}
+        </div>
+    </header>
+</section>
+{% endblock %}
