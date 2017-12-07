@@ -8,11 +8,6 @@
             <p class="ryl-fs-4 ryl-fw-medium">Enter your <a href="https://www.rinkeby.io/"
                                                             style="text-decoration:underline;">Rinkeby address</a> to
                 get started:
-                {% if error %}
-            <div class="error-banner">
-                {{error}}
-            </div>
-            {% endif %}
             <form action="/dashboard" method="get"><input type="text" name="address" size=60
                                                           style="margin-top:-20px;"/>
             </form>

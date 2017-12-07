@@ -17,17 +17,14 @@ deployers = {}
 
 @app.route("/")
 def hello():
-    if request.args.get("error", None) is None:
         return render_template('index.html')
-    else:
-        return render_template('index.html', error=request.args.get("error", None))
 
 
 @app.route("/dashboard")
 def dashboard():
     address = request.args.get("address", None).strip()
     if not util.is_valid_address(address):
-        return redirect("/?error=Invalid%20address")
+        return render_template("error.html")
     challenges = {}
     for challenge_id in constants.CHALLENGES:
         challenges[challenge_id] = json.loads(open("challenges/" + challenge_id + ".json").read().strip())
@@ -39,6 +36,8 @@ def dashboard():
 
 
 def get_status(address, contract):
+    if not util.is_valid_address(address):
+        return render_template("error.html")
     global deployers
     deploy_key = address + "|" + contract
     if not deploy_key in deployers:
@@ -53,6 +52,8 @@ def get_status(address, contract):
 
 @app.route("/done/<string:address>/<string:contract>")
 def done(address, contract):
+    if not util.is_valid_address(address):
+        return render_template("error.html")
     status = get_status(address, contract)
     if status[1] is not None:
         util.write_address(address, contract, status[1])
@@ -61,6 +62,8 @@ def done(address, contract):
 
 @app.route("/deploy/<string:address>/<string:contract>")
 def deploy(address, contract):
+    if not util.is_valid_address(address):
+        return render_template("error.html")
     status = util.get_status(address, contract)
     if "not started" in status[0].lower():
         return render_template('deploy.html', deployed=False, address=address, contract=contract)
@@ -74,6 +77,8 @@ def deploy(address, contract):
 
 @app.route("/update/<string:address>/<string:contract_name>")
 def update(address, contract_name):
+    if not util.is_valid_address(address):
+        return render_template("error.html")
     file_name = "challenges/" + contract_name + ".py"
     contract_addr = util.get_status(address, contract_name)[2].strip()
     if not os.path.exists(file_name) or not os.path.isfile(file_name):
