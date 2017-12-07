@@ -23,7 +23,7 @@
                 <span style="display:inline-block;"><i>Level {{ challenges[challenge]['level'] }} / 10</i> <a href=""
                                                                                                               onclick="myFunction('{{challenges[challenge]['name']}}'); return false;">[ Show Code ]</a> <span
                         style="color:{{challenges[challenge]['status'][1]}}">[ {{ challenges[challenge]['status'][0] }} ]</span> <a
-                        href="/deploy/{{ address }}/{{ challenge }}" style="color:green;">[ Deploy New ]</a> {% if challenges[challenge]['deployed'] %}<a
+                        href="/deploy/{{ address }}/{{ challenge }}" style="color:green;">{% if challenges[challenge]['deployed']%}[ View ]{%else%}[ Deploy ]{%endif%}</a> {% if challenges[challenge]['deployed'] %}<a
                         href="/update/{{address}}/{{ challenge }}">[Update Status]{% endif %}</a></span></p>
             {% if challenges[challenge]['deployed'] %}
             <p> Deployed at address <b><a
