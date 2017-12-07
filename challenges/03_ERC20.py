@@ -1,8 +1,11 @@
 import ethereum
-import validator
+import icontract
 
 
-class ValidatorImpl(validator.Validator):
+class Contract(icontract.IContract):
+    def setup(self):
+        pass
+
     def has_been_hacked(self):
         contract_bal = ethereum.EasyWeb3().balance(self.contract_address)
         if int(contract_bal) < 50000000000000000:

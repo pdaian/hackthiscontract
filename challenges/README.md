@@ -9,11 +9,7 @@ A JSON descriptor looks like this:
 {
     "name" : "Test",
     "description" : "A test.",
-    "level" : "3",
-    "on_deploy": [{
-        "method": "deposit",
-        "value": "50000000000000000"
-    }]
+    "level" : "3"
 }
 ```
 
@@ -22,19 +18,20 @@ A JSON descriptor looks like this:
 | name          | The name that will be displayed on the website      | Yes      |
 | description   | The description to show on the website              | Yes      |
 | level         | Difficulty on a scale of 1 to 10                    | Yes      |
-| on_deploy     | An array of actions to be executed after deployment | No       |
-| method        | The action to take. Currently only deposit          | No       |
-| value         | Parameter for method                                | No       |
 
 
 ## Writing a validator
 A minimal validator looks like this:
 ```python
-import validator
+import icontract
 
-class ValidatorImpl(validator.Validator):
-    def perform_validation(self):
-            self.set_hacked()
+class Contract(icontract.IContract):
+    def setup(self):
+        pass
+        
+    def has_been_hacked(self):
+            return False
 ```
-The class **must** be called `ValidatorImpl`, **must** extend `Validator` and **must** implement the `has_been_hacked` method.
-`has_been_hacked` **must** return `True` if the contact has been hacked, `False` otherwise..
+The class **must** be called `Contract`, **must** extend `IContract` and **must** implement all methods.
+`has_been_hacked` **must** return `True` if the contact has been hacked, `False` otherwise.
+`setup` is optional, though the method **must** be overwritten.

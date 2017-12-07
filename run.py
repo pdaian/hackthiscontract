@@ -72,12 +72,12 @@ def deploy(address, contract):
                                contract_desc=contract_desc)
 
 
-@app.route("/update/<string:address>/<string:contract>")
-def update(address, contract):
-    file_name = "challenges/" + contract + ".py"
-    contract_addr = util.get_status(address, contract)[2].strip()
+@app.route("/update/<string:address>/<string:contract_name>")
+def update(address, contract_name):
+    file_name = "challenges/" + contract_name + ".py"
+    contract_addr = util.get_status(address, contract_name)[2].strip()
     if not os.path.exists(file_name) or not os.path.isfile(file_name):
-        print("Challenge validator not found for contract: " + contract)
+        print("Challenge validator not found for contract: " + contract_name)
         return redirect(request.referrer)
 
     # Load the file
@@ -87,13 +87,13 @@ def update(address, contract):
     loader.exec_module(module)
 
     # Setup
-    validator = module.ValidatorImpl()
-    validator.contract_address = contract_addr
-    validator.user_address = address
+    contract = module.Contract()
+    contract.contract_address = contract_addr
+    contract.user_address = address
 
     # Validate
-    if validator.has_been_hacked():
-        util.mark_finished(address, contract)
+    if contract.has_been_hacked():
+        util.mark_finished(address, contract_name)
 
     return redirect(request.referrer)
     # return redirect("/dashboard?address=" + address)
