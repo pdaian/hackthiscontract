@@ -8,12 +8,19 @@
             <p class="ryl-fs-4 ryl-fw-medium">Enter your <a href="https://www.rinkeby.io/"
                                                             style="text-decoration:underline;">Rinkeby address</a> to
                 get started:
-            <form action="/dashboard" method="get"><input type="text" name="address" size=60
-                                                          style="margin-top:-20px;"/>
+            <form id="form" onsubmit="onSubmit()" method="get"><input type="text" id="address" size=60
+                                                                      style="margin-top:-20px;"/>
             </form>
             <br>(or keep scrolling for information)</p></div>
     </div>
 </div>
+<script>
+    function onSubmit() {
+        var action_src = "/dashboard/" + document.getElementById("address").value;
+        var form = document.getElementById('form');
+        form.action = action_src;
+    }
+</script>
 </header>
 <section id="about" class="ryl-bg-gray">
     <header class="ryl-section-header-style-2 ryl-bg-gray" style="padding-bottom:20px; margin-bottom:20px;">

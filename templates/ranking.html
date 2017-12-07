@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block body %}
+</header>
+<table class="table-hover container" style="font-size: 1.5em">
+    <tr>
+        <th>Rank</th>
+        <th>Address</th>
+        <th>Balance</th>
+        <th>Solved</th>
+    </tr>
+    {% for user in users %}
+    <tr>
+        <td>{{ user['pos'] }}</td>
+        <td>{{ user['address'] }}</td>
+        <td>{{ user['balance'] }}</td>
+        <td>{{ user['solved'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

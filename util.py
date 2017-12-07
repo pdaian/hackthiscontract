@@ -1,5 +1,7 @@
 import os
+from functools import wraps
 
+from flask import render_template
 from web3.utils import validation
 
 import config as constants
@@ -39,3 +41,14 @@ def mark_finished(user, challenge):
 
 def is_valid_address(address):
     return validation.is_address(address)
+
+
+def check_address_decorator(fn):
+    @wraps(fn)
+    def wrapped(*args, **kwargs):
+        address = kwargs['address']
+        if not is_valid_address(address):
+            return render_template("error.html")
+        return fn(*args, **kwargs)
+
+    return wrapped

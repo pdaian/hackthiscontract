@@ -17,14 +17,12 @@ deployers = {}
 
 @app.route("/")
 def hello():
-        return render_template('index.html')
+    return render_template('index.html')
 
 
-@app.route("/dashboard")
-def dashboard():
-    address = request.args.get("address", None).strip()
-    if not util.is_valid_address(address):
-        return render_template("error.html")
+@app.route("/dashboard/<string:address>")
+@util.check_address_decorator
+def dashboard(address):
     challenges = {}
     for challenge_id in constants.CHALLENGES:
         challenges[challenge_id] = json.loads(open("challenges/" + challenge_id + ".json").read().strip())
@@ -51,6 +49,7 @@ def get_status(address, contract):
 
 
 @app.route("/done/<string:address>/<string:contract>")
+@util.check_address_decorator
 def done(address, contract):
     if not util.is_valid_address(address):
         return render_template("error.html")
@@ -61,9 +60,8 @@ def done(address, contract):
 
 
 @app.route("/deploy/<string:address>/<string:contract>")
+@util.check_address_decorator
 def deploy(address, contract):
-    if not util.is_valid_address(address):
-        return render_template("error.html")
     status = util.get_status(address, contract)
     if "not started" in status[0].lower():
         return render_template('deploy.html', deployed=False, address=address, contract=contract)
@@ -76,9 +74,8 @@ def deploy(address, contract):
 
 
 @app.route("/update/<string:address>/<string:contract_name>")
+@util.check_address_decorator
 def update(address, contract_name):
-    if not util.is_valid_address(address):
-        return render_template("error.html")
     file_name = "challenges/" + contract_name + ".py"
     contract_addr = util.get_status(address, contract_name)[2].strip()
     if not os.path.exists(file_name) or not os.path.isfile(file_name):
@@ -102,6 +99,30 @@ def update(address, contract_name):
 
     return redirect(request.referrer)
     # return redirect("/dashboard?address=" + address)
+
+
+@app.route("/ranking")
+def ranking():
+    users = []
+    for address in os.listdir(constants.DB_PATH):
+        done = 0
+        for filename in os.listdir(constants.DB_PATH + address):
+            if filename.endswith(".done"):
+                done += 1
+        data = {"address": address, "solved": done}
+        if not done == 0:
+            users.append(data)
+
+    users.sort(key=lambda x: x['solved'], reverse=True)
+    counter = 0
+    largest = 1e29
+    for user in users:
+        if user['solved'] < largest:
+            counter += 1
+            largest = user['solved']
+        user['pos'] = counter
+        user['balance'] = '{:,.5f}'.format(ethereum.EasyWeb3().balance(user['address']) / 1e18)
+    return render_template("ranking.html", users=users)
 
 
 if __name__ == "__main__":
