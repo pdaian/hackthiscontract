@@ -121,7 +121,6 @@ def ranking():
             counter += 1
             largest = user['solved']
         user['pos'] = counter
-        user['balance'] = '{:,.5f}'.format(ethereum.EasyWeb3().balance(user['address']) / 1e18)
     return render_template("ranking.html", users=users)
 
 

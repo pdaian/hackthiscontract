@@ -1,20 +1,24 @@
 {% extends "base.html" %}
 {% block body %}
 </header>
-<table class="table-hover container" style="font-size: 1.5em">
-    <tr>
-        <th>Rank</th>
-        <th>Address</th>
-        <th>Balance</th>
-        <th>Solved</th>
-    </tr>
-    {% for user in users %}
-    <tr>
-        <td>{{ user['pos'] }}</td>
-        <td>{{ user['address'] }}</td>
-        <td>{{ user['balance'] }}</td>
-        <td>{{ user['solved'] }}</td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="sticky-footer-container">
+    <table class="table table-striped table-hover table-ranking">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Address</th>
+            <th>Solved</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user['pos'] }}</td>
+            <td style="font-family: monospace">{{ user['address'] }}</td>
+            <td>{{ user['solved'] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

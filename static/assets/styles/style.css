@@ -21,3 +21,18 @@ i.icon-black.ryl-icon-circle-border-3 {
 .copy {
     cursor: pointer;
 }
+
+.table-ranking {
+    margin: 15px auto;
+    width: 50%;
+    font-size: 1.5em
+}
+
+.sticky-footer-container {
+    margin-bottom: -112px;
+    height: 100%;
+}
+
+#ryl-main {
+    height: 100vh;
+}
