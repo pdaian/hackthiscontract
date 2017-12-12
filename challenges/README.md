@@ -26,7 +26,7 @@ A minimal validator looks like this:
 import icontract
 
 class Contract(icontract.IContract):
-    def setup(self):
+    def setup(self, web3_contract):
         pass
         
     def has_been_hacked(self):
@@ -35,3 +35,12 @@ class Contract(icontract.IContract):
 The class **must** be called `Contract`, **must** extend `IContract` and **must** implement all methods.
 `has_been_hacked` **must** return `True` if the contact has been hacked, `False` otherwise.
 `setup` is optional, though the method **must** be overwritten.
+
+### Variables
+The Contract will have the following variables already set: 
+
+| Name             | Description                            |
+| ---------------- | -------------------------------------- |
+| contract_address | The address the contract is located at |
+| user_address     | The address of the user                |
+| web3             | An instance of EasyWeb3                |
