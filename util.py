@@ -38,8 +38,6 @@ def write_address(user, challenge, address):
     if not os.path.exists(constants.DB_PATH):
         os.mkdir(constants.DB_PATH)  # TODO: Is this working?
 
-    print("write_address\t" + address)
-    print("user:\t" + user)
     with open(constants.DB_PATH + user + "/" + challenge, 'w') as fd:
         fd.write(address)
 

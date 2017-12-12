@@ -63,13 +63,9 @@ def done(address, contract):
 @util.check_address_decorator
 def deploy(address, contract):
     status = util.get_status(address, contract)
-    print("deploy")
-    print(status)
     if "not started" in status[0].lower():
-        print("not started")
         return render_template('deploy.html', deployed=False, address=address, contract=contract)
     else:
-        print("started")
         return redirect("/view/" + address + "/" + contract)
 
 
@@ -108,14 +104,10 @@ def update(address, contract_name):
 @app.route("/redeploy/<string:address>/<string:contract_name>", methods=['POST'])
 @util.check_address_decorator
 def redeploy(address, contract_name):
-    print("called")
     if (os.path.isfile(constants.DB_PATH + address + "/" + contract_name)):
         os.remove(constants.DB_PATH + address + "/" + contract_name)
-        print("removed")
     if (os.path.isfile(constants.DB_PATH + address + "/" + contract_name + ".done")):
         os.remove(constants.DB_PATH + address + "/" + contract_name + ".done")
-        print(".done removed")
-    print("redirect")
     return deploy(address, contract_name)
 
 

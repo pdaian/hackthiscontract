@@ -106,7 +106,6 @@ class EasyWeb3:
             return self._status, self._deployed_address
 
     def _deploy_solidity_contract(self, code, contract_name, user_address, deploy_actions=[], timeout=90):
-        print("_deploy_solidity_contract: " + contract_name, user_address)
         '''Deploys the solidity contract given by code. Uses nasty
         polling loop to give you the illusion of a synchronous call.
         timeout is
