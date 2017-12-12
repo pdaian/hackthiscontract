@@ -6,6 +6,7 @@ import time
 import web3
 
 import config as constants
+import util
 
 
 def new_web3():
@@ -71,10 +72,10 @@ class EasyWeb3:
         contract = contracts[list(contracts.keys())[0]]
         return contract['evm']['bytecode']['object'], contract['abi']
 
-    def deploy_named_solidity_contract(self, name, timeout=90):
+    def deploy_named_solidity_contract(self, name, user_address, timeout=90):
         def wrapper():
             #    try:
-            self._deploy_named_solidity_contract(name, timeout=timeout)
+            self._deploy_named_solidity_contract(name, user_address, timeout=timeout)
 
         #    except Exception as ex:
         #        print 'Exception in ethereum.py'
@@ -89,14 +90,14 @@ class EasyWeb3:
         )
         t.start()
 
-    def _deploy_named_solidity_contract(self, name, timeout=90):
+    def _deploy_named_solidity_contract(self, name, user_address, timeout=90):
         '''Like deploy_solidity_contract, but reads the contract
         file and deploy_actions for you.'''
         with open('{}/{}.json'.format(constants.CHALLENGE_DIR, name), 'r') as fd:
             config = json.load(fd)
         with open('{}/{}.sol'.format(constants.CHALLENGE_DIR, name), 'r') as fd:
             return self._deploy_solidity_contract(
-                fd.read(),
+                fd.read(), name, user_address,
                 deploy_actions=config.get('on_deploy', []),
                 timeout=timeout)
 
@@ -104,7 +105,8 @@ class EasyWeb3:
         with self._lock:
             return self._status, self._deployed_address
 
-    def _deploy_solidity_contract(self, code, deploy_actions=[], timeout=90):
+    def _deploy_solidity_contract(self, code, contract_name, user_address, deploy_actions=[], timeout=90):
+        print("_deploy_solidity_contract: " + contract_name, user_address)
         '''Deploys the solidity contract given by code. Uses nasty
         polling loop to give you the illusion of a synchronous call.
         timeout is
@@ -136,9 +138,11 @@ class EasyWeb3:
             self._status = "mined on-chain, post-processing"
             self._deployed_address = contract_address
 
-        # contract_helper = util.get_contract_by_address(contract_address)
-        # print(dir(contract_helper))
-        # contract_helper.setup()
+        print("Getting contract helper")
+        contract_helper = util.get_contract(user_address, contract_name, contract_address)
+        print("Post-deploy")
+        contract_helper.setup(contract)
+        print("Success!")
 
         with self._lock:
             self._status = "deployed"
@@ -147,14 +151,15 @@ class EasyWeb3:
         '''Returns the balance of address.'''
         return self._web3.eth.getBalance(address)
 
-    def deposit(self, contract_address, amount):
+    def deposit(self, contract, contract_address, amount, timeout=90):
         tx_receipt = getattr(contract.transact({
             'from': self._web3.eth.coinbase,
             'to': contract_address,
             'value': int(amount)
         }), 'deposit')()
+        t0 = time.time()
         while time.time() - t0 < timeout:
-            if web3.eth.getTransactionReceipt(tx_receipt):
+            if self._web3.eth.getTransactionReceipt(tx_receipt):
                 break
             time.sleep(0.2)
         else:

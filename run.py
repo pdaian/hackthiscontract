@@ -38,7 +38,7 @@ def get_status(address, contract):
         web3_instance = ethereum.EasyWeb3()
         deployers[deploy_key] = web3_instance
         web3_instance.unlock_coinbase()
-        web3_instance.deploy_named_solidity_contract(contract)
+        web3_instance.deploy_named_solidity_contract(contract, address)
     else:
         web3_instance = deployers[deploy_key]
     return web3_instance.deploy_status()
@@ -49,7 +49,9 @@ def get_status(address, contract):
 def done(address, contract):
     print("Done:\t" + address)
     status = get_status(address, contract)
-    if status[1] is not None:
+
+    if status[1] is not None and status[0] == "deployed":
+        print("Status is not none: " + str(status))
         global deployers
         deploy_key = (address, contract)
         del deployers[deploy_key]

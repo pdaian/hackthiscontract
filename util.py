@@ -80,11 +80,15 @@ def contract_exists(contract_name):
 
 
 def get_contract(address, contract_name):
+    contract_addr = get_status(address, contract_name)[2].strip()
+    return get_contract(address, contract_name, contract_addr)
+
+
+def get_contract(address, contract_name, contract_address):
     if not contract_exists(contract_name):
         raise FileNotFoundError("challenges/" + contract_name + ".py")
 
     file_name = "challenges/" + contract_name + ".py"
-    contract_addr = get_status(address, contract_name)[2].strip()
 
     # Load the file
     loader = importlib.machinery.SourceFileLoader("contract", file_name)
@@ -94,10 +98,9 @@ def get_contract(address, contract_name):
 
     # Setup
     contract = module.Contract()
-    contract.contract_address = contract_addr
+    contract.contract_address = contract_address
     contract.user_address = address
     contract.web3 = ethereum.EasyWeb3()
-    print("util" + str(dir(contract)))
     return contract
 
 

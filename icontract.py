@@ -6,7 +6,7 @@ class IContract:
 
     '''Performs any operations needed after the contract has been deployed'''
 
-    def setup(self):
+    def setup(self, web3_contract):
         raise NotImplementedError("setup is not implemented!")
 
     '''Returns true if the contract has been hacked, false otherwise'''
