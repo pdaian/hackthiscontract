@@ -77,6 +77,12 @@ def deploy(address, contract):
                                contract_desc=contract_desc)
 
 
+@app.route("/deploy/<string:address>/<string:contract>")
+@util.check_address_decorator
+def view(address, contract):
+    pass
+
+
 @app.route("/update/<string:address>/<string:contract_name>")
 @util.check_address_decorator
 def update(address, contract_name):
@@ -96,9 +102,9 @@ def update(address, contract_name):
     # return redirect("/dashboard?address=" + address)
 
 
-@app.route("/restart/<string:address>/<string:contract_name>")
+@app.route("/redeploy/<string:address>/<string:contract_name>", methods=['POST'])
 @util.check_address_decorator
-def restart(address, contract_name):
+def redeploy(address, contract_name):
     print("called")
     if (os.path.isfile(constants.DB_PATH + address + "/" + contract_name)):
         os.remove(constants.DB_PATH + address + "/" + contract_name)

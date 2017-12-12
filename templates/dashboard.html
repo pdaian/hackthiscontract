@@ -24,7 +24,9 @@
                                                                                                               onclick="myFunction('{{challenges[challenge]['name']}}'); return false;">[ Show Code ]</a> <span
                         style="color:{{challenges[challenge]['status'][1]}}">[ {{ challenges[challenge]['status'][0] }} ]</span> <a
                         href="/deploy/{{ address }}/{{ challenge }}" style="color:green;">{% if challenges[challenge]['deployed']%}[ View ]{%else%}[ Deploy ]{%endif%}</a> {% if challenges[challenge]['deployed'] %}<a
-                        href="/update/{{address}}/{{ challenge }}">[Update Status]{% endif %}</a></span></p>
+                        href="/update/{{address}}/{{ challenge }}">[ Update Status ]</a> <span style="color: orange"><a
+                        id="open_modal" href="#" onclick="showModal('{{ challenge}}')">[ Redeploy ]</a></span>{% endif %}</span>
+        </p>
             {% if challenges[challenge]['deployed'] %}
             <p> Deployed at address <b><a
                     href="http://rinkeby.etherscan.io/address/{{challenges[challenge]['status'][2]}}" class="underline">{{
@@ -39,6 +41,23 @@
             <pre>{{ challenges[challenge]['code'] }}</pre>
         </div>
         <br><br>
+        {% if challenges[challenge]['deployed'] %}
+        <div id="{{challenge}}" class="my-modal">
+
+            <div class="my-modal-header">
+                <h2>WARNING</h2>
+            </div>
+            <div class="my-modal-content">
+                <p>By redeploying this contract, all your progress will be lost!</p>
+                <span class="close" onclick="hideModal('{{challenge}}')">&times;</span>
+                <form action="/redeploy/{{address}}/{{challenge}}" method="post">
+                    <button type="button" class="btn-primary" onclick="hideModal('{{challenge}}')">Cancel</button>
+                    <button class="btn-danger" type="submit">Redeploy</button>
+                </form>
+            </div>
+
+        </div>
+        {% endif %}
         {% endfor %}
         <script>
             function myFunction(x) {
@@ -53,4 +72,5 @@
         </div>
     </header>
 </section>
+<script src="/static/assets/scripts/modal.js"></script>
 {% endblock %}
