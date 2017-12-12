@@ -98,7 +98,6 @@ def update(address, contract_name):
         util.mark_finished(address, contract_name)
 
     return redirect(request.referrer)
-    # return redirect("/dashboard?address=" + address)
 
 
 @app.route("/redeploy/<string:address>/<string:contract_name>", methods=['POST'])
