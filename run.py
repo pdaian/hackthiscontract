@@ -1,8 +1,5 @@
-import importlib.machinery
-import importlib.util
 import json
 import os
-import types
 
 from flask import Flask, render_template, request, redirect
 
@@ -33,11 +30,10 @@ def dashboard(address):
                            exists=util.exists(address))
 
 
+@util.check_address_decorator
 def get_status(address, contract):
-    if not util.is_valid_address(address):
-        return render_template("error.html")
     global deployers
-    deploy_key = address + "|" + contract
+    deploy_key = (address, contract)
     if not deploy_key in deployers:
         web3_instance = ethereum.EasyWeb3()
         deployers[deploy_key] = web3_instance
@@ -51,10 +47,12 @@ def get_status(address, contract):
 @app.route("/done/<string:address>/<string:contract>")
 @util.check_address_decorator
 def done(address, contract):
-    if not util.is_valid_address(address):
-        return render_template("error.html")
+    print("Done:\t" + address)
     status = get_status(address, contract)
     if status[1] is not None:
+        global deployers
+        deploy_key = (address, contract)
+        del deployers[deploy_key]
         util.write_address(address, contract, status[1])
     return status[0]
 
@@ -63,9 +61,13 @@ def done(address, contract):
 @util.check_address_decorator
 def deploy(address, contract):
     status = util.get_status(address, contract)
+    print("deploy")
+    print(status)
     if "not started" in status[0].lower():
+        print("not started")
         return render_template('deploy.html', deployed=False, address=address, contract=contract)
     else:
+        print("started")
         contract_code = open("challenges/" + contract + ".sol").read().strip()
         contract_desc = json.loads(open("challenges/" + contract + ".json").read().strip())["description"]
         return render_template('deploy.html', deployed=True, done=("done" in status[0].lower()), status=status,
@@ -82,16 +84,7 @@ def update(address, contract_name):
         print("Challenge validator not found for contract: " + contract_name)
         return redirect(request.referrer)
 
-    # Load the file
-    loader = importlib.machinery.SourceFileLoader("validator", file_name)
-    module = types.ModuleType(loader.name)
-
-    loader.exec_module(module)
-
-    # Setup
-    contract = module.Contract()
-    contract.contract_address = contract_addr
-    contract.user_address = address
+    contract = util.get_contract(address, contract_name)
 
     # Validate
     if contract.has_been_hacked():
@@ -99,6 +92,20 @@ def update(address, contract_name):
 
     return redirect(request.referrer)
     # return redirect("/dashboard?address=" + address)
+
+
+@app.route("/restart/<string:address>/<string:contract_name>")
+@util.check_address_decorator
+def restart(address, contract_name):
+    print("called")
+    if (os.path.isfile(constants.DB_PATH + address + "/" + contract_name)):
+        os.remove(constants.DB_PATH + address + "/" + contract_name)
+        print("removed")
+    if (os.path.isfile(constants.DB_PATH + address + "/" + contract_name + ".done")):
+        os.remove(constants.DB_PATH + address + "/" + contract_name + ".done")
+        print(".done removed")
+    print("redirect")
+    return redirect("/deploy/" + address + "/" + contract_name)
 
 
 @app.route("/ranking")

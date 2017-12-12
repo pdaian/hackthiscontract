@@ -136,20 +136,9 @@ class EasyWeb3:
             self._status = "mined on-chain, post-processing"
             self._deployed_address = contract_address
 
-        for i, action in enumerate(deploy_actions):
-            tx_receipt = getattr(contract.transact({
-                'from': self._web3.eth.coinbase,
-                'to': contract_address,
-                'value': int(action['value'])
-            }), action['method'])()
-            while time.time() - t0 < timeout:
-                if web3.eth.getTransactionReceipt(tx_receipt):
-                    break
-                time.sleep(0.2)
-            else:
-                raise Exception("Deployment actions timed out.")
-            with self._lock:
-                self._status = "postprocessing deploy action {}/{}".format(i, len(deploy_actions))
+        # contract_helper = util.get_contract_by_address(contract_address)
+        # print(dir(contract_helper))
+        # contract_helper.setup()
 
         with self._lock:
             self._status = "deployed"
@@ -157,6 +146,19 @@ class EasyWeb3:
     def balance(self, address):
         '''Returns the balance of address.'''
         return self._web3.eth.getBalance(address)
+
+    def deposit(self, contract_address, amount):
+        tx_receipt = getattr(contract.transact({
+            'from': self._web3.eth.coinbase,
+            'to': contract_address,
+            'value': int(amount)
+        }), 'deposit')()
+        while time.time() - t0 < timeout:
+            if web3.eth.getTransactionReceipt(tx_receipt):
+                break
+            time.sleep(0.2)
+        else:
+            raise Exception("Deployment actions timed out.")
 
 
 if __name__ == '__main__':
