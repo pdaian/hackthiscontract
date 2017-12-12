@@ -35,7 +35,7 @@
             </h4>
             <p>Your task: <i>{{ contract_desc }}</i><br><br>
                 {% if not done %}When you are finished, <a href="/update/{{address}}/{{contract}}" class="underline">click
-                    here</a> to update your task status (or do it from the <a href="/dashboard?address={{address}}"
+                    here</a> to update your task status (or do it from the <a href="/dashboard/{{address}}"
                                                                               class="underline">dashboard</a>).<br><br>
                 <b>Happy hacking!</b> {% else %}<b>Congrats on finding the problem!</b>{% endif %}
             </p>

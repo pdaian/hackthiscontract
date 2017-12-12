@@ -138,11 +138,9 @@ class EasyWeb3:
             self._status = "mined on-chain, post-processing"
             self._deployed_address = contract_address
 
-        print("Getting contract helper")
-        contract_helper = util.get_contract(user_address, contract_name, contract_address)
-        print("Post-deploy")
-        contract_helper.setup(contract)
-        print("Success!")
+        if (util.contract_exists(contract_name)):
+            contract_helper = util.get_contract(user_address, contract_name, contract_address)
+            contract_helper.setup(contract)
 
         with self._lock:
             self._status = "deployed"
