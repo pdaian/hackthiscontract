@@ -37,6 +37,15 @@ i.icon-black.ryl-icon-circle-border-3 {
     height: 100vh;
 }
 
+.inline {
+    font-size: 18px;
+    display: inline;
+}
+
+.inline li {
+    display: inline;
+}
+
 /* Code from w3schools.com */
 /* Added my- prefix because bootstrap also has modals that didn't work*/
 /* The Modal (background) */

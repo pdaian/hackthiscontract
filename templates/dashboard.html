@@ -18,15 +18,48 @@
                 challenges, which can be obtained from <a href="https://www.rinkeby.io" class="underline">the faucet</a>)<br><br><br>
                 {% for challenge in challenge_ids %}
                 <div>
-            <p style="text-align:right;"><b><span
-                    style="float: left; text-align:left; width:200px; display:inline-block;">{{ challenges[challenge]['name'] }}</span></b>
-                <span style="display:inline-block;"><i>Level {{ challenges[challenge]['level'] }} / 10</i> <a href=""
-                                                                                                              onclick="myFunction('{{challenges[challenge]['name']}}'); return false;">[ Show Code ]</a> <span
-                        style="color:{{challenges[challenge]['status'][1]}}">[ {{ challenges[challenge]['status'][0] }} ]</span> <a
-                        href="/deploy/{{ address }}/{{ challenge }}" style="color:green;">{% if challenges[challenge]['deployed']%}[ View ]{%else%}[ Deploy ]{%endif%}</a> {% if challenges[challenge]['deployed'] %}<a
-                        href="/update/{{address}}/{{ challenge }}">[ Update Status ]</a> <span style="color: orange"><a
-                        id="open_modal" href="#" onclick="showModal('{{ challenge}}')">[ Redeploy ]</a></span>{% endif %}</span>
-        </p>
+            <p style="text-align:right;">
+
+            <ul class="inline">
+                <li><b><span
+                        style="float: left; text-align:left; width:200px; display:inline-block;">{{ challenges[challenge]['name'] }}</span></b>
+                </li>
+                <li>
+                    <span style="display:inline-block;"><i>Level {{ challenges[challenge]['level'] }} / 10</i></span>
+                </li>
+                <li>
+                    <span style="color:{{challenges[challenge]['status'][1]}}">[ {{ challenges[challenge]['status'][0] }} ]</span>
+                </li>
+                <li>
+                    <a href=""
+                       onclick="myFunction('{{challenges[challenge]['name']}}'); return false;">[ Show Code
+                        ]</a>
+                </li>
+                {% if challenges[challenge]['deployed'] %}
+                <li>
+                    <span style="color: orange">
+                        <a id="open_modal" href="#" onclick="showModal('{{ challenge}}')">[ Redeploy ]</a>
+                    </span>
+                </li>
+                {% endif %}
+                <li>
+                    {% if challenges[challenge]['deployed'] %}
+                    <a href="/view/{{ address }}/{{ challenge }}" style="color: green">[ View ]</a>
+                    {% else %}
+                    <form action="/deploy/{{ address }}/{{ challenge }}" method="post" class="inline">
+                        <span style="color: green">
+                            <a href="#" onclick="this.parentElement.parentElement.submit()">[ Deploy ]</a>
+                        </span>
+                    </form>
+                    {% endif %}
+                </li>
+                {% if challenges[challenge]['deployed'] %}
+                <li>
+                    <a href="/update/{{address}}/{{ challenge }}">[ Update Status ]</a>
+                </li>
+                {% endif %}
+            </ul>
+            </p>
             {% if challenges[challenge]['deployed'] %}
             <p> Deployed at address <b><a
                     href="http://rinkeby.etherscan.io/address/{{challenges[challenge]['status'][2]}}" class="underline">{{

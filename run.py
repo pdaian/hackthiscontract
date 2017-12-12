@@ -59,7 +59,7 @@ def done(address, contract):
     return status[0]
 
 
-@app.route("/deploy/<string:address>/<string:contract>")
+@app.route("/deploy/<string:address>/<string:contract>", methods=['POST'])
 @util.check_address_decorator
 def deploy(address, contract):
     status = util.get_status(address, contract)
@@ -70,17 +70,20 @@ def deploy(address, contract):
         return render_template('deploy.html', deployed=False, address=address, contract=contract)
     else:
         print("started")
-        contract_code = open("challenges/" + contract + ".sol").read().strip()
-        contract_desc = json.loads(open("challenges/" + contract + ".json").read().strip())["description"]
-        return render_template('deploy.html', deployed=True, done=("done" in status[0].lower()), status=status,
-                               address=address, contract=contract, contract_code=contract_code,
-                               contract_desc=contract_desc)
+        return redirect("/view/" + address + "/" + contract)
 
 
-@app.route("/deploy/<string:address>/<string:contract>")
+@app.route("/view/<string:address>/<string:contract>")
 @util.check_address_decorator
 def view(address, contract):
-    pass
+    status = util.get_status(address, contract)
+    if "not started" in status[0].lower():
+        return "Not started!"
+    contract_code = open("challenges/" + contract + ".sol").read().strip()
+    contract_desc = json.loads(open("challenges/" + contract + ".json").read().strip())["description"]
+    return render_template('view.html', deployed=True, done=("done" in status[0].lower()), status=status,
+                           address=address, contract=contract, contract_code=contract_code,
+                           contract_desc=contract_desc)
 
 
 @app.route("/update/<string:address>/<string:contract_name>")
@@ -113,7 +116,7 @@ def redeploy(address, contract_name):
         os.remove(constants.DB_PATH + address + "/" + contract_name + ".done")
         print(".done removed")
     print("redirect")
-    return redirect("/deploy/" + address + "/" + contract_name)
+    return deploy(address, contract_name)
 
 
 @app.route("/ranking")
