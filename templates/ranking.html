@@ -14,7 +14,8 @@
         {% for user in users %}
         <tr>
             <td>{{ user['pos'] }}</td>
-            <td style="font-family: monospace">{{ user['address'] }}</td>
+            <td style="font-family: monospace"><a href="http://rinkeby.etherscan.io/address/{{ user['address'] }}">{{
+                user['address'] }}</a></td>
             <td>{{ user['solved'] }}</td>
         </tr>
         {% endfor %}
