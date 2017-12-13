@@ -138,7 +138,7 @@ class EasyWeb3:
             self._deployed_address = contract_address
 
         if (util.contract_exists(contract_name)):
-            contract_helper = util.get_contract(user_address, contract_name, contract_address)
+            contract_helper = util.get_contract(user_address, contract_name, contract_address=contract_address)
             contract_helper.setup(contract)
 
         with self._lock:

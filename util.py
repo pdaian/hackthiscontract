@@ -36,7 +36,9 @@ def get_status(user, challenge):
 
 def write_address(user, challenge, address):
     if not os.path.exists(constants.DB_PATH):
-        os.mkdir(constants.DB_PATH)  # TODO: Is this working?
+        os.mkdir(constants.DB_PATH)
+    if not os.path.exists(constants.DB_PATH + user):
+        os.mkdir(constants.DB_PATH + user)
 
     with open(constants.DB_PATH + user + "/" + challenge, 'w') as fd:
         fd.write(address)
@@ -77,12 +79,10 @@ def contract_exists(contract_name):
         return True
 
 
-def get_contract(address, contract_name):
-    contract_addr = get_status(address, contract_name)[2].strip()
-    return get_contract(address, contract_name, contract_addr)
+def get_contract(address, contract_name, contract_address=None):
+    if contract_address is None:
+        contract_address = get_status(address, contract_name)[2].strip()
 
-
-def get_contract(address, contract_name, contract_address):
     if not contract_exists(contract_name):
         raise FileNotFoundError("challenges/" + contract_name + ".py")
 
@@ -100,16 +100,3 @@ def get_contract(address, contract_name, contract_address):
     contract.user_address = address
     contract.web3 = ethereum.EasyWeb3()
     return contract
-
-
-def get_contract_by_address(contract_address):
-    result = [os.path.join(dp, f) for dp, dn, filenames in os.walk(constants.DB_PATH) for f in filenames if
-              not os.path.splitext(f)[1] == '.done']
-
-    for s in result:
-        with open(s) as f:
-            address = f.readline()
-            if (address == contract_address):
-                parts = s.split("/")
-                return get_contract(parts[len(parts) - 2], parts[len(parts) - 1])
-    raise EnvironmentError("Failed to find contract with address: " + contract_address)

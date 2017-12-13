@@ -91,7 +91,7 @@ def update(address, contract_name):
         print("Challenge validator not found for contract: " + contract_name)
         return redirect(request.referrer)
 
-    contract = util.get_contract(address, contract_name)
+    contract = util.get_contract(address, contract_name, contract_address=contract_addr)
 
     # Validate
     if contract.has_been_hacked():
