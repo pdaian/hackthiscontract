@@ -7,6 +7,7 @@ import web3
 
 import config as constants
 import util
+from web3.middleware import geth_poa_middleware
 
 
 def new_web3():
@@ -17,13 +18,15 @@ def new_web3():
 class EasyWeb3:
     def __init__(self):
         self._web3 = new_web3()
+        self._web3.middleware_stack.inject(geth_poa_middleware, layer=0)
+        self._web3.eth.defaultAccount = constants.DEPLOY_FROM_ADDRESS
+        self._web3.personal.unlockAccount(constants.DEPLOY_FROM_ADDRESS, "")
         self._lock = threading.Lock()
         self._status = None
         self._deployed_address = None
 
-    def unlock_coinbase(self):
-        '''Unlock coinbase account'''
-        self._web3.personal.unlockAccount(self._web3.eth.coinbase, "")
+    def unlock_default_account(self):
+        self._web3.personal.unlockAccount(constants.DEPLOY_FROM_ADDRESS, "")
 
     def compile_solidity(self, code):
         '''Compiles the given solidity code to EVM byte code.
@@ -52,7 +55,7 @@ class EasyWeb3:
         }
 
         solc = subprocess.Popen(
-            [constants.SOLC_PATH, '--standard-json'],
+            [constants.SOLC4_PATH, '--standard-json'],
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE)
@@ -91,26 +94,21 @@ class EasyWeb3:
         t.start()
 
     def _deploy_named_solidity_contract(self, name, user_address, timeout=90):
-        '''Like deploy_solidity_contract, but reads the contract
-        file and deploy_actions for you.'''
         with open('{}/{}.json'.format(constants.CHALLENGE_DIR, name), 'r') as fd:
             config = json.load(fd)
         with open('{}/{}.sol'.format(constants.CHALLENGE_DIR, name), 'r') as fd:
             return self._deploy_solidity_contract(
                 fd.read(), name, user_address,
-                deploy_actions=config.get('on_deploy', []),
                 timeout=timeout)
 
     def deploy_status(self):
         with self._lock:
             return self._status, self._deployed_address
 
-    def _deploy_solidity_contract(self, code, contract_name, user_address, deploy_actions=[], timeout=90):
-        '''Deploys the solidity contract given by code. Uses nasty
-        polling loop to give you the illusion of a synchronous call.
-        timeout is
-        in seconds and specifies how long to keep polling in the
-        worst case.
+    def _deploy_solidity_contract(self, code, contract_name, user_address, timeout=180):
+        '''Deploys the solidity contract given by code. 
+        timeout is in seconds and specifies how long to 
+        keep polling in the worst case.
         '''
         with self._lock:
             self._status = "compiling"
@@ -120,18 +118,9 @@ class EasyWeb3:
             self._status = "compiled and processing"
         contract = web3.eth.contract(abi=abi, bytecode=bytecode)
         contract_address = None
-        tx_receipt = contract.deploy(transaction={'from': constants.DEPLOY_FROM_ADDRESS,
-                                                  'gasPrice': constants.DEPLOY_GAS_PRICE})
-        t0 = time.time()
-        while time.time() - t0 < timeout:
-            receipt = web3.eth.getTransactionReceipt(tx_receipt)
-            if receipt:
-                contract_address = receipt['contractAddress']
-                break
-            # nasty polling loop 
-            time.sleep(0.2)
-        else:
-            raise Exception("Deployment timed out.")
+        tx_hash = contract.constructor().transact()
+        tx_receipt = web3.eth.waitForTransactionReceipt(tx_hash, timeout)
+        contract_address = tx_receipt.contractAddress
 
         with self._lock:
             self._status = "mined on-chain, post-processing"
@@ -143,12 +132,13 @@ class EasyWeb3:
 
         with self._lock:
             self._status = "deployed"
+        return contract_address
 
     def balance(self, address):
         '''Returns the balance of address.'''
         return self._web3.eth.getBalance(address)
 
-    def deposit(self, contract, contract_address, amount, timeout=90):
+    def deposit(self, contract, contract_address, amount, timeout=180):
         tx_receipt = getattr(contract.transact({
             'from': self._web3.eth.coinbase,
             'to': contract_address,
@@ -181,8 +171,8 @@ contract SimpleStorage {
     }
 }'''
     eweb3 = EasyWeb3()
-    eweb3.unlockCoinbase()
-    a = eweb3.deploy_named_solidity_contract('ERC20')
-    print(a)
-    print(eweb3.balance(a))
-    print(eweb3.balance(new_web3().eth.coinbase))
+    eweb3.unlock_default_account()
+    a = eweb3.deploy_named_solidity_contract('03_ERC20', "0xEAf21008167fb3cC43a82B6197C273a7424322C8")
+    #print(a)
+    #print(eweb3.balance(str(a)))
+    #print(eweb3.balance(new_web3().eth.coinbase))

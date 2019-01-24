@@ -2,7 +2,6 @@ import os
 
 CHALLENGE_DIR = 'challenges'
 
-
 def find_challenges():
     challenges = []
     array = os.listdir(CHALLENGE_DIR)
@@ -21,16 +20,17 @@ def find_challenges():
         challenges[i] = str(challenges[i])
     return challenges
 
-
 CHALLENGES = find_challenges()
 
-GETH_DATADIR = '/home/benji/.ethereum/rinkeby'
-SOLC_PATH = '/home/benji/compiled/solidity/build/solc/solc'
+HOMEPATH = os.path.expanduser("~")
 
-DEPLOY_FROM_ADDRESS = '0xe4dfd8063d09928a47ef566b249ad227d9f5586d'
+GETH_DATADIR = '{}/geth_rinkeby/'.format(HOMEPATH)
+SOLC4_PATH = '{}/solidity4.x/solc'.format(HOMEPATH)
+
+DEPLOY_FROM_ADDRESS = '0xc0fcd7514CBfC90A36E4bB21AD49845A4c3b3D54'
 DEPLOY_GAS_PRICE = 1000000000
 
-DB_PATH = "/home/benji/hackthiscontractdb/"  # include trailing /
+DB_PATH = "{}/database/".format(HOMEPATH)
 
 SERVER_HOST = "0.0.0.0"
 SERVER_PORT = 8080

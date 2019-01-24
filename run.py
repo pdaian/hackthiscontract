@@ -37,7 +37,6 @@ def get_status(address, contract):
     if not deploy_key in deployers:
         web3_instance = ethereum.EasyWeb3()
         deployers[deploy_key] = web3_instance
-        web3_instance.unlock_coinbase()
         web3_instance.deploy_named_solidity_contract(contract, address)
     else:
         web3_instance = deployers[deploy_key]
@@ -56,7 +55,10 @@ def done(address, contract):
         deploy_key = (address, contract)
         del deployers[deploy_key]
         util.write_address(address, contract, status[1])
-    return status[0]
+    if status[0]:
+        return status[0]
+    else:
+        return "Starting deployment process"
 
 
 @app.route("/deploy/<string:address>/<string:contract>", methods=['POST'])

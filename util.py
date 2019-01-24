@@ -5,7 +5,7 @@ import types
 from functools import wraps
 
 from flask import render_template
-from web3.utils import validation
+import web3
 
 import config as constants
 import ethereum
@@ -50,7 +50,8 @@ def mark_finished(user, challenge):
 
 
 def is_valid_address(address):
-    return validation.is_address(address)
+    web3_handle = ethereum.EasyWeb3()
+    return web3_handle._web3.isAddress(address)
 
 
 def check_address_decorator(fn):
