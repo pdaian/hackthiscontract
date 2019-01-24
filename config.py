@@ -1,6 +1,8 @@
 import os
 
-CHALLENGE_DIR = 'challenges'
+HOMEPATH = os.path.expanduser("~")
+
+CHALLENGE_DIR = '{}/hackthiscontract/challenges/'.format(HOMEPATH)
 
 def find_challenges():
     challenges = []
@@ -21,8 +23,6 @@ def find_challenges():
     return challenges
 
 CHALLENGES = find_challenges()
-
-HOMEPATH = os.path.expanduser("~")
 
 GETH_DATADIR = '{}/geth_rinkeby/'.format(HOMEPATH)
 SOLC4_PATH = '{}/solidity4.x/solc'.format(HOMEPATH)

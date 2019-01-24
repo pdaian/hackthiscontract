@@ -71,7 +71,7 @@ def check_address_decorator(fn):
 
 
 def contract_exists(contract_name):
-    file_name = "challenges/" + contract_name + ".py"
+    file_name = constants.CHALLENGE_DIR + contract_name + ".py"
 
     if not os.path.exists(file_name) or not os.path.isfile(file_name):
         print("Challenge validator not found for contract: " + contract_name)
@@ -87,7 +87,7 @@ def get_contract(address, contract_name, contract_address=None):
     if not contract_exists(contract_name):
         raise FileNotFoundError("challenges/" + contract_name + ".py")
 
-    file_name = "challenges/" + contract_name + ".py"
+    file_name = constants.CHALLENGE_DIR + contract_name + ".py"
 
     # Load the file
     loader = importlib.machinery.SourceFileLoader("contract", file_name)

@@ -1,7 +1,9 @@
 import os
 import shutil
 import unittest
+import sys
 
+sys.path.insert(0, os.path.abspath('..'))
 import config as constants
 import run
 import util

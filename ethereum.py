@@ -138,38 +138,35 @@ class EasyWeb3:
         '''Returns the balance of address.'''
         return self._web3.eth.getBalance(address)
 
-    def deposit(self, contract, contract_address, amount, timeout=180):
+    def transact_contract_method(self, contract, contract_address, method_name, amount, timeout=180):
+        '''Call a method of a contract through the "EasyWeb3" class, sending money as well'''
         tx_receipt = getattr(contract.transact({
-            'from': self._web3.eth.coinbase,
+            'from': self._web3.eth.defaultAccount,
             'to': contract_address,
             'value': int(amount)
-        }), 'deposit')()
+        }), method_name)()
         t0 = time.time()
         while time.time() - t0 < timeout:
             if self._web3.eth.getTransactionReceipt(tx_receipt):
                 break
             time.sleep(0.2)
         else:
-            raise Exception("Deployment actions timed out.")
+            raise Exception("Deployment action timed out: {}".format(method_name))
 
+    def call_contract_method(self, contract, contract_address, method_name, timeout=180):
+        '''Call a method of a contract through the "EasyWeb3" class without sending any money to the contract'''
+        tx_hash = getattr(contract.call({
+            'from': self._web3.eth.defaultAccount,
+            'to': contract_address,
+            'value': int(amount)
+        }), method_name)()
+        try:
+            tx_receipt = web3.eth.waitForTransactionReceipt(tx_hash, timeout)
+        except Exception as e:
+            raise Exception("Deployment action timed out: {}".format(method_name))
+        return tx_receipt
 
 if __name__ == '__main__':
-    CODE = '''pragma solidity ^0.4.0;
-contract SimpleStorage {
-    uint storedData;
-
-    function SimpleStorage() {
-        storedData = 0x1337;
-    }
-
-    function set(uint x) {
-        storedData = x;
-    }
-
-    function get() constant returns (uint) {
-        return storedData;
-    }
-}'''
     eweb3 = EasyWeb3()
     eweb3.unlock_default_account()
     a = eweb3.deploy_named_solidity_contract('03_ERC20', "0xEAf21008167fb3cC43a82B6197C273a7424322C8")

@@ -4,7 +4,7 @@ import icontract
 
 class Contract(icontract.IContract):
     def setup(self, web3_contract):
-        self.web3.deposit(web3_contract, self.contract_address, 50000000000000000)
+        self.web3.transact_contract_method(web3_contract, self.contract_address, "deposit", 50000000000000000)
 
     def has_been_hacked(self):
         contract_bal = ethereum.EasyWeb3().balance(self.contract_address)
