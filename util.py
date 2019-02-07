@@ -8,7 +8,7 @@ from flask import render_template
 import web3
 
 import config as constants
-import ethereum
+import easyweb3
 
 
 def exists(user):
@@ -50,7 +50,7 @@ def mark_finished(user, challenge):
 
 
 def is_valid_address(address):
-    web3_handle = ethereum.EasyWeb3()
+    web3_handle = easyweb3.EasyWeb3()
     return web3_handle._web3.isAddress(address)
 
 
@@ -99,5 +99,5 @@ def get_contract(address, contract_name, contract_address=None):
     contract = module.Contract()
     contract.contract_address = contract_address
     contract.user_address = address
-    contract.web3 = ethereum.EasyWeb3()
+    contract.web3 = easyweb3.EasyWeb3()
     return contract

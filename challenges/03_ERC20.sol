@@ -1,10 +1,10 @@
-pragma solidity^0.4.0;
+pragma solidity^0.5.0;
 
 contract TestToken {
     string constant name = "IC3 2017 Bootcamp Token";
     string constant symbol = "IC3";
     uint8 constant decimals = 18;
-    uint total;
+    uint public total;
 
     struct Allowed {
         mapping (address => uint256) _allowed;
@@ -16,19 +16,15 @@ contract TestToken {
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
-    function TestToken() {
+    constructor() public {
         total = 0;
     }
 
-    function totalSupply() constant returns (uint256 totalSupply) {
-        return total;
-    }
-
-    function balanceOf(address _owner) constant returns (uint256 balance) {
+    function balanceOf(address _owner) public view returns (uint256 balance) {
         return balances[_owner];
     }
 
-    function deposit() payable returns (bool success) {
+    function deposit() public payable returns (bool success) {
         if (balances[msg.sender] + msg.value < msg.value) return false;
         if (total + msg.value < msg.value) return false;
         balances[msg.sender] += msg.value;
@@ -36,38 +32,38 @@ contract TestToken {
         return true;
     }
 
-    function withdraw(uint256 _value) payable returns (bool success) {
+    function withdraw(uint256 _value) public payable returns (bool success) {
         if (balances[msg.sender] < _value) return false;
-        msg.sender.call.value(_value)();
+        msg.sender.call.value(_value)("");
         balances[msg.sender] -= _value;
         total -= _value;
         return true;
     }
 
-    function transfer(address _to, uint256 _value) returns (bool success) {
+    function transfer(address _to, uint256 _value) public returns (bool success) {
         if (balances[msg.sender] < _value) return false;
 
         if (balances[_to] + _value < _value) return false;
         balances[msg.sender] -= _value;
         balances[_to] += _value;
 
-        Transfer(msg.sender, _to, _value);
-       
+        emit Transfer(msg.sender, _to, _value);
+
         return true;
-    } 
-
-
-    function approve(address _spender, uint256 _value) returns (bool success) {
-        allowed[msg.sender]._allowed[_spender] = _value; 
-        Approval(msg.sender, _spender, _value);
-        return true;    
     }
 
-    function allowance(address _owner, address _spender) constant returns (uint256 remaining) {
+
+    function approve(address _spender, uint256 _value) public returns (bool success) {
+        allowed[msg.sender]._allowed[_spender] = _value;
+        emit Approval(msg.sender, _spender, _value);
+        return true;
+    }
+
+    function allowance(address _owner, address _spender) public view returns (uint256 remaining) {
         return allowed[_owner]._allowed[_spender];
     }
 
-    function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
         if (balances[_from] < _value) return false;
         if ( allowed[_from]._allowed[msg.sender] < _value) return false;
         if (balances[_to] + _value < _value) return false;

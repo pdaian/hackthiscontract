@@ -1,4 +1,4 @@
-pragma solidity ^0.4.7;
+pragma solidity ^0.5.0;
 
 contract SourceTrixAreForl337 {
     // The two choices for your vote
@@ -21,45 +21,51 @@ contract SourceTrixAreForl337 {
     event voteWinner(string, string);
 
     // Constructor used to set parameters for the this specific vote
-    function SourceTrixAreFor1337(uint _commitPhaseLengthInSeconds, 
-                                  string _choice1, 
-                                  string _choice2) {
-        if (_commitPhaseLengthInSeconds < 20) {
-            throw;
-        }
+    function SourceTrixAreFor1337(uint _commitPhaseLengthInSeconds,
+                                  string memory _choice1,
+                                  string memory _choice2) public {
+        require(_commitPhaseLengthInSeconds > 20);
         commitPhaseEndTime = now + _commitPhaseLengthInSeconds * 1 seconds;
         choice1 = _choice1;
         choice2 = _choice2;
     }
 
-    function commitVote(bytes32 _voteCommit) {
-        if (now > commitPhaseEndTime) throw; // Only allow commits during committing period
+    function commitVote(bytes32 _voteCommit) public {
+        require(now < commitPhaseEndTime); // Only allow commits during committing period
 
         // Check if this commit has been used before
         bytes memory bytesVoteCommit = bytes(voteStatuses[_voteCommit]);
-        if (bytesVoteCommit.length != 0) throw;
+        require(bytesVoteCommit.length == 0);
 
         // We are still in the committing period & the commit is new so add it
         voteCommits.push(_voteCommit);
         voteStatuses[_voteCommit] = "Committed";
         numberOfVotesCast ++;
-        newVoteCommit("Vote committed with the following hash:", _voteCommit);
+        emit newVoteCommit("Vote committed with the following hash:", _voteCommit);
     }
 
-    function revealVote(string _vote, bytes32 _voteCommit) {
-        if (now < commitPhaseEndTime) throw; // Only reveal votes after committing period is over
+    function isCommitPhase() public view returns(bool) {
+        if(now < commitPhaseEndTime) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function revealVote(string memory _vote, bytes32 _voteCommit) public {
+        require(now > commitPhaseEndTime); // Only reveal votes after committing period is over
 
         // FIRST: Verify the vote & commit is valid
         bytes memory bytesVoteStatus = bytes(voteStatuses[_voteCommit]);
         if (bytesVoteStatus.length == 0) {
-            logString('A vote with this voteCommit was not cast');
+            emit logString('A vote with this voteCommit was not cast');
         } else if (bytesVoteStatus[0] != 'C') {
-            logString('This vote was already cast');
+            emit logString('This vote was already cast');
             return;
         }
 
-        if (_voteCommit != keccak256(_vote)) {
-            logString('Vote hash does not match vote commit');
+        if (_voteCommit != keccak256(abi.encodePacked(_vote))) {
+            emit logString('Vote hash does not match vote commit');
             return;
         }
 
@@ -67,31 +73,32 @@ contract SourceTrixAreForl337 {
         bytes memory bytesVote = bytes(_vote);
         if (bytesVote[0] == '1') {
             votesForChoice1 = votesForChoice1 + 1;
-            logString('Vote for choice 1 counted.');
+            emit logString('Vote for choice 1 counted.');
         } else if (bytesVote[0] == '2') {
             votesForChoice2 = votesForChoice2 + 1;
-            logString('Vote for choice 2 counted.');
+            emit logString('Vote for choice 2 counted.');
         } else {
-            logString('Vote could not be read! Votes must start with the ASCII character `1` or `2`');
+            emit logString('Vote could not be read! Votes must start with the ASCII character `1` or `2`');
         }
         voteStatuses[_voteCommit] = "Revealed";
     }
 
-    function getWinner () constant returns(string) {
+    function getWinner () public returns(string memory) {
         // Only get winner after all vote commits are in
-        if (now < commitPhaseEndTime) throw;
+        require(now > commitPhaseEndTime);
         // Make sure all the votes have been counted
-        if (votesForChoice1 + votesForChoice2 != voteCommits.length) throw;
+        require(votesForChoice1 + votesForChoice2 == voteCommits.length);
 
         if (votesForChoice1 > votesForChoice2) {
-            voteWinner("And the winner of the vote is:", choice1);
+            emit voteWinner("And the winner of the vote is:", choice1);
             return choice1;
         } else if (votesForChoice2 > votesForChoice1) {
-            voteWinner("And the winner of the vote is:", choice2);
+            emit voteWinner("And the winner of the vote is:", choice2);
             return choice2;
         } else if (votesForChoice1 == votesForChoice2) {
-            voteWinner("The vote ended in a tie!", "");
+            emit voteWinner("The vote ended in a tie!", "");
             return "It was a tie!";
         }
     }
 }
+

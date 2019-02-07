@@ -4,7 +4,7 @@ import os
 from flask import Flask, render_template, request, redirect
 
 import config as constants
-import ethereum
+import easyweb3
 import util
 
 app = Flask(__name__)
@@ -35,7 +35,7 @@ def get_status(address, contract):
     global deployers
     deploy_key = (address, contract)
     if not deploy_key in deployers:
-        web3_instance = ethereum.EasyWeb3()
+        web3_instance = easyweb3.EasyWeb3()
         deployers[deploy_key] = web3_instance
         web3_instance.deploy_named_solidity_contract(contract, address)
     else:

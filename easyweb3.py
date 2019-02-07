@@ -30,7 +30,7 @@ class EasyWeb3:
 
     def compile_solidity(self, code):
         '''Compiles the given solidity code to EVM byte code.
-        
+
         Returns a tuple (bytecode, abi), where bytecode is a hexstring
         and abi is a deserialized json object.
         '''
@@ -138,20 +138,30 @@ class EasyWeb3:
         '''Returns the balance of address.'''
         return self._web3.eth.getBalance(address)
 
-    def transact_contract_method(self, contract, contract_address, method_name, amount, timeout=180):
+    def transact_contract_method(self, contract, contract_address, method_name, amount, abiEncodedData=None, timeout=180):
         '''Call a method of a contract through the "EasyWeb3" class, sending money as well'''
-        tx_receipt = getattr(contract.transact({
-            'from': self._web3.eth.defaultAccount,
-            'to': contract_address,
-            'value': int(amount)
-        }), method_name)()
+        if abiEncodedData:
+            tx_receipt = getattr(contract.transact({
+                'from': self._web3.eth.defaultAccount,
+                'to': contract_address,
+                'data': abiEncodedData,
+                'value': int(amount)
+            }), method_name)()
+        else:
+            tx_receipt = getattr(contract.transact({
+                'from': self._web3.eth.defaultAccount,
+                'to': contract_address,
+                'value': int(amount)
+            }), method_name)()
         t0 = time.time()
         while time.time() - t0 < timeout:
-            if self._web3.eth.getTransactionReceipt(tx_receipt):
+            ret_reciept = self._web3.eth.getTransactionReceipt(tx_receipt)
+            if ret_reciept:
                 break
             time.sleep(0.2)
         else:
             raise Exception("Deployment action timed out: {}".format(method_name))
+        return ret_reciept
 
     def call_contract_method(self, contract, contract_address, method_name, timeout=180):
         '''Call a method of a contract through the "EasyWeb3" class without sending any money to the contract'''
