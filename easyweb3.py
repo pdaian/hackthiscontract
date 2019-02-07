@@ -193,7 +193,7 @@ class EasyWeb3:
                 'from': self._web3.eth.defaultAccount,
                 'to': contract_address,
                 'value': int(amount)
-            }), method_name)(data)
+            }), method_name)(*data)
         else:
             tx_receipt = getattr(contract.transact({
                 'from': self._web3.eth.defaultAccount,
