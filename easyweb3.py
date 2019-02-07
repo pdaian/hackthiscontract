@@ -186,7 +186,7 @@ class EasyWeb3:
         '''Returns the balance of address.'''
         return self._web3.eth.getBalance(address)
 
-    def transact_contract_method(self, contract, contract_address, method_name, amount, abiEncodedData=None, timeout=180):
+    def transact_contract_method(self, contract, contract_address, method_name, amount, data=None, timeout=180):
         '''Call a method of a contract through the "EasyWeb3" class, sending money as well'''
         if data:
             tx_receipt = getattr(contract.transact({
