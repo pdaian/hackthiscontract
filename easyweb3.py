@@ -55,6 +55,54 @@ class EasyWeb3:
         }
 
         solc = subprocess.Popen(
+            [constants.SOLC5_PATH, '--standard-json'],
+            stdout=subprocess.PIPE,
+            stdin=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+        (out_json, err) = solc.communicate(input=json.dumps(input).encode('utf-8'))
+        if solc.returncode != 0:
+            raise Exception('solc crashed. returncode: {} errormsg: {}'.format(
+                solc.returncode, err))
+        out = json.loads(out_json.decode('utf-8'))
+        for error in out.get('errors', []):
+            if error['severity'] == 'error':
+                raise Exception('solc compilation failed: {}'.format(error['message']))
+        contracts = out['contracts']['contract.sol']
+        if len(contracts) == 0:
+            raise Exception('solc output contains no contract')
+        if len(contracts) > 1:
+            raise Exception('solc compiled multiple contracts. Which one is the right one?')
+        contract = contracts[list(contracts.keys())[0]]
+        return contract['evm']['bytecode']['object'], contract['abi']
+
+
+    def compile_solidity4(self, code):
+        '''Compiles the given solidity code to EVM byte code.
+
+        Returns a tuple (bytecode, abi), where bytecode is a hexstring
+        and abi is a deserialized json object.
+        '''
+        input = {
+            'language': 'Solidity',
+            'sources': {
+                'contract.sol': {
+                    'content': code
+                }
+            },
+            'settings': {
+                'optimizer': {
+                    'enabled': True,
+                    'runs': 500
+                },
+                'outputSelection': {
+                    'contract.sol': {
+                        '*': ['abi', 'evm.bytecode']
+                    }
+                }
+            }
+        }
+
+        solc = subprocess.Popen(
             [constants.SOLC4_PATH, '--standard-json'],
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,

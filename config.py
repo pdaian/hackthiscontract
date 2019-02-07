@@ -26,6 +26,7 @@ CHALLENGES = find_challenges()
 
 GETH_DATADIR = '{}/geth_rinkeby/'.format(HOMEPATH)
 SOLC4_PATH = '{}/solidity4.x/solc'.format(HOMEPATH)
+SOLC5_PATH = '{}/solidity5.x/solc'.format(HOMEPATH)
 
 DEPLOY_FROM_ADDRESS = '0xc0fcd7514CBfC90A36E4bB21AD49845A4c3b3D54'
 DEPLOY_GAS_PRICE = 1000000000
