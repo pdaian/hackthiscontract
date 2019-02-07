@@ -188,13 +188,12 @@ class EasyWeb3:
 
     def transact_contract_method(self, contract, contract_address, method_name, amount, abiEncodedData=None, timeout=180):
         '''Call a method of a contract through the "EasyWeb3" class, sending money as well'''
-        if abiEncodedData:
+        if data:
             tx_receipt = getattr(contract.transact({
                 'from': self._web3.eth.defaultAccount,
                 'to': contract_address,
-                'data': abiEncodedData,
                 'value': int(amount)
-            }), method_name)()
+            }), method_name)(data)
         else:
             tx_receipt = getattr(contract.transact({
                 'from': self._web3.eth.defaultAccount,
