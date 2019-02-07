@@ -12,7 +12,7 @@ class Contract(icontract.IContract):
         self.web3.transact_contract_method(web3_contract, self.contract_address, "SourceTrixAreFor1337", 0, (60, "Alice", "Bob"), 300)
         # commitVote(bytes32 _voteCommit)
         aliceVoteText = "1Alice"
-        aliceVoteCommit = bytes(Web3.keccak(text=aliceVoteText))
+        aliceVoteCommit = bytes(Web3.sha3(text=aliceVoteText))
         #aliceVoteAbi = encode_single('bytes32',aliceVoteCommit)
         self.web3.transact_contract_method(web3_contract, self.contract_address, "commitVote", 0, (aliceVoteCommit,), 300)
         time.sleep(60)
