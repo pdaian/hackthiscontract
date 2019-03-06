@@ -73,7 +73,7 @@ def done(address, contract):
 @app.route("/deploy/<string:address>/<string:contract>", methods=['POST'])
 @util.check_address_decorator
 def deploy(address, contract):
-    status = util.get_status(address, contract)
+    status = util.get_status(address, util.get_contract_number(contract))
     if "not started" in status[0].lower():
         return render_template('deploy.html', deployed=False, address=address, contract=contract)
     else:
@@ -83,7 +83,7 @@ def deploy(address, contract):
 @app.route("/view/<string:address>/<string:contract>")
 @util.check_address_decorator
 def view(address, contract):
-    status = util.get_status(address, contract)
+    status = util.get_status(address, util.get_contract_number(contract))
     if "not started" in status[0].lower():
         return "Not started!"
     contract_code = open("challenges/" + contract + ".sol").read().strip()
@@ -97,7 +97,7 @@ def view(address, contract):
 @util.check_address_decorator
 def update(address, contract_name):
     file_name = "challenges/" + contract_name + ".py"
-    contract_addr = util.get_status(address, contract_name)[2].strip()
+    contract_addr = util.get_status(address, util.get_contract_number(contract_name))[2].strip()
     if not os.path.exists(file_name) or not os.path.isfile(file_name):
         print("Challenge validator not found for contract: " + contract_name)
         return redirect(request.referrer)

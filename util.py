@@ -116,17 +116,24 @@ def mark_finished(user, challenge):
     cur = htcdb.execute("UPDATE htctable SET {0} = ? WHERE useraddress = ?".format(state_column_name), (constants.STATE_FINISHED, user))
     htcdb.commit()
 
-
-def get_status(user, challenge):
+def get_contract_number(contract_name):
     """
-    Returns the completion status of a (user, challenge) tuple on our system
+    Simple helper function to return the number corresponding to a contract name
+    :param contract_name the name of the contract you're working with
+    :return number - the number for this contract in the db
+    """
+    return int(contract_name.split("_")[0])
+
+
+def get_status(user, challenge_number):
+    """
+    Returns the completion status of a (user, challenge_number) tuple on our system
     :param user: the user address to check against
-    :param challenge: which challenge to check against
+    :param challenge_number: which challenge to check against
     :return: statusTuple - status, color, deployed_contract_address
     """
-    challenge_number = challenge.split("_")[0]
     state_column_name = "c" + str(int(challenge_number)) + "state"
-    deployed_addr_column_name = "c" + str(int(challenge)) + "deployaddr"
+    deployed_addr_column_name = "c" + str(int(challenge_number)) + "deployaddr"
     status_query = "SELECT {}, {} FROM htctable WHERE useraddress = ?".format(state_column_name, deployed_addr_column_name)
     qresp = query_db(status_query, (user, ), True)
     if qresp is None:
