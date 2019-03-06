@@ -1,7 +1,7 @@
 import json
 import os
 
-from flask import Flask, render_template, request, redirect, g
+from flask import Flask, render_template, request, redirect, g, url_for
 
 import config as constants
 import easyweb3
@@ -77,7 +77,7 @@ def deploy(address, contract):
     if "not started" in status[0].lower():
         return render_template('deploy.html', deployed=False, address=address, contract=contract)
     else:
-        return redirect("/view/" + address + "/" + contract)
+        return redirect(url_for('view', _external=True, scheme="https", address=address, contract=contract))
 
 
 @app.route("/view/<string:address>/<string:contract>")
@@ -146,4 +146,5 @@ def ranking():
 
 if __name__ == "__main__":
     app.config['TEMPLATES_AUTO_RELOAD'] = True
+    app.config['PREFERRED_URL_SCHEME'] = 'https'
     app.run(host=constants.SERVER_HOST, port=constants.SERVER_PORT)
