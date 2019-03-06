@@ -125,7 +125,7 @@ def get_status(user, challenge):
     :return: statusTuple - status, color, deployed_contract_address
     """
     challenge_number = challenge.split("_")[0]
-    state_column_name = "c" + str(int(challenge)) + "state"
+    state_column_name = "c" + str(int(challenge_number)) + "state"
     deployed_addr_column_name = "c" + str(int(challenge)) + "deployaddr"
     status_query = "SELECT {}, {} FROM htctable WHERE useraddress = ?".format(state_column_name, deployed_addr_column_name)
     qresp = query_db(status_query, (user, ), True)
