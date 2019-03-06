@@ -100,5 +100,16 @@ contract SourceTrixAreForl337 {
             return "It was a tie!";
         }
     }
+
+    function currentWinner () public view returns(string memory) {
+        if (votesForChoice1 > votesForChoice2) {
+            return choice1;
+        } else if (votesForChoice2 > votesForChoice1) {
+            return choice2;
+        } else if (votesForChoice1 == votesForChoice2) {
+            return "It is a tie!";
+        }
+    }
+
 }
 

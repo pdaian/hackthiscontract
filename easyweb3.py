@@ -1,22 +1,22 @@
-import json
-import subprocess
 import threading
 import time
 
 import web3
+from web3.middleware import geth_poa_middleware
 
 import config as constants
 import util
-from web3.middleware import geth_poa_middleware
 
 
 def new_web3():
-    '''Return new IPC-based web3 instance'''
+    """Return new IPC-based web3 instance"""
     return web3.Web3(web3.IPCProvider(constants.GETH_DATADIR + '/geth.ipc'))
-
 
 class EasyWeb3:
     def __init__(self):
+        """
+        Initialise member values
+        """
         self._web3 = new_web3()
         self._web3.middleware_stack.inject(geth_poa_middleware, layer=0)
         self._web3.eth.defaultAccount = constants.DEPLOY_FROM_ADDRESS
@@ -26,107 +26,29 @@ class EasyWeb3:
         self._deployed_address = None
 
     def unlock_default_account(self):
+        """
+        Unlock the default account so that the server can sign and send transactions
+        """
         self._web3.personal.unlockAccount(constants.DEPLOY_FROM_ADDRESS, "")
 
-    def compile_solidity(self, code):
-        '''Compiles the given solidity code to EVM byte code.
-
-        Returns a tuple (bytecode, abi), where bytecode is a hexstring
-        and abi is a deserialized json object.
-        '''
-        input = {
-            'language': 'Solidity',
-            'sources': {
-                'contract.sol': {
-                    'content': code
-                }
-            },
-            'settings': {
-                'optimizer': {
-                    'enabled': True,
-                    'runs': 500
-                },
-                'outputSelection': {
-                    'contract.sol': {
-                        '*': ['abi', 'evm.bytecode']
-                    }
-                }
-            }
-        }
-
-        solc = subprocess.Popen(
-            [constants.SOLC5_PATH, '--standard-json'],
-            stdout=subprocess.PIPE,
-            stdin=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-        (out_json, err) = solc.communicate(input=json.dumps(input).encode('utf-8'))
-        if solc.returncode != 0:
-            raise Exception('solc crashed. returncode: {} errormsg: {}'.format(
-                solc.returncode, err))
-        out = json.loads(out_json.decode('utf-8'))
-        for error in out.get('errors', []):
-            if error['severity'] == 'error':
-                raise Exception('solc compilation failed: {}'.format(error['message']))
-        contracts = out['contracts']['contract.sol']
-        if len(contracts) == 0:
-            raise Exception('solc output contains no contract')
-        if len(contracts) > 1:
-            raise Exception('solc compiled multiple contracts. Which one is the right one?')
-        contract = contracts[list(contracts.keys())[0]]
-        return contract['evm']['bytecode']['object'], contract['abi']
-
-
-    def compile_solidity4(self, code):
-        '''Compiles the given solidity code to EVM byte code.
-
-        Returns a tuple (bytecode, abi), where bytecode is a hexstring
-        and abi is a deserialized json object.
-        '''
-        input = {
-            'language': 'Solidity',
-            'sources': {
-                'contract.sol': {
-                    'content': code
-                }
-            },
-            'settings': {
-                'optimizer': {
-                    'enabled': True,
-                    'runs': 500
-                },
-                'outputSelection': {
-                    'contract.sol': {
-                        '*': ['abi', 'evm.bytecode']
-                    }
-                }
-            }
-        }
-
-        solc = subprocess.Popen(
-            [constants.SOLC4_PATH, '--standard-json'],
-            stdout=subprocess.PIPE,
-            stdin=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-        (out_json, err) = solc.communicate(input=json.dumps(input).encode('utf-8'))
-        if solc.returncode != 0:
-            raise Exception('solc crashed. returncode: {} errormsg: {}'.format(
-                solc.returncode, err))
-        out = json.loads(out_json.decode('utf-8'))
-        for error in out.get('errors', []):
-            if error['severity'] == 'error':
-                raise Exception('solc compilation failed: {}'.format(error['message']))
-        contracts = out['contracts']['contract.sol']
-        if len(contracts) == 0:
-            raise Exception('solc output contains no contract')
-        if len(contracts) > 1:
-            raise Exception('solc compiled multiple contracts. Which one is the right one?')
-        contract = contracts[list(contracts.keys())[0]]
-        return contract['evm']['bytecode']['object'], contract['abi']
+    def deploy_status(self):
+        """
+        Return deploy status of the given contract that this EasyWeb3 instance is connected to.
+        :return: status, deployed_address - the status and address (if the status is deployed)
+        """
+        with self._lock:
+            return self._status, self._deployed_address
 
     def deploy_named_solidity_contract(self, name, user_address, timeout=90):
+        """
+        Deploys a contract - spins off a thread to deploy the contract
+        :param name: The challenge/contract name
+        :param user_address: the address of the end-user that asked for this challenge
+        :param timeout: how long to wait for things to happen on-chain - in seconds.
+        """
         def wrapper():
             #    try:
-            self._deploy_named_solidity_contract(name, user_address, timeout=timeout)
+            self._deploy_solidity_contract(name, user_address, timeout=timeout)
 
         #    except Exception as ex:
         #        print 'Exception in ethereum.py'
@@ -141,33 +63,21 @@ class EasyWeb3:
         )
         t.start()
 
-    def _deploy_named_solidity_contract(self, name, user_address, timeout=90):
-        with open('{}/{}.json'.format(constants.CHALLENGE_DIR, name), 'r') as fd:
-            config = json.load(fd)
-        with open('{}/{}.sol'.format(constants.CHALLENGE_DIR, name), 'r') as fd:
-            return self._deploy_solidity_contract(
-                fd.read(), name, user_address,
-                timeout=timeout)
-
-    def deploy_status(self):
-        with self._lock:
-            return self._status, self._deployed_address
-
-    def _deploy_solidity_contract(self, code, contract_name, user_address, timeout=180):
-        '''Deploys the solidity contract given by code. 
-        timeout is in seconds and specifies how long to 
-        keep polling in the worst case.
-        '''
-        with self._lock:
-            self._status = "compiling"
-        web3 = self._web3
-        bytecode, abi = self.compile_solidity(code)
+    def _deploy_solidity_contract(self, contract_name, user_address, timeout=180):
+        """
+        Deploys solidity contract
+        :param contract_name: name of the challenge / the contract we're going to deploy
+        :param user_address:  end-user address that asked for this challenge
+        :param timeout: how long to wait for things to happen on-chain - in seconds
+        :return: contract_address - address of this newly spawned contract
+        """
+        bytecode, abi = util.get_bytecode_abi(contract_name)
         with self._lock:
             self._status = "compiled and processing"
-        contract = web3.eth.contract(abi=abi, bytecode=bytecode)
+        contract = self._web3.eth.contract(abi=abi, bytecode=bytecode)
         contract_address = None
-        tx_hash = contract.constructor().transact()
-        tx_receipt = web3.eth.waitForTransactionReceipt(tx_hash, timeout)
+        tx_hash = contract.constructor().transact({'from': constants.DEPLOY_FROM_ADDRESS, 'gas': 2000000})
+        tx_receipt = self._web3.eth.waitForTransactionReceipt(tx_hash, timeout)
         contract_address = tx_receipt.contractAddress
 
         with self._lock:
@@ -175,30 +85,46 @@ class EasyWeb3:
             self._deployed_address = contract_address
 
         if (util.contract_exists(contract_name)):
-            contract_helper = util.get_contract(user_address, contract_name, contract_address=contract_address)
-            contract_helper.setup(contract)
+            contract_helper = util.get_icontract(user_address, contract_name, contract_address=contract_address)
+            contract_helper.setup()
 
         with self._lock:
             self._status = "deployed"
+
         return contract_address
 
     def balance(self, address):
-        '''Returns the balance of address.'''
+        """
+        Helper function - Returns the balance of an address.
+        :param address: address to get the balance of
+        :return: the balance of an address, in Wei
+        """
         return self._web3.eth.getBalance(address)
 
     def transact_contract_method(self, contract, contract_address, method_name, amount, data=None, timeout=180):
-        '''Call a method of a contract through the "EasyWeb3" class, sending money as well'''
+        """
+        Call a method of a contract through the "EasyWeb3" class, sending money as well
+        :param contract: contract object/handler which is having the function called on it
+        :param contract_address: address of this contract on chain
+        :param method_name: name of the method to call
+        :param amount: amount of money to send along with the function call. 0 is also acceptable.
+        :param data: a python tuple of the function arguments of the method
+        :param timeout: how long to wait for things to happen on chain, in seconds
+        :return: ret_reciept - the TransactionReciept from web3 that has the return value of the contract method call
+        """
         if data:
             tx_receipt = getattr(contract.transact({
                 'from': self._web3.eth.defaultAccount,
                 'to': contract_address,
-                'value': int(amount)
+                'value': int(amount),
+                'gas': 200000
             }), method_name)(*data)
         else:
             tx_receipt = getattr(contract.transact({
                 'from': self._web3.eth.defaultAccount,
                 'to': contract_address,
-                'value': int(amount)
+                'value': int(amount),
+                'gas': 200000
             }), method_name)()
         t0 = time.time()
         while time.time() - t0 < timeout:
@@ -210,23 +136,3 @@ class EasyWeb3:
             raise Exception("Deployment action timed out: {}".format(method_name))
         return ret_reciept
 
-    def call_contract_method(self, contract, contract_address, method_name, timeout=180):
-        '''Call a method of a contract through the "EasyWeb3" class without sending any money to the contract'''
-        tx_hash = getattr(contract.call({
-            'from': self._web3.eth.defaultAccount,
-            'to': contract_address,
-            'value': int(amount)
-        }), method_name)()
-        try:
-            tx_receipt = web3.eth.waitForTransactionReceipt(tx_hash, timeout)
-        except Exception as e:
-            raise Exception("Deployment action timed out: {}".format(method_name))
-        return tx_receipt
-
-if __name__ == '__main__':
-    eweb3 = EasyWeb3()
-    eweb3.unlock_default_account()
-    a = eweb3.deploy_named_solidity_contract('03_ERC20', "0xEAf21008167fb3cC43a82B6197C273a7424322C8")
-    #print(a)
-    #print(eweb3.balance(str(a)))
-    #print(eweb3.balance(new_web3().eth.coinbase))

@@ -110,7 +110,7 @@ class HackThisContractTest(unittest.TestCase):
 
     def test_get_contract(self):
         # Setup
-        contract_helper = util.get_contract(self.MOCK_USER, self.VALID_CHALLENGE,
+        contract_helper = util.get_icontract(self.MOCK_USER, self.VALID_CHALLENGE,
                                             contract_address=self.MOCK_CONTRACT_ADDRESS)
 
         # Validate
@@ -125,7 +125,7 @@ class HackThisContractTest(unittest.TestCase):
     def test_get_contract_with_write_address(self):
         # Setup
         util.write_address(self.MOCK_USER, self.VALID_CHALLENGE, self.MOCK_CONTRACT_ADDRESS)
-        contract_helper = util.get_contract(self.MOCK_USER, self.VALID_CHALLENGE)
+        contract_helper = util.get_icontract(self.MOCK_USER, self.VALID_CHALLENGE)
 
         # Validate
         assert contract_helper is not None

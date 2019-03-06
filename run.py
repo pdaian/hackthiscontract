@@ -1,16 +1,24 @@
 import json
 import os
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, g
 
 import config as constants
 import easyweb3
 import util
 
 app = Flask(__name__)
-
 deployers = {}
 
+@app.before_first_request
+def init_application():
+    util.init_db()
+
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
 
 @app.route("/")
 def hello():
@@ -24,7 +32,8 @@ def dashboard(address):
     for challenge_id in constants.CHALLENGES:
         challenges[challenge_id] = json.loads(open("challenges/" + challenge_id + ".json").read().strip())
         challenges[challenge_id]["code"] = open("challenges/" + challenge_id + ".sol").read().strip()
-        challenges[challenge_id]["status"] = util.get_status(address, challenge_id)
+        challenge_id_int = int(challenge_id.split("_")[0])
+        challenges[challenge_id]["status"] = util.get_status(address, challenge_id_int)
         challenges[challenge_id]["deployed"] = (len(challenges[challenge_id]["status"]) == 3)
     return render_template('dashboard.html', address=address, challenge_ids=constants.CHALLENGES, challenges=challenges,
                            exists=util.exists(address))
@@ -93,10 +102,10 @@ def update(address, contract_name):
         print("Challenge validator not found for contract: " + contract_name)
         return redirect(request.referrer)
 
-    contract = util.get_contract(address, contract_name, contract_address=contract_addr)
+    icontract = util.get_icontract(address, contract_name, contract_address=contract_addr)
 
     # Validate
-    if contract.has_been_hacked():
+    if icontract.has_been_hacked():
         util.mark_finished(address, contract_name)
 
     return redirect(request.referrer)
