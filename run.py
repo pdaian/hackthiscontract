@@ -63,7 +63,7 @@ def done(address, contract):
         global deployers
         deploy_key = (address, contract)
         del deployers[deploy_key]
-        util.write_address(address, contract, status[1])
+        util.write_address(address, util.get_contract_number(contract), status[1])
     if status[0]:
         return status[0]
     else:
@@ -106,7 +106,7 @@ def update(address, contract_name):
 
     # Validate
     if icontract.has_been_hacked():
-        util.mark_finished(address, contract_name)
+        util.mark_finished(address, util.get_contract_number(contract_name))
 
     return redirect(request.referrer)
 

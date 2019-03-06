@@ -86,32 +86,32 @@ def exists(user):
 
 
 
-def write_address(user, challenge, address):
+def write_address(user, challenge_number, address):
     """
     Writes a user's address into the HackThisContract database
     :param user: user address to write
-    :param challenge: which challenge they're working on
+    :param challenge_number: which challenge they're working on
     :param address: address of the deployed challenge contract for this user
     :return:
     """
     exists(user)
-    deployed_addr_column_name = "c" + str(int(challenge)) + "deployaddr"
-    state_column_name = "c" + str(int(challenge)) + "state"
+    deployed_addr_column_name = "c" + str(int(challenge_number)) + "deployaddr"
+    state_column_name = "c" + str(int(challenge_number)) + "state"
     htcdb = get_db()
     cur = htcdb.execute("UPDATE htctable SET {0} = ?, {1} = ? WHERE useraddress = ?".format(deployed_addr_column_name, state_column_name),
                         (address, constants.STATE_DEPLOYED_IN_PROGRESS, user))
     htcdb.commit()
 
 
-def mark_finished(user, challenge):
+def mark_finished(user, challenge_number):
     """
     Mark a challenge as finished in the HackThisContract Database
     :param user: user address that completed the challenge
-    :param challenge: which challenge
+    :param challenge_number: which challenge
     :return:
     """
     exists(user)
-    state_column_name = "c" + str(int(challenge)) + "state"
+    state_column_name = "c" + str(int(challenge_number)) + "state"
     htcdb = get_db()
     cur = htcdb.execute("UPDATE htctable SET {0} = ? WHERE useraddress = ?".format(state_column_name), (constants.STATE_FINISHED, user))
     htcdb.commit()
