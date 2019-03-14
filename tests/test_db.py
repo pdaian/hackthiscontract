@@ -74,6 +74,19 @@ class HackThisContractDBTest(unittest.TestCase):
             self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    1,    self.MOCK_CONTRACT_ADDRESS, 0,      None,        0,      None,       0,       None))
             conn.close()
 
+    def test_erase_challenge_deployed_address_from_db(self):
+        with run.app.app_context():
+            util.write_address(self.MOCK_USER, 1, self.MOCK_CONTRACT_ADDRESS)
+            util.erase_challenge_deployed_address_from_db(self.MOCK_USER, 1)
+            conn = sqlite3.connect(constants.DB_PATH)
+            cur = conn.cursor()
+            resp = cur.execute("SELECT * FROM htctable")
+            val = list(resp)[0]
+            #                         userid   useraddress score c1state c1depoyaddr            c2state c2deployaddr c3state c3deployaddr c4state c4deployaddr
+            self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    0,    None, 0,      None,        0,      None,       0,       None))
+            conn.close()
+
+
     def test_mark_finished(self):
         with run.app.app_context():
             util.write_address(self.MOCK_USER, 1, self.MOCK_CONTRACT_ADDRESS)

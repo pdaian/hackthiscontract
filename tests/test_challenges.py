@@ -24,8 +24,8 @@ class HackThisContractChallengesTest(unittest.TestCase):
 
     def tearDown(self):
         pass
-        # if os.path.isfile(constants.DB_PATH):
-        #     os.remove(constants.DB_PATH)
+        if os.path.isfile(constants.DB_PATH):
+            os.remove(constants.DB_PATH)
 
     def test_challenges_01_naive_programmer(self):
         constants.GETH_DATADIR = "/tmp"

@@ -85,6 +85,21 @@ def exists(user):
     return True
 
 
+def erase_challenge_deployed_address_from_db(user, challenge_number):
+    """
+    Deletes a users deployed contract address from the db. Used for redeployment.
+    :param user: user address to write
+    :param challenge_number: which challenge they're working on
+    :param address: address of the deployed challenge contract for this user
+    """
+    exists(user)
+    deployed_addr_column_name = "c" + str(int(challenge_number)) + "deployaddr"
+    state_column_name = "c" + str(int(challenge_number)) + "state"
+    htcdb = get_db()
+    cur = htcdb.execute("UPDATE htctable SET {0} = ?, {1} = ? WHERE useraddress = ?".format(deployed_addr_column_name, state_column_name),
+                        (None, constants.STATE_NOT_STARTED, user))
+    htcdb.commit()
+
 
 def write_address(user, challenge_number, address):
     """
@@ -92,7 +107,6 @@ def write_address(user, challenge_number, address):
     :param user: user address to write
     :param challenge_number: which challenge they're working on
     :param address: address of the deployed challenge contract for this user
-    :return:
     """
     exists(user)
     deployed_addr_column_name = "c" + str(int(challenge_number)) + "deployaddr"
