@@ -6,7 +6,7 @@
         <div class="container ryl-padding-top-20">
             <p class="ryl-margin-bottom-30">
                 <span style="font-size: 32px;"><b>{% if exists %}Welcome back{%else%}Welcome{%endif%}, <a
-                        href="http://rinkeby.etherscan.io/address/{{address}}"
+                        href="https://rinkeby.etherscan.io/address/{{address}}"
                         class="underline">{{address}}!</a></b></span>
                 <button class="copy btn" title="Copy" data-clipboard-text="{{address}}"><i class="icon-clipboard"></i>
                 </button>
@@ -62,7 +62,7 @@
             </p>
             {% if challenges[challenge]['deployed'] %}
             <p> Deployed at address <b><a
-                    href="http://rinkeby.etherscan.io/address/{{challenges[challenge]['status'][2]}}" class="underline">{{
+                    href="https://rinkeby.etherscan.io/address/{{challenges[challenge]['status'][2]}}" class="underline">{{
                 challenges[challenge]['status'][2] }}</a></b>
                 <button class="copy btn" title="Copy" data-clipboard-text="{{
             challenges[challenge]['status'][2] }}"><i class="icon-clipboard"></i></button>

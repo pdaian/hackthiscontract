@@ -100,7 +100,7 @@ def update(address, contract_name):
     contract_addr = util.get_status(address, util.get_contract_number(contract_name))[2].strip()
     if not os.path.exists(file_name) or not os.path.isfile(file_name):
         print("Challenge validator not found for contract: " + contract_name)
-        return redirect(request.referrer)
+        return redirect(url_for('view', _external=True, scheme="https", address=address, contract=contract))
 
     icontract = util.get_icontract(address, contract_name, contract_address=contract_addr)
 
@@ -108,7 +108,7 @@ def update(address, contract_name):
     if icontract.has_been_hacked():
         util.mark_finished(address, util.get_contract_number(contract_name))
 
-    return redirect(request.referrer)
+    return redirect(url_for('dashboard', _external=True, scheme="https", address=address))
 
 
 @app.route("/redeploy/<string:address>/<string:contract_name>", methods=['POST'])
