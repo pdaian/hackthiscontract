@@ -12,6 +12,9 @@ import easyweb3
 import sqlite3
 
 def init_db():
+    """
+    CREATE TABLE init db function. To be run on startup.
+    """
     create_table_sql = """
     CREATE TABLE IF NOT EXISTS htctable(
         userid INTEGER PRIMARY KEY,
@@ -31,11 +34,34 @@ def init_db():
     htcdb.commit()
 
 def get_db():
+    """
+    gets the DB from the flask global context.
+    :param user: user address to check against
+    :return: whether or not the user is in our database
+    """
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = sqlite3.connect(constants.DB_PATH)
         db.row_factory = sqlite3.Row
     return db
+
+def get_db_no_app_context():
+    """
+    just gets a connection to the db with no global context.
+    Why would we want to do this? Because flask is a stupid pos that doesn't work
+    and throws "RuntimeError: Working outside of application context." completely
+    randomly and in a totally non-deterministic way. So sometimes, it's ok to access
+    the global context, and other times it'll throw.
+
+    So now we just have multiple ways to get at the bloody db, and we try to share
+    as much as we can.
+    :param user: user address to check against
+    :return: whether or not the user is in our database
+    """
+    db = sqlite3.connect(constants.DB_PATH)
+    db.row_factory = sqlite3.Row
+    return db
+
 
 def query_db(query, args=(), onlyFirstRow=False):
     cur = get_db().execute(query, args)
@@ -140,9 +166,9 @@ def mark_in_progress(user, challenge_number):
     :param challenge_number: which challenge
     :return:
     """
-    exists(user)
+    #exists(user)
     state_column_name = "c" + str(int(challenge_number)) + "state"
-    htcdb = get_db()
+    htcdb = get_db_no_app_context()
     cur = htcdb.execute("UPDATE htctable SET {0} = ? WHERE useraddress = ?".format(state_column_name), (constants.STATE_DEPLOYED_IN_PROGRESS, user))
     htcdb.commit()
 
@@ -153,9 +179,9 @@ def mark_grading(user, challenge_number):
     :param challenge_number: which challenge
     :return:
     """
-    exists(user)
+    #exists(user)
     state_column_name = "c" + str(int(challenge_number)) + "state"
-    htcdb = get_db()
+    htcdb = get_db_no_app_context()
     cur = htcdb.execute("UPDATE htctable SET {0} = ? WHERE useraddress = ?".format(state_column_name), (constants.STATE_GRADING, user))
     htcdb.commit()
 
@@ -166,9 +192,9 @@ def mark_finished(user, challenge_number):
     :param challenge_number: which challenge
     :return:
     """
-    exists(user)
+    #exists(user)
     state_column_name = "c" + str(int(challenge_number)) + "state"
-    htcdb = get_db()
+    htcdb = get_db_no_app_context()
     cur = htcdb.execute("UPDATE htctable SET {0} = ? WHERE useraddress = ?".format(state_column_name), (constants.STATE_FINISHED, user))
     htcdb.commit()
 
