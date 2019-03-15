@@ -58,16 +58,8 @@ class EasyWeb3:
         """
 
         def wrapper():
-            #    try:
             self._deploy_solidity_contract(name, user_address, timeout=timeout)
 
-        #    except Exception as ex:
-        #        print 'Exception in ethereum.py'
-        #        print ex
-        #        import traceback
-        #        traceback.print_exc()
-        #        with self._lock:
-        #            self._status = 'EXCEPTION: {}'.format(ex)
         t = threading.Thread(
             target=wrapper,
             args=()
@@ -104,16 +96,16 @@ class EasyWeb3:
 
         return contract_address
 
-    def grade_challenge(self, contract_name, user_address, timeout=90):
+    def grade_challenge(self, contract_name, user_address, contract_address, timeout=90):
         """
         grades a challenge - spins off a thread to grade a challenge for a user
         :param name: The challenge/contract name
         :param user_address: the address of the end-user that asked for this challenge
         :param timeout: how long to wait for things to happen on-chain - in seconds.
         """
-        @copy_current_request_context
+
         def wrapper():
-            self._grade_challenge(contract_name, user_address, timeout=timeout)
+            self._grade_challenge(contract_name, user_address, contract_address, timeout=timeout)
 
         t = threading.Thread(
             target=wrapper,
@@ -121,8 +113,7 @@ class EasyWeb3:
         )
         t.start()
 
-    @copy_current_request_context
-    def _grade_challenge(self, contract_name, user_address, timeout=180):
+    def _grade_challenge(self, contract_name, user_address, contract_address, timeout=180):
         """
         Deploys solidity contract
         :param contract_name: name of the challenge / the contract we're going to deploy
@@ -133,7 +124,6 @@ class EasyWeb3:
         with self._lock:
             self._status = "started"
         contract_number = util.get_contract_number(contract_name)
-        contract_addr = util.get_deployed_contract_address_for_challenge(user_address, contract_number)
         with self._lock:
             self._status = "in-progress"
             self._deployed_address = contract_address

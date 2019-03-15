@@ -59,7 +59,8 @@ def get_grade_thread_status(address, contract_name):
     if not grade_key in graders:
         web3_instance = easyweb3.EasyWeb3()
         graders[grade_key] = web3_instance
-        web3_instance.grade_challenge(contract_name, address)
+        contract_addr = util.get_deployed_contract_address_for_challenge(user_address, util.get_contract_number(contract_name))
+        web3_instance.grade_challenge(contract_name, address, contract_addr)
     else:
         web3_instance = graders[grade_key]
     return web3_instance.deploy_status()
