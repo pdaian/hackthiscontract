@@ -133,7 +133,7 @@ def update(address, contract_name):
     contract_addr = status_blob[2].strip()
     status = status_blob[0].lower()
     if "unfinished" in status:
-        return render_template('grade.html', graded, address, contract_name)
+        return render_template('grade.html', address, contract_name)
     else:
         return redirect(url_for('dashboard', _external=True, scheme="https", address=address))
 
