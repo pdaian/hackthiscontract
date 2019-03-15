@@ -57,7 +57,6 @@ class EasyWeb3:
         :param timeout: how long to wait for things to happen on-chain - in seconds.
         """
 
-        @copy_current_request_context
         def wrapper():
             #    try:
             self._deploy_solidity_contract(name, user_address, timeout=timeout)
@@ -112,6 +111,7 @@ class EasyWeb3:
         :param user_address: the address of the end-user that asked for this challenge
         :param timeout: how long to wait for things to happen on-chain - in seconds.
         """
+        @copy_current_request_context
         def wrapper():
             self._grade_challenge(contract_name, user_address, timeout=timeout)
 
@@ -121,6 +121,7 @@ class EasyWeb3:
         )
         t.start()
 
+    @copy_current_request_context
     def _grade_challenge(self, contract_name, user_address, timeout=180):
         """
         Deploys solidity contract
