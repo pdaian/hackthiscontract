@@ -9,6 +9,7 @@ import util
 
 app = Flask(__name__)
 deployers = {}
+graders = {}
 
 @app.before_first_request
 def init_application():
@@ -40,7 +41,7 @@ def dashboard(address):
 
 
 @util.check_address_decorator
-def get_status(address, contract):
+def get_deploy_thread_status(address, contract):
     global deployers
     deploy_key = (address, contract)
     if not deploy_key in deployers:
@@ -51,12 +52,23 @@ def get_status(address, contract):
         web3_instance = deployers[deploy_key]
     return web3_instance.deploy_status()
 
+@util.check_address_decorator
+def get_grade_thread_status(address, contract_name):
+    global graders
+    grade_key = (address, contract_name)
+    if not grade_key in graders:
+        web3_instance = easyweb3.EasyWeb3()
+        graders[grade_key] = web3_instance
+        web3_instance.grade_challenge(contract_name, address)
+    else:
+        web3_instance = deployers[deploy_key]
+    return web3_instance.deploy_status()
 
 @app.route("/done/<string:address>/<string:contract>")
 @util.check_address_decorator
 def done(address, contract):
-    print("Done:\t" + address)
-    status = get_status(address, contract)
+    print("Deploying:\t" + address)
+    status = get_deploy_thread_status(address, contract)
 
     if status[1] is not None and status[0] == "deployed":
         print("Status is not none: " + str(status))
@@ -92,23 +104,38 @@ def view(address, contract):
                            address=address, contract=contract, contract_code=contract_code,
                            contract_desc=contract_desc)
 
+@app.route("/grade/<string:address>/<string:contract_name>")
+@util.check_address_decorator
+def grade(address, contract_name):
+    print("grading:\t" + address)
+    status = get_grade_thread_status(address, contract_name)
+
+    if status[1] is not None and status[0] == "graded":
+        print("graded complete: " + str(status))
+        global graders
+        grade_key = (address, contract_name)
+        del graders[grade_key]
+    if status[0]:
+        return status[0]
+    else:
+        return "Starting grading process"
+
 
 @app.route("/update/<string:address>/<string:contract_name>")
 @util.check_address_decorator
 def update(address, contract_name):
     file_name = "challenges/" + contract_name + ".py"
-    contract_addr = util.get_status(address, util.get_contract_number(contract_name))[2].strip()
     if not os.path.exists(file_name) or not os.path.isfile(file_name):
         print("Challenge validator not found for contract: " + contract_name)
         return redirect(url_for('view', _external=True, scheme="https", address=address, contract=contract))
 
-    icontract = util.get_icontract(address, contract_name, contract_address=contract_addr)
-
-    # Validate
-    if icontract.has_been_hacked():
-        util.mark_finished(address, util.get_contract_number(contract_name))
-
-    return redirect(url_for('dashboard', _external=True, scheme="https", address=address))
+    status_blob = util.get_status(address, util.get_contract_number(contract_name))
+    contract_addr = status_blob[2].strip()
+    status = status_blob[0].lower()
+    if "unfinished" in status:
+        return render_template('grade.html', graded, address, contract_name)
+    else:
+        return redirect(url_for('dashboard', _external=True, scheme="https", address=address))
 
 
 @app.route("/redeploy/<string:address>/<string:contract_name>", methods=['POST'])

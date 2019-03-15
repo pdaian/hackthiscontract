@@ -86,6 +86,36 @@ class HackThisContractDBTest(unittest.TestCase):
             self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    0,    None, 0,      None,        0,      None,       0,       None))
             conn.close()
 
+    def test_get_deployed_contract_address_for_challenge(self):
+        with run.app.app_context():
+            util.write_address(self.MOCK_USER, 1, self.MOCK_CONTRACT_ADDRESS)
+            conn = sqlite3.connect(constants.DB_PATH)
+            self.assertEqual(self.MOCK_CONTRACT_ADDRESS, util.get_deployed_contract_address_for_challenge(self.MOCK_USER, 1))
+
+    def test_mark_in_progress(self):
+        with run.app.app_context():
+            util.write_address(self.MOCK_USER, 1, self.MOCK_CONTRACT_ADDRESS)
+            util.mark_finished(self.MOCK_USER, 1)
+            util.mark_in_progress(self.MOCK_USER, 1)
+            conn = sqlite3.connect(constants.DB_PATH)
+            cur = conn.cursor()
+            resp = cur.execute("SELECT * FROM htctable")
+            val = list(resp)[0]
+            #                         userid   useraddress score c1state c1depoyaddr            c2state c2deployaddr c3state c3deployaddr c4state c4deployaddr
+            self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    1,    self.MOCK_CONTRACT_ADDRESS, 0,      None,        0,      None,       0,       None))
+            conn.close()
+
+    def test_mark_grading(self):
+        with run.app.app_context():
+            util.write_address(self.MOCK_USER, 1, self.MOCK_CONTRACT_ADDRESS)
+            util.mark_grading(self.MOCK_USER, 1)
+            conn = sqlite3.connect(constants.DB_PATH)
+            cur = conn.cursor()
+            resp = cur.execute("SELECT * FROM htctable")
+            val = list(resp)[0]
+            #                         userid   useraddress score c1state c1depoyaddr            c2state c2deployaddr c3state c3deployaddr c4state c4deployaddr
+            self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    3,    self.MOCK_CONTRACT_ADDRESS, 0,      None,        0,      None,       0,       None))
+            conn.close()
 
     def test_mark_finished(self):
         with run.app.app_context():

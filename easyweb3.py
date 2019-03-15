@@ -39,6 +39,15 @@ class EasyWeb3:
         with self._lock:
             return self._status, self._deployed_address
 
+    def grade_status(self):
+        """
+        Return grade status of the given contract /challenge tuple that this this EasyWeb3 instance
+        is responsible for
+        :return: status, deployed_address - the status and address
+        """
+        with self._lock:
+            return self._status, self._deployed_address
+
     def deploy_named_solidity_contract(self, name, user_address, timeout=90):
         """
         Deploys a contract - spins off a thread to deploy the contract
@@ -92,6 +101,53 @@ class EasyWeb3:
             self._status = "deployed"
 
         return contract_address
+
+    def grade_challenge(self, contract_name, user_address, timeout=90):
+        """
+        grades a challenge - spins off a thread to grade a challenge for a user
+        :param name: The challenge/contract name
+        :param user_address: the address of the end-user that asked for this challenge
+        :param timeout: how long to wait for things to happen on-chain - in seconds.
+        """
+        def wrapper():
+            self._grade_challenge(contract_name, user_address, timeout=timeout)
+
+        t = threading.Thread(
+            target=wrapper,
+            args=()
+        )
+        t.start()
+
+    def _grade_challenge(self, contract_name, user_address, timeout=180):
+        """
+        Deploys solidity contract
+        :param contract_name: name of the challenge / the contract we're going to deploy
+        :param user_address:  end-user address that asked for this challenge
+        :param timeout: how long to wait for things to happen on-chain - in seconds
+        :return: contract_address - address of this newly spawned contract
+        """
+        with self._lock:
+            self._status = "started"
+        contract_number = util.get_contract_number(contract_name)
+        contract_addr = util.get_deployed_contract_address_for_challenge(user_address, contract_number)
+        with self._lock:
+            self._status = "in-progress"
+            self._deployed_address = contract_address
+        util.mark_grading(user_address, contract_number)
+
+        if (util.contract_exists(contract_name)):
+            contract_helper = util.get_icontract(user_address, contract_name, contract_address=contract_address)
+            hacked = contract_helper.has_been_hacked()
+            if hacked:
+                util.mark_finished(user_address, contract_number)
+            else:
+                util.mark_in_progress(user_address, contract_number)
+
+        with self._lock:
+            self._status = "graded"
+
+        return contract_address
+
 
     def balance(self, address):
         """

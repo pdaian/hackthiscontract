@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block body %}
+</header>
+<section id="about" class="ryl-bg-light">
+    <header class="ryl-section-header-style-2 ryl-bg-light" style="padding-bottom:20px; margin-bottom:20px;">
+        <p class="container ryl-padding-top-20">
+        <h4 class="ryl-margin-bottom-30">Running Autograder... <span id="status">initializing</span>! Please wait!</h4>
+        <p class="ryl-margin-bottom-30">
+        <p><i>(you will be redirected automagically...)</i></p><br><br>
+        <img src="/static/assets/images/loading.gif"/>
+        <script>
+            function go() {
+                $.ajax({
+                    url: '/grade/{{address}}/{{contract_name}}',
+                    success: function (response) {
+                        $("#status").text(response);
+                        if (response.includes("graded")) {
+                            location.reload();
+                        }
+                    }
+                });
+                setTimeout(go, 2000);
+            }
+
+            go();
+        </script>
+    </header>
+</section>
+{% endblock %}

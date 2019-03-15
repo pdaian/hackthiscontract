@@ -116,10 +116,52 @@ def write_address(user, challenge_number, address):
                         (address, constants.STATE_DEPLOYED_IN_PROGRESS, user))
     htcdb.commit()
 
+def get_deployed_contract_address_for_challenge(user, challenge_number):
+    """
+    Reads the deployed contract address from the HackThisContract database
+    :param user: user address to lookup for
+    :param challenge_number: which challenge they're working on
+    :return address: address of the deployed challenge contract for this user
+    """
+    exists(user)
+    deployed_addr_column_name = "c" + str(int(challenge_number)) + "deployaddr"
+    state_column_name = "c" + str(int(challenge_number)) + "state"
+    htcdb = get_db()
+    cur = htcdb.execute("SELECT {},{} FROM htctable WHERE useraddress = ?".format(deployed_addr_column_name, state_column_name),
+                        (user, ))
+    row = cur.fetchone()
+    assert(row[1] == constants.STATE_DEPLOYED_IN_PROGRESS)
+    return row[0]
+
+def mark_in_progress(user, challenge_number):
+    """
+    Mark a challenge as deployed / in progress in the HackThisContract Database
+    :param user: user address that completed the challenge
+    :param challenge_number: which challenge
+    :return:
+    """
+    exists(user)
+    state_column_name = "c" + str(int(challenge_number)) + "state"
+    htcdb = get_db()
+    cur = htcdb.execute("UPDATE htctable SET {0} = ? WHERE useraddress = ?".format(state_column_name), (constants.STATE_DEPLOYED_IN_PROGRESS, user))
+    htcdb.commit()
+
+def mark_grading(user, challenge_number):
+    """
+    Mark a challenge as in grading progress in the HackThisContract Database
+    :param user: user address that completed the challenge
+    :param challenge_number: which challenge
+    :return:
+    """
+    exists(user)
+    state_column_name = "c" + str(int(challenge_number)) + "state"
+    htcdb = get_db()
+    cur = htcdb.execute("UPDATE htctable SET {0} = ? WHERE useraddress = ?".format(state_column_name), (constants.STATE_GRADING, user))
+    htcdb.commit()
 
 def mark_finished(user, challenge_number):
     """
-    Mark a challenge as finished in the HackThisContract Database
+    Mark a challenge as finished (graded and is correct) in the HackThisContract Database
     :param user: user address that completed the challenge
     :param challenge_number: which challenge
     :return:
@@ -158,6 +200,8 @@ def get_status(user, challenge_number):
         return ("Not Started", "red")
     elif state == constants.STATE_DEPLOYED_IN_PROGRESS:
         return ("Deployed / Unfinished", "black", deployed_addr)
+    elif state == constants.STATE_GRADING:
+        return ("Grading", "red", deployed_addr)
     elif state == constants.STATE_FINISHED:
         return ("Done!", "green", deployed_addr)
 
