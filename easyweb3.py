@@ -7,6 +7,7 @@ from web3.middleware import geth_poa_middleware
 import config as constants
 import util
 
+from flask import copy_current_request_context
 
 def new_web3():
     """Return new IPC-based web3 instance"""
@@ -55,6 +56,8 @@ class EasyWeb3:
         :param user_address: the address of the end-user that asked for this challenge
         :param timeout: how long to wait for things to happen on-chain - in seconds.
         """
+
+        @copy_current_request_context
         def wrapper():
             #    try:
             self._deploy_solidity_contract(name, user_address, timeout=timeout)
