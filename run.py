@@ -61,7 +61,7 @@ def get_grade_thread_status(address, contract_name):
         graders[grade_key] = web3_instance
         web3_instance.grade_challenge(contract_name, address)
     else:
-        web3_instance = deployers[deploy_key]
+        web3_instance = graders[grade_key]
     return web3_instance.deploy_status()
 
 @app.route("/done/<string:address>/<string:contract>")
