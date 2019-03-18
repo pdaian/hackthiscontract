@@ -24,10 +24,6 @@ class Contract(icontract.IContract):
         self.eweb3._web3.eth.waitForTransactionReceipt(reveal_tx_hash)
 
     def has_been_hacked(self):
-        # This is an empty transaction for testing
-        force_next_block = self.eweb3._web3.eth.sendTransaction({"from":constants.DEPLOY_FROM_ADDRESS, "to": constants.DEPLOY_FROM_ADDRESS, "value":0})
-        next_receipt = self.eweb3._web3.eth.waitForTransactionReceipt(force_next_block)
-
         # getWinner() public returns(string memory)
         winrar_tx_hash = self.contract_object.functions.getWinner().transact({"gas": 200000})
         winrar_tx_receipt = self.eweb3._web3.eth.waitForTransactionReceipt(winrar_tx_hash)

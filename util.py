@@ -219,7 +219,7 @@ def get_status(user, challenge_number):
     status_query = "SELECT {}, {} FROM htctable WHERE useraddress = ?".format(state_column_name, deployed_addr_column_name)
     qresp = query_db(status_query, (user, ), True)
     if qresp is None:
-        return ("Not Started/Error", "red")
+        return ("Not Started", "red")
     state = list(qresp)[0]
     deployed_addr = list(qresp)[1]
     if state == constants.STATE_NOT_STARTED:
