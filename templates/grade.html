@@ -15,7 +15,7 @@
                     success: function (response) {
                         $("#status").text(response);
                         if (response.includes("graded")) {
-                            location.reload();
+                            window.location.replace("https://hackthiscontract.io/dashboard/{{address}}");
                         }
                     }
                 });
