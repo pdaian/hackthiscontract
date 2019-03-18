@@ -1,7 +1,7 @@
 import json
 import os
 
-from flask import Flask, render_template, request, redirect, g
+from flask import Flask, render_template, request, redirect, g, url_for
 
 import config as constants
 import easyweb3
@@ -10,24 +10,6 @@ import util
 app = Flask(__name__)
 deployers = {}
 graders = {}
-
-
-def generate_url(location, user_address, contract_name):
-    """
-    flask url_for is hopelessly broken and causing infinite redirects.
-    Therefore we must reimplement this garbage function because the flask devs cannot do their jobs properly.
-    :param user_address: the end user's address
-    :param contract_name: the name of the contract which we want to use
-    :return a URL string that will actually work
-    """
-    if location == "deploy":
-        return "https://hackthiscontract.io/deploy/{}/{}".format(user_address, contract_name)
-    elif location == "view":
-        return "https://hackthiscontract.io/view/{}/{}".format(user_address, contract_name)
-    elif location == "dashboard":
-        return "https://hackthiscontract.io/dashboard/{}".format(user_address)
-    else:
-        return "https://hackthiscontract.io"
 
 
 @app.before_first_request
@@ -109,7 +91,7 @@ def deploy(address, contract):
     if "not started" in status[0].lower():
         return render_template('deploy.html', deployed=False, address=address, contract=contract)
     else:
-        return redirect(generate_url('view', user_address=address, contract_name=contract))
+        return redirect(url_for('view', _external=True, scheme=https, address=address, contract=contract))
 
 
 @app.route("/view/<string:address>/<string:contract>")
@@ -147,7 +129,7 @@ def update(address, contract_name):
     file_name = "challenges/" + contract_name + ".py"
     if not os.path.exists(file_name) or not os.path.isfile(file_name):
         print("Challenge validator not found for contract: " + contract_name)
-        return redirect(generate_url('view', user_address=address, contract_name=contract))
+        return redirect(url_for('view', _external=True, scheme=https, address=address, contract=contract))
 
     status_blob = util.get_status(address, util.get_contract_number(contract_name))
     contract_addr = status_blob[2].strip()
@@ -155,14 +137,14 @@ def update(address, contract_name):
     if "unfinished" in status:
         return render_template('grade.html', address=address, contract_name=contract_name)
     else:
-        return redirect(generate_url('dashboard', user_address=address, contract_name=None))
+        return redirect(url_for('dashboard', _external=True, scheme="https", address=address))
 
 
 @app.route("/redeploy/<string:address>/<string:contract_name>", methods=['POST'])
 @util.check_address_decorator
 def redeploy(address, contract_name):
     util.erase_challenge_deployed_address_from_db(address, util.get_contract_number(contract_name))
-    return redirect(generate_url('deploy', user_address=address, contract_name=contract_name))
+    return redirect(url_for('deploy', _external=True, scheme="https", address=address, contract=contract_name))
 
 
 # @app.route("/ranking")
