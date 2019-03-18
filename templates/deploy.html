@@ -16,6 +16,8 @@
                         $("#status").text(response);
                         if (response.includes("deployed")) {
                             location.reload();
+                            // Simulate an HTTP redirect:
+                            window.location.replace("https://hackthiscontract.io/dashboard/{{address}}");
                         }
                     }
                 });
