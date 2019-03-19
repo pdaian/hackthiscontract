@@ -28,8 +28,6 @@ class HackThisContractChallengesTest(unittest.TestCase):
             os.remove(constants.DB_PATH)
 
     def test_challenges_01_naive_programmer(self):
-        constants.GETH_DATADIR = "/tmp"
-        constants.DEPLOY_FROM_ADDRESS = prefundedAddr
         w3handle = easyweb3.EasyWeb3()
         cbase = w3handle.balance(w3handle._web3.eth.defaultAccount)
         self.assertIsNotNone(cbase)
@@ -59,7 +57,8 @@ class HackThisContractChallengesTest(unittest.TestCase):
 
         self.assertTrue(icontract.has_been_hacked())
 
-
 if __name__ == '__main__':
     prefundedAddr = input("What is your geth --dev default address with prefunded money for testing? ")
+    constants.GETH_DATADIR = "/tmp"
+    constants.DEPLOY_FROM_ADDRESS = prefundedAddr
     unittest.main()
