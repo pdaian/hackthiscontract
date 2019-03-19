@@ -57,7 +57,7 @@ contract CoinFlip {
         require(!extended[player1] || !extended[player2] );
         if (msg.value > mintoextend) {
             /* Extend by 5 blocks */
-            gameend += 5;
+            gameend = block.number + 5;
             if (msg.value > captoadd) {
                 /* Refund money above the deposit cap */
                 balance += (captoadd - mintoextend);

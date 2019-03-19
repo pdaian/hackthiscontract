@@ -29,7 +29,7 @@ class HackThisContractChallengesTest(unittest.TestCase):
 
     def test_challenges_01_naive_programmer(self):
         w3handle = easyweb3.EasyWeb3()
-        cbase = w3handle.balance(w3handle._web3.eth.defaultAccount)
+        cbase = w3handle._web3.eth.getBalance(w3handle._web3.eth.defaultAccount)
         self.assertIsNotNone(cbase)
         # Fund user account so they have money too
         w3handle._web3.personal.importRawKey(self.MOCK_PRIVATE_KEY, "")
@@ -37,7 +37,7 @@ class HackThisContractChallengesTest(unittest.TestCase):
         fund_tx = w3handle._web3.eth.sendTransaction({"from":prefundedAddr, "to":self.MOCK_USER, "value":FIVE_ETHER})
         w3handle._web3.eth.waitForTransactionReceipt(fund_tx)
 
-        self.assertEqual(w3handle.balance(self.MOCK_USER), FIVE_ETHER)
+        self.assertEqual(w3handle._web3.eth.getBalance(self.MOCK_USER), FIVE_ETHER)
 
         cAddr = w3handle._deploy_solidity_contract("01_naive_programmer",w3handle._web3.eth.defaultAccount)
         self.assertIsNotNone(cAddr)
