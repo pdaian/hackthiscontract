@@ -18,7 +18,7 @@ class Contract(icontract.IContract):
     def has_been_hacked(self):
         winrar = self.contract_object.functions.winner().call()
         print("02_has_been_hacked winner is: {}".format(winrar))
-        if winrar:
+        if winrar and str(winrar) != "0x0000000000000000000000000000000000000000":
             if winrar != constants.DEPLOY_FROM_ADDRESS:
                 return True
         return False
