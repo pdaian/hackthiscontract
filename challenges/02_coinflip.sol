@@ -36,6 +36,18 @@ contract CoinFlip {
         return blockhash(gameend);
     }
 
+    /* players are allowed to name a champion to play
+     * in the coliseum in their stead */
+    function delegate(address delegateaddress) public {
+        require(msg.sender == player1 || msg.sender == player2);
+        if(msg.sender == player1) {
+            player1 = delegateaddress;
+        }
+        else {
+            player2 = delegateaddress;
+        }
+    }
+
     function deposit() public payable {
         require(!gameover);
         require(msg.sender == player1 || msg.sender == player2);
