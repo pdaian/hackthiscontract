@@ -1,5 +1,5 @@
 {
     "name": "Lost Ether",
-    "description": "A greedy programmer has beein impatient and created an ERC20 ICO without any thought. Your job is to violate one of the invariants of an ERC20: an agent deposits to the contract and doesn't get any tokens.",
-    "level": "4"
+    "description": "A programmer has made an ERC20 with a silly vulnerability. Your job is to violate one of the invariants of an ERC20: an agent sends money to the contract and doesn't get any tokens.",
+    "level": "1"
 }

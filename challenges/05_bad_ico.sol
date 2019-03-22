@@ -1,7 +1,7 @@
 pragma solidity^0.5.0;
 
 contract TestToken {
-    string constant name = "Lost Ether Token";
+    string constant name = "Bad ICO Token";
     string constant symbol = "IC3";
     uint8 constant decimals = 18;
     uint public totaltokens;
@@ -63,7 +63,7 @@ contract TestToken {
         return true;
     }
 
-    function withdraw(uint256 _value) public payable returns (bool success) {
+    function withdraw(uint256 _value) public returns (bool success) {
         if (balances[msg.sender] < _value) return false;
         balances[msg.sender] -= _value;
         msg.sender.transfer(_value);
