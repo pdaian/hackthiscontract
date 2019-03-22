@@ -27,7 +27,9 @@ def init_db():
         c3state INTEGER,
         c3deployaddr TEXT,
         c4state INTEGER,
-        c4deployaddr TEXT
+        c4deployaddr TEXT,
+        c5state INTEGER,
+        c5deployaddr TEXT
     );"""
     htcdb = get_db()
     cur = htcdb.execute(create_table_sql)
@@ -87,8 +89,10 @@ def exists(user):
             c1state,
             c2state,
             c3state,
-            c4state
+            c4state,
+            c5state
         ) VALUES (
+            ?,
             ?,
             ?,
             ?,
@@ -100,6 +104,7 @@ def exists(user):
         (
             user,
             0,
+            constants.STATE_NOT_STARTED,
             constants.STATE_NOT_STARTED,
             constants.STATE_NOT_STARTED,
             constants.STATE_NOT_STARTED,

@@ -47,7 +47,9 @@ class HackThisContractDBTest(unittest.TestCase):
         c3state INTEGER,
         c3deployaddr TEXT,
         c4state INTEGER,
-        c4deployaddr TEXT
+        c4deployaddr TEXT,
+        c5state INTEGER,
+        c5deployaddr TEXT
     )"""
             self.assertEqual(list(resp)[0][0], expected_create_string)
 
@@ -59,7 +61,7 @@ class HackThisContractDBTest(unittest.TestCase):
             resp = cur.execute("SELECT * FROM htctable")
             val = list(resp)[0]
             #                         userid   useraddress       score c1state c1depoyaddr c2state c2deployaddr c3state c3deployaddr c4state c4deployaddr
-            self.assertTupleEqual(val, (1, self.VALID_ADDRESSES[1], 0,    0,    None,        0,      None,        0,      None,       0,       None))
+            self.assertTupleEqual(val, (1, self.VALID_ADDRESSES[1], 0,    0,    None,        0,      None,        0,      None,       0,       None, 0, None))
             conn.close()
             self.assertTrue(util.exists(self.VALID_ADDRESSES[1]))
 
@@ -71,7 +73,23 @@ class HackThisContractDBTest(unittest.TestCase):
             resp = cur.execute("SELECT * FROM htctable")
             val = list(resp)[0]
             #                         userid   useraddress score c1state c1depoyaddr            c2state c2deployaddr c3state c3deployaddr c4state c4deployaddr
-            self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    1,    self.MOCK_CONTRACT_ADDRESS, 0,      None,        0,      None,       0,       None))
+            self.assertTupleEqual(val,
+                    (
+                        1, #userid
+                        self.MOCK_USER, #useraddress
+                        0, # score
+                        1, # c1state
+                        self.MOCK_CONTRACT_ADDRESS, # c1deployaddr
+                        0, #c2state
+                        None, # c2deployaddr
+                        0, #c3state
+                        None, # c3deployaddr
+                        0, #c4state
+                        None, # c4deployaddr
+                        0, # c5state
+                        None # c4deployaddr
+                    ))
+
             conn.close()
 
     def test_erase_challenge_deployed_address_from_db(self):
@@ -83,7 +101,7 @@ class HackThisContractDBTest(unittest.TestCase):
             resp = cur.execute("SELECT * FROM htctable")
             val = list(resp)[0]
             #                         userid   useraddress score c1state c1depoyaddr            c2state c2deployaddr c3state c3deployaddr c4state c4deployaddr
-            self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    0,    None, 0,      None,        0,      None,       0,       None))
+            self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    0,    None, 0,      None,        0,      None,       0,       None, 0, None))
             conn.close()
 
     def test_get_deployed_contract_address_for_challenge(self):
@@ -102,7 +120,7 @@ class HackThisContractDBTest(unittest.TestCase):
             resp = cur.execute("SELECT * FROM htctable")
             val = list(resp)[0]
             #                         userid   useraddress score c1state c1depoyaddr            c2state c2deployaddr c3state c3deployaddr c4state c4deployaddr
-            self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    1,    self.MOCK_CONTRACT_ADDRESS, 0,      None,        0,      None,       0,       None))
+            self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    1,    self.MOCK_CONTRACT_ADDRESS, 0,      None,        0,      None,       0,       None, 0, None))
             conn.close()
 
     def test_mark_grading(self):
@@ -114,7 +132,22 @@ class HackThisContractDBTest(unittest.TestCase):
             resp = cur.execute("SELECT * FROM htctable")
             val = list(resp)[0]
             #                         userid   useraddress score c1state c1depoyaddr            c2state c2deployaddr c3state c3deployaddr c4state c4deployaddr
-            self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    3,    self.MOCK_CONTRACT_ADDRESS, 0,      None,        0,      None,       0,       None))
+            self.assertTupleEqual(val,
+                    (
+                        1, #userid
+                        self.MOCK_USER, #useraddress
+                        0, # score
+                        3, # c1state
+                        self.MOCK_CONTRACT_ADDRESS, # c1deployaddr
+                        0, #c2state
+                        None, # c2deployaddr
+                        0, #c3state
+                        None, # c3deployaddr
+                        0, #c4state
+                        None, # c4deployaddr
+                        0, # c5state
+                        None # c4deployaddr
+                    ))
             conn.close()
 
     def test_mark_finished(self):
@@ -126,17 +159,16 @@ class HackThisContractDBTest(unittest.TestCase):
             resp = cur.execute("SELECT * FROM htctable")
             val = list(resp)[0]
             #                         userid   useraddress score c1state c1depoyaddr            c2state c2deployaddr c3state c3deployaddr c4state c4deployaddr
-            self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    2,    self.MOCK_CONTRACT_ADDRESS, 0,      None,        0,      None,       0,       None))
+            self.assertTupleEqual(val, (1, self.MOCK_USER, 0,    2,    self.MOCK_CONTRACT_ADDRESS, 0,      None,        0,      None,       0,       None, 0, None))
             conn.close()
 
     def test_get_status(self):
-        nse = ("Not Started/Error", "red")
         ns = ("Not Started", "red")
         dep = ("Deployed / Unfinished", "black", self.MOCK_CONTRACT_ADDRESS)
         fin = ("Done!", "green", self.MOCK_CONTRACT_ADDRESS)
         with run.app.app_context():
             stat = util.get_status(self.MOCK_USER, 1)
-            self.assertTupleEqual(stat, nse)
+            self.assertTupleEqual(stat, ns)
             util.exists(self.MOCK_USER)
             stat = util.get_status(self.MOCK_USER, 1)
             self.assertTupleEqual(stat, ns)
