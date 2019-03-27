@@ -1,6 +1,7 @@
 import importlib.machinery
 import importlib.util
 import os
+import json
 import types
 from functools import wraps
 
@@ -22,14 +23,19 @@ def init_db():
         score INTEGER,
         c1state INTEGER,
         c1deployaddr TEXT,
+        c1finished INTEGER,
         c2state INTEGER,
         c2deployaddr TEXT,
+        c2finished INTEGER,
         c3state INTEGER,
         c3deployaddr TEXT,
+        c3finished INTEGER,
         c4state INTEGER,
         c4deployaddr TEXT,
+        c4finished INTEGER,
         c5state INTEGER,
-        c5deployaddr TEXT
+        c5deployaddr TEXT,
+        c5finished INTEGER
     );"""
     htcdb = get_db()
     cur = htcdb.execute(create_table_sql)
@@ -87,11 +93,21 @@ def exists(user):
             useraddress,
             score,
             c1state,
+            c1finished,
             c2state,
+            c2finished,
             c3state,
+            c3finished,
             c4state,
-            c5state
+            c4finished,
+            c5state,
+            c5finished
         ) VALUES (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
             ?,
             ?,
             ?,
@@ -105,10 +121,15 @@ def exists(user):
             user,
             0,
             constants.STATE_NOT_STARTED,
+            False,
             constants.STATE_NOT_STARTED,
+            False,
             constants.STATE_NOT_STARTED,
+            False,
             constants.STATE_NOT_STARTED,
-            constants.STATE_NOT_STARTED
+            False,
+            constants.STATE_NOT_STARTED,
+            False
         ))
         htcdb.commit()
         return False
@@ -160,9 +181,10 @@ def get_deployed_contract_address_for_challenge(user, challenge_number):
     htcdb = get_db()
     cur = htcdb.execute("SELECT {},{} FROM htctable WHERE useraddress = ?".format(deployed_addr_column_name, state_column_name),
                         (user, ))
-    row = cur.fetchone()
-    assert(row[1] == constants.STATE_DEPLOYED_IN_PROGRESS)
-    return row[0]
+    # there should always only be one row. This is still wierd syntax, I know
+    for row in cur:
+        assert(row[1] == constants.STATE_DEPLOYED_IN_PROGRESS)
+        return row[0]
 
 def mark_in_progress(user, challenge_number):
     """
@@ -190,7 +212,7 @@ def mark_grading(user, challenge_number):
     cur = htcdb.execute("UPDATE htctable SET {0} = ? WHERE useraddress = ?".format(state_column_name), (constants.STATE_GRADING, user))
     htcdb.commit()
 
-def mark_finished(user, challenge_number):
+def mark_finished(user, challenge_name):
     """
     Mark a challenge as finished (graded and is correct) in the HackThisContract Database
     :param user: user address that completed the challenge
@@ -198,10 +220,22 @@ def mark_finished(user, challenge_number):
     :return:
     """
     #exists(user)
+    challenge_number = get_contract_number(challenge_name)
     state_column_name = "c" + str(int(challenge_number)) + "state"
+    finished_column_name = "c" + str(int(challenge_number)) + "finished"
     htcdb = get_db_no_app_context()
-    cur = htcdb.execute("UPDATE htctable SET {0} = ? WHERE useraddress = ?".format(state_column_name), (constants.STATE_FINISHED, user))
-    htcdb.commit()
+    cur = htcdb.execute("SELECT {}, score FROM htctable WHERE useraddress = ?".format(finished_column_name),
+                        (user, ))
+    firstele = cur.fetchone()
+    finished = firstele[0]
+    if finished == False:
+        points = get_points(challenge_name)
+        curscore = firstele[1]
+        cur = htcdb.execute("UPDATE htctable SET {0} = ?, {1} = ?, score = ? WHERE useraddress = ?".format(state_column_name, finished_column_name), (constants.STATE_FINISHED, True, curscore + points , user))
+        htcdb.commit()
+    else: # if the challenge has been previously solved do not award points for it
+        cur = htcdb.execute("UPDATE htctable SET {0} = ? WHERE useraddress = ?".format(state_column_name), (constants.STATE_FINISHED, user))
+        htcdb.commit()
 
 def get_contract_number(contract_name):
     """
@@ -211,6 +245,11 @@ def get_contract_number(contract_name):
     """
     return int(contract_name.split("_")[0])
 
+def get_points(contract_name):
+    with open("challenges/" + contract_name + ".json") as f:
+        jsonfile = f.read().strip()
+        retval = int(json.loads(jsonfile)["level"])
+    return retval
 
 def get_status(user, challenge_number):
     """
@@ -238,6 +277,10 @@ def get_status(user, challenge_number):
 
     raise ValueError("Status was not an accepted status {}".format(list(qresp)[0]))
 
+def get_ranking_from_db():
+    htcdb = get_db()
+    qresp = query_db("SELECT useraddress, score FROM htctable WHERE score > 0 ORDER BY score DESC", (), False)
+    return [(row[0], row[1]) for row in qresp]
 
 def is_valid_address(address):
     """

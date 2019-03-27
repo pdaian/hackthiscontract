@@ -133,7 +133,7 @@ class EasyWeb3:
             contract_helper = util.get_icontract(user_address, contract_name, contract_address=contract_address)
             hacked = contract_helper.has_been_hacked()
             if hacked:
-                util.mark_finished(user_address, contract_number)
+                util.mark_finished(user_address, contract_name)
             else:
                 util.mark_in_progress(user_address, contract_number)
 

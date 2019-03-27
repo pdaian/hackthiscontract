@@ -147,27 +147,9 @@ def redeploy(address, contract_name):
     return redirect(url_for('deploy', _external=True, scheme="https", address=address, contract=contract_name))
 
 
-# @app.route("/ranking")
-# def ranking():
-#     users = []
-#     for address in os.listdir(constants.DB_PATH):
-#         done = 0
-#         for filename in os.listdir(constants.DB_PATH + address):
-#             if filename.endswith(".done"):
-#                 done += 1
-#         data = {"address": address, "solved": done}
-#         if not done == 0:
-#             users.append(data)
-# 
-#     users.sort(key=lambda x: x['solved'], reverse=True)
-#     counter = 0
-#     largest = 1e29
-#     for user in users:
-#         if user['solved'] < largest:
-#             counter += 1
-#             largest = user['solved']
-#         user['pos'] = counter
-#     return render_template("ranking.html", users=users)
+@app.route("/ranking")
+def ranking():
+    return render_template("ranking.html", users=util.get_ranking_from_db())
 
 
 if __name__ == "__main__":
