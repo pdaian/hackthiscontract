@@ -31,7 +31,7 @@ class Contract(icontract.IContract):
 
         if winrar_logs:
             if len(winrar_logs) > 0:
-                print(winrar_logs[0]['args'][''])
+                #print(winrar_logs[0]['args'][''])
                 if winrar_logs[0]['args'][''] == 'Bob':
                     return True
         return False

@@ -27,17 +27,56 @@ class HackThisContractChallengesTest(unittest.TestCase):
         if os.path.isfile(constants.DB_PATH):
             os.remove(constants.DB_PATH)
 
+    def test_challenges_00_hello_world(self):
+        w3handle = easyweb3.EasyWeb3()
+        cbase = w3handle._web3.eth.getBalance(w3handle._web3.eth.defaultAccount)
+        self.assertIsNotNone(cbase)
+        # Fund user account so they have money too
+        try:
+            w3handle._web3.personal.importRawKey(self.MOCK_PRIVATE_KEY, "")
+        except ValueError as accountAlreadyExists:
+            print("skipping importing the key for the mock user twice")
+
+        w3handle._web3.personal.unlockAccount(self.MOCK_USER, "")
+        fund_tx = w3handle._web3.eth.sendTransaction({"from":prefundedAddr, "to":self.MOCK_USER, "value":FIVE_ETHER})
+        w3handle._web3.eth.waitForTransactionReceipt(fund_tx)
+
+        self.assertGreaterEqual(w3handle._web3.eth.getBalance(self.MOCK_USER), FIVE_ETHER)
+
+        cAddr = w3handle._deploy_solidity_contract("00_hello_world", w3handle._web3.eth.defaultAccount)
+        self.assertIsNotNone(cAddr)
+
+        icontract = util.get_icontract(self.MOCK_USER, "00_hello_world", contract_address=cAddr)
+        _, reconstructed_abi = util.get_bytecode_abi("00_hello_world")
+        reconstructed_contract_handle = w3handle._web3.eth.contract(abi=reconstructed_abi, address=cAddr)
+
+        self.assertFalse(icontract.has_been_hacked())
+
+        # solve the challenge
+        instring = self.MOCK_USER + "a very useless salt"
+        solution_tx_hash = reconstructed_contract_handle.functions.helloworld(
+                                "hello",
+                                w3handle._web3.sha3(text=instring)
+        ).transact({"from": self.MOCK_USER, "gas":500000})
+        solution_tx_receipt = w3handle._web3.eth.waitForTransactionReceipt(solution_tx_hash)
+
+        self.assertTrue(icontract.has_been_hacked())
+
     def test_challenges_01_naive_programmer(self):
         w3handle = easyweb3.EasyWeb3()
         cbase = w3handle._web3.eth.getBalance(w3handle._web3.eth.defaultAccount)
         self.assertIsNotNone(cbase)
         # Fund user account so they have money too
-        w3handle._web3.personal.importRawKey(self.MOCK_PRIVATE_KEY, "")
+        try:
+            w3handle._web3.personal.importRawKey(self.MOCK_PRIVATE_KEY, "")
+        except ValueError as accountAlreadyExists:
+            print("skipping importing the key for the mock user twice")
+
         w3handle._web3.personal.unlockAccount(self.MOCK_USER, "")
         fund_tx = w3handle._web3.eth.sendTransaction({"from":prefundedAddr, "to":self.MOCK_USER, "value":FIVE_ETHER})
         w3handle._web3.eth.waitForTransactionReceipt(fund_tx)
 
-        self.assertEqual(w3handle._web3.eth.getBalance(self.MOCK_USER), FIVE_ETHER)
+        self.assertGreaterEqual(w3handle._web3.eth.getBalance(self.MOCK_USER), FIVE_ETHER)
 
         cAddr = w3handle._deploy_solidity_contract("01_naive_programmer",w3handle._web3.eth.defaultAccount)
         self.assertIsNotNone(cAddr)
