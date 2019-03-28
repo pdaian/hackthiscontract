@@ -21,6 +21,9 @@ def init_db():
         userid INTEGER PRIMARY KEY,
         useraddress TEXT NOT NULL UNIQUE,
         score INTEGER,
+        c0state INTEGER,
+        c0deployaddr TEXT,
+        c0finished INTEGER,
         c1state INTEGER,
         c1deployaddr TEXT,
         c1finished INTEGER,
@@ -92,6 +95,8 @@ def exists(user):
         INSERT INTO htctable(
             useraddress,
             score,
+            c0state,
+            c0finished,
             c1state,
             c1finished,
             c2state,
@@ -114,12 +119,16 @@ def exists(user):
             ?,
             ?,
             ?,
+            ?,
+            ?,
             ?
         );
         """,
         (
             user,
             0,
+            constants.STATE_NOT_STARTED,
+            False,
             constants.STATE_NOT_STARTED,
             False,
             constants.STATE_NOT_STARTED,
