@@ -43,6 +43,9 @@ class HackThisContractDBTest(unittest.TestCase):
         userid INTEGER PRIMARY KEY,
         useraddress TEXT NOT NULL UNIQUE,
         score INTEGER,
+        c0state INTEGER,
+        c0deployaddr TEXT,
+        c0finished INTEGER,
         c1state INTEGER,
         c1deployaddr TEXT,
         c1finished INTEGER,
@@ -73,6 +76,9 @@ class HackThisContractDBTest(unittest.TestCase):
                         1, #userid
                         self.VALID_ADDRESSES[1], #useraddress
                         0, # score
+                        0, # c0state
+                        None, # c0deployaddr
+                        0, # c0finished
                         0, # c1state
                         None, # c1deployaddr
                         0, # c1finished
@@ -105,6 +111,9 @@ class HackThisContractDBTest(unittest.TestCase):
                         1, #userid
                         self.MOCK_USER, #useraddress
                         0, # score
+                        0, # c0state
+                        None, # c0deployaddr
+                        0, # c0finished
                         1, # c1state
                         self.MOCK_CONTRACT_ADDRESS, # c1deployaddr
                         0, # c1finished
@@ -136,6 +145,9 @@ class HackThisContractDBTest(unittest.TestCase):
                         1, #userid
                         self.MOCK_USER, #useraddress
                         0, # score
+                        0, # c0state
+                        None, # c0deployaddr
+                        0, # c0finished
                         0, # c1state
                         None, # c1deployaddr
                         0, # c1finished
@@ -174,6 +186,9 @@ class HackThisContractDBTest(unittest.TestCase):
                     1, # userid
                     self.MOCK_USER, # useraddress
                     1, # score
+                    0, # c0state
+                    None, # c0deployaddr
+                    0, # c0finished
                     1, # c1state
                     self.MOCK_CONTRACT_ADDRESS, # c1deployaddr
                     1, # c1finished
@@ -206,6 +221,9 @@ class HackThisContractDBTest(unittest.TestCase):
                     1, # userid
                     self.MOCK_USER, # useraddress
                     0, # score
+                    0, # c0state
+                    None, # c0deployaddr
+                    0, # c0finished
                     constants.STATE_DEPLOYED_IN_PROGRESS, # c1state
                     self.MOCK_CONTRACT_ADDRESS, # c1deployaddr
                     0, # c1finished
@@ -232,6 +250,9 @@ class HackThisContractDBTest(unittest.TestCase):
                     1, # userid
                     self.MOCK_USER, # useraddress
                     0, # score
+                    0, # c0state
+                    None, # c0deployaddr
+                    0, # c0finished
                     constants.STATE_DEPLOYED_IN_PROGRESS, # c1state
                     self.MOCK_CONTRACT_ADDRESS, # c1deployaddr
                     0, # c1finished
@@ -258,6 +279,9 @@ class HackThisContractDBTest(unittest.TestCase):
                     1, # userid
                     self.MOCK_USER, # useraddress
                     1, # score
+                    0, # c0state
+                    None, # c0deployaddr
+                    0, # c0finished
                     constants.STATE_FINISHED, # c1state
                     self.MOCK_CONTRACT_ADDRESS, # c1deployaddr
                     1, # c1finished
@@ -284,6 +308,9 @@ class HackThisContractDBTest(unittest.TestCase):
                     1, # userid
                     self.MOCK_USER, # useraddress
                     1, # score
+                    0, # c0state
+                    None, # c0deployaddr
+                    0, # c0finished
                     constants.STATE_FINISHED, # c1state
                     self.MOCK_CONTRACT_ADDRESS, # c1deployaddr
                     1, # c1finished
@@ -311,6 +338,9 @@ class HackThisContractDBTest(unittest.TestCase):
                     1, # userid
                     self.MOCK_USER, # useraddress
                     1, # score
+                    0, # c0state
+                    None, # c0deployaddr
+                    0, # c0finished
                     constants.STATE_DEPLOYED_IN_PROGRESS, # c1state
                     self.VALID_ADDRESSES[1], # c1deployaddr
                     1, # c1finished
@@ -337,6 +367,9 @@ class HackThisContractDBTest(unittest.TestCase):
                     1, # userid
                     self.MOCK_USER, # useraddress
                     1, # score
+                    0, # c0state
+                    None, # c0deployaddr
+                    0, # c0finished
                     constants.STATE_GRADING, # c1state
                     self.VALID_ADDRESSES[1], # c1deployaddr
                     1, # c1finished
@@ -362,6 +395,9 @@ class HackThisContractDBTest(unittest.TestCase):
                     1, # userid
                     self.MOCK_USER, # useraddress
                     1, # score
+                    0, # c0state
+                    None, # c0deployaddr
+                    0, # c0finished
                     constants.STATE_FINISHED, # c1state
                     self.VALID_ADDRESSES[1], # c1deployaddr
                     1, # c1finished
@@ -396,6 +432,9 @@ class HackThisContractDBTest(unittest.TestCase):
                         1, #userid
                         self.MOCK_USER, #useraddress
                         0, # score
+                        0, # c0state
+                        None, # c0deployaddr
+                        0, # c0finished
                         3, # c1state
                         self.MOCK_CONTRACT_ADDRESS, # c1deployaddr
                         0, #c1finished
@@ -427,6 +466,9 @@ class HackThisContractDBTest(unittest.TestCase):
                         1, #userid
                         self.MOCK_USER, #useraddress
                         1, # score
+                        0, # c0state
+                        None, # c0deployaddr
+                        0, # c0finished
                         2, # c1state
                         self.MOCK_CONTRACT_ADDRESS, # c1deployaddr
                         1, #c1finished
