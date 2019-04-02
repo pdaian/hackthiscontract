@@ -323,7 +323,7 @@ def contract_exists(contract_name):
     :param contract_name: the name of the contract to check
     :return:
     """
-    file_name = constants.CHALLENGE_DIR + contract_name + ".py"
+    file_name = constants.CHALLENGE_DIR + contract_name + ".sol"
 
     if not os.path.exists(file_name) or not os.path.isfile(file_name):
         print("Challenge validator not found for contract: " + contract_name)
@@ -338,7 +338,7 @@ def get_bytecode_abi(contract_name):
     :return: A tuple consisting of the ABI as a string and the bytecode as a string
     """
     if not contract_exists(contract_name):
-        raise FileNotFoundError("challenges/" + contract_name + ".py")
+        raise FileNotFoundError("challenges/" + contract_name + ".sol")
     abi_return = None
     bytecode_return = None
 
