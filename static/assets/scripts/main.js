@@ -389,35 +389,5 @@ jQuery(document).ready(function($) {
         }
     }
     RYLvideoModal();
-    
-    /**
-     * Submit contact form with ajax
-     * @constructor
-     */
-    function OsContactSubmit() {
-        $('#contact_form').on('submit', function () {
-            event.preventDefault();
-
-            var $submit_button = $(this).find('button[type="submit"]');
-            var backup_button = $submit_button.html();
-            var data = $(this).serialize();
-
-            $submit_button.html('PROCESSING <i class="icon icon-back-in-time"</i>').attr('disabled','disabled');
-
-            $.ajax({
-                type : "POST",
-                url : 'phpscript/contact.php',
-                data : data,
-                success : function (result) {
-                    $submit_button.html('SUCCESSFUL <i class="icon icon-check"></i>');
-                    setTimeout(function(){
-                        $submit_button.removeAttr('disabled').html(backup_button);
-                    },2000)
-                }
-            });
-        })
-    }
-
-    OsContactSubmit();
 
 });

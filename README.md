@@ -1,5 +1,9 @@
 # Hack this Contract Website
 
+## What is this
+
+This is the code that runs the hackthiscontract.io website.
+
 ## Running it
 
 1. `geth --rinkeby (starts ethereum node on the rinkeby test network)`
@@ -8,15 +12,19 @@
 4. `geth --rinkeby --rpc --rpccorsdomain "https://remix.ethereum.org"` (start JS console and enable remix debugging)
 
 ## Dependencies
-* python3
+* python3 + pip
 * virtualenv
-* solidity
-* dirmngr (maybe)
 
 ## Installation
 1. `pip3 install -r requirements.txt`
-2. Create folder for the database (anywhere)
-3. Change the paths in `config.py` to match your system. `db_dir` is the folder you created in step 2
+2. Change the paths in `config.py` to match your system.
+
+## Directory Structure
+
+* `challenges` - Contains the solidity files, abis, and graders for each challenge.
+* `static` - Website assets. CSS, images, etc.
+* `templates` - Flask Jinja2 templates for some of the pages on hackthiscontract.
+* `tests` - Unit tests.
 
 ## Nginx Config
 
@@ -34,3 +42,4 @@ Proxy Pass notes:
         proxy_pass http://127.0.0.1:8080;
 }
 ```
+
