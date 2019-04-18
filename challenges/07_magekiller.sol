@@ -327,8 +327,7 @@ contract Wallet is WalletEvents {
   // gets called when no other function matches
   function() payable {
     // just being sent some cash?
-    if (msg.value > 0)
-      Deposit(msg.sender, msg.value);
+    Deposit(msg.sender, msg.value);
   }
 
   // Gets an owner by 0-indexed position (using numOwners as the count)
