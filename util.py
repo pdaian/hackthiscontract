@@ -38,7 +38,13 @@ def init_db():
         c4finished INTEGER,
         c5state INTEGER,
         c5deployaddr TEXT,
-        c5finished INTEGER
+        c5finished INTEGER,
+        c6state INTEGER,
+        c6deployaddr TEXT,
+        c6finished INTEGER,
+        c7state INTEGER,
+        c7deployaddr TEXT,
+        c7finished INTEGER
     );"""
     htcdb = get_db()
     cur = htcdb.execute(create_table_sql)
@@ -106,8 +112,16 @@ def exists(user):
             c4state,
             c4finished,
             c5state,
-            c5finished
+            c5finished,
+            c6state,
+            c6finished,
+            c7state,
+            c7finished
         ) VALUES (
+            ?,
+            ?,
+            ?,
+            ?,
             ?,
             ?,
             ?,
@@ -127,6 +141,10 @@ def exists(user):
         (
             user,
             0,
+            constants.STATE_NOT_STARTED,
+            False,
+            constants.STATE_NOT_STARTED,
+            False,
             constants.STATE_NOT_STARTED,
             False,
             constants.STATE_NOT_STARTED,

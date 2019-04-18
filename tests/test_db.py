@@ -60,7 +60,13 @@ class HackThisContractDBTest(unittest.TestCase):
         c4finished INTEGER,
         c5state INTEGER,
         c5deployaddr TEXT,
-        c5finished INTEGER
+        c5finished INTEGER,
+        c6state INTEGER,
+        c6deployaddr TEXT,
+        c6finished INTEGER,
+        c7state INTEGER,
+        c7deployaddr TEXT,
+        c7finished INTEGER
     )"""
             self.assertEqual(list(resp)[0][0], expected_create_string)
 
@@ -93,7 +99,13 @@ class HackThisContractDBTest(unittest.TestCase):
                         0, # c4finished
                         0, # c5state
                         None, # c5deployaddr
-                        0 # c5finished
+                        0, # c5finished
+                        0, #c6state
+                        None, # c6deployaddr
+                        0, # c6finished
+                        0, #c7state
+                        None, # c7deployaddr
+                        0 # c7finished
                     ))
 
             conn.close()
@@ -128,7 +140,13 @@ class HackThisContractDBTest(unittest.TestCase):
                         0, # c4finished
                         0, # c5state
                         None, # c5deployaddr
-                        0 # c5finished
+                        0, # c5finished
+                        0, # c6state
+                        None, # c6deployaddr
+                        0, # c6finished
+                        0, #c7state
+                        None, # c7deployaddr
+                        0 # c7finished
                     ))
             conn.close()
 
@@ -162,7 +180,13 @@ class HackThisContractDBTest(unittest.TestCase):
                         0, # c4finished
                         0, # c5state
                         None, # c5deployaddr
-                        0 # c5finished
+                        0, # c5finished
+                        0, #c6state
+                        None, # c6deployaddr
+                        0, # c6finished
+                        0, #c7state
+                        None, # c7deployaddr
+                        0 # c7finished
                     ))
             conn.close()
 
@@ -203,7 +227,13 @@ class HackThisContractDBTest(unittest.TestCase):
                     0, # c4finished
                     0, # c5state
                     None, # c5deployaddr
-                    0 #c5finished
+                    0, # c5finished
+                    0, # c6state
+                    None, # c6deployaddr
+                    0, # c6finished
+                    0, #c7state
+                    None, # c7deployaddr
+                    0 # c7finished
                 )
             )
             conn.close()
@@ -238,8 +268,14 @@ class HackThisContractDBTest(unittest.TestCase):
                     0, # c4finished
                     0, # c5state
                     None, # c5deployaddr
-                    0 #c5finished
-                )
+                    0, # c5finished
+                    0, # c6state
+                    None, # c6deployaddr
+                    0, # c6finished
+                    0, #c7state
+                    None, # c7deployaddr
+                    0 # c7finished
+            )
             )
 
             util.mark_in_progress(self.MOCK_USER, 1)
@@ -267,7 +303,13 @@ class HackThisContractDBTest(unittest.TestCase):
                     0, # c4finished
                     0, # c5state
                     None, # c5deployaddr
-                    0 #c5finished
+                    0, # c5finished
+                    0, #c6state
+                    None, # c6deployaddr
+                    0, # c6finished
+                    0, #c7state
+                    None, # c7deployaddr
+                    0 # c7finished
                 )
             )
 
@@ -296,7 +338,13 @@ class HackThisContractDBTest(unittest.TestCase):
                     0, # c4finished
                     0, # c5state
                     None, # c5deployaddr
-                    0 #c5finished
+                    0, # c5finished
+                    0, #c6state
+                    None, # c6deployaddr
+                    0, # c6finished
+                    0, #c7state
+                    None, # c7deployaddr
+                    0 # c7finished
                 )
             )
 
@@ -325,7 +373,13 @@ class HackThisContractDBTest(unittest.TestCase):
                     0, # c4finished
                     0, # c5state
                     None, # c5deployaddr
-                    0 #c5finished
+                    0, # c5finished
+                    0, #c6state
+                    None, # c6deployaddr
+                    0, # c6finished
+                    0, #c7state
+                    None, # c7deployaddr
+                    0 # c7finished
                 )
             )
 
@@ -355,7 +409,13 @@ class HackThisContractDBTest(unittest.TestCase):
                     0, # c4finished
                     0, # c5state
                     None, # c5deployaddr
-                    0 #c5finished
+                    0, # c5finished
+                    0, #c6state
+                    None, # c6deployaddr
+                    0, # c6finished
+                    0, #c7state
+                    None, # c7deployaddr
+                    0 # c7finished
                 )
             )
 
@@ -384,7 +444,13 @@ class HackThisContractDBTest(unittest.TestCase):
                     0, # c4finished
                     0, # c5state
                     None, # c5deployaddr
-                    0 #c5finished
+                    0, # c5finished
+                    0, #c6state
+                    None, # c6deployaddr
+                    0, # c6finished
+                    0, #c7state
+                    None, # c7deployaddr
+                    0 # c7finished
                 )
             )
             util.mark_finished(self.MOCK_USER, "01_naive_programmer")
@@ -412,7 +478,13 @@ class HackThisContractDBTest(unittest.TestCase):
                     0, # c4finished
                     0, # c5state
                     None, # c5deployaddr
-                    0 #c5finished
+                    0, # c5finished
+                    0, #c6state
+                    None, # c6deployaddr
+                    0, # c6finished
+                    0, #c7state
+                    None, # c7deployaddr
+                    0 # c7finished
                 )
             )
 
@@ -448,8 +520,14 @@ class HackThisContractDBTest(unittest.TestCase):
                         None, # c4deployaddr
                         0, #c4finished
                         0, # c5state
-                        None, # c4deployaddr
-                        0 #c5finished
+                        None, # c5deployaddr
+                        0, #c5finished
+                        0, #c6state
+                        None, # c6deployaddr
+                        0, # c6finished
+                        0, #c7state
+                        None, # c7deployaddr
+                        0 # c7finished
                     ))
             conn.close()
 
@@ -482,8 +560,14 @@ class HackThisContractDBTest(unittest.TestCase):
                         None, # c4deployaddr
                         0, #c4finished
                         0, # c5state
-                        None, # c4deployaddr
-                        0 #c5finished
+                        None, # c5deployaddr
+                        0, #c5finished
+                        0, #c6state
+                        None, # c6deployaddr
+                        0, # c6finished
+                        0, #c7state
+                        None, # c7deployaddr
+                        0 # c7finished
                     ))
 
             conn.close()

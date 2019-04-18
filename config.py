@@ -14,8 +14,7 @@ def find_challenges():
     for file in array:
         if file.endswith(".json"):
             json.append(file.replace(".json", ""))
-        if file.endswith(".sol"):
-            sol.append(file.replace(".sol", ""))
+            sol.append(file.replace(".json", ""))
     for s in json:
         if s in sol:
             challenges.append(s)
