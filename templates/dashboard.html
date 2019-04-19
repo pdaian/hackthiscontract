@@ -84,9 +84,9 @@
             <div class="my-modal-content">
                 <p>By redeploying this contract, all your progress will be lost!</p>
                 <span class="close" onclick="hideModal('{{challenge}}')">&times;</span>
-                <form action="/redeploy/{{address}}/{{challenge}}" method="post">
-                    <button type="button" class="btn-primary" onclick="hideModal('{{challenge}}')">Cancel</button>
-                    <button class="btn-danger" type="submit">Redeploy</button>
+                <form action="/redeploy/{{address}}/{{challenge}}" id="redeployform" method="post">
+                    <button form="redeployform" type="button" class="btn-primary" onclick="hideModal('{{challenge}}')">Cancel</button>
+                    <button form="redeployform" class="btn-danger" type="submit">Redeploy</button>
                 </form>
             </div>
 
