@@ -144,7 +144,7 @@ def update(address, contract_name):
 @util.check_address_decorator
 def redeploy(address, contract_name):
     util.erase_challenge_deployed_address_from_db(address, util.get_contract_number(contract_name))
-    return redirect(url_for('deploy', _external=True, _method="POST", address=address, contract=contract_name), code=307)
+    return redirect(url_for('deploy', _external=True, _scheme='https', _method="POST", address=address, contract=contract_name), code=307)
 
 
 @app.route("/ranking")
