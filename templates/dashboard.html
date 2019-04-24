@@ -19,92 +19,91 @@
             <p>Check out the <a href="/ranking">leaderboard</a> to see where you match up against your peers.</p><br><br><br>
             {% for challenge in challenge_ids %}
             <div style="width: auto; display: block;">
-        <p style="text-align:right;">
-
-        <ul class="inline">
-            <li><b><span
-                    style="float: left; text-align:left; width:200px; display:inline-block;">{{ challenges[challenge]['name'] }}</span></b>
-            </li>
-            <span style="text-align:right;">
-                <li>
-                    <span style="display:inline-block;"><i>Level {{ challenges[challenge]['level'] }} / 10</i></span>
-                </li>
-                <li>
-                    <span style="color:{{challenges[challenge]['status'][1]}}">[ {{ challenges[challenge]['status'][0] }} ]</span>
-                </li>
-                <li>
-                    <a href=""
-                       onclick="myFunction('{{challenges[challenge]['name']}}'); return false;">[ Show Code
-                        ]</a>
-                </li>
-                {% if challenges[challenge]['deployed'] %}
-                <li>
-                    <span style="color: orange">
-                        <a id="open_modal" href="#" onclick="showModal('{{ challenge}}')">[ Redeploy ]</a>
-                    </span>
-                </li>
-                {% endif %}
-                <li>
-                    {% if challenges[challenge]['deployed'] %}
-                    <a href="/view/{{ address }}/{{ challenge }}" style="color: green">[ View ]</a>
-                    {% else %}
-                    <form action="/deploy/{{ address }}/{{ challenge }}" method="post" class="inline">
-                        <span style="color: green">
-                            <a href="#" onclick="this.parentElement.parentElement.submit()">[ Deploy ]</a>
+                <p style="text-align:right;">
+                    <ul class="inline" style="width: auto; display: block;">
+                        <li><b><span
+                                style="float: left; text-align:left; width:200px; display:inline-block;">{{ challenges[challenge]['name'] }}</span></b>
+                        </li>
+                        <span style="text-align:right; display: block; width: auto;">
+                            <li>
+                                <span style="display:inline-block;"><i>Level {{ challenges[challenge]['level'] }} / 10</i></span>
+                            </li>
+                            <li>
+                                <span style="color:{{challenges[challenge]['status'][1]}}">[ {{ challenges[challenge]['status'][0] }} ]</span>
+                            </li>
+                            <li>
+                                <a href=""
+                                   onclick="myFunction('{{challenges[challenge]['name']}}'); return false;">[ Show Code
+                                    ]</a>
+                            </li>
+                            {% if challenges[challenge]['deployed'] %}
+                            <li>
+                                <span style="color: orange">
+                                    <a id="open_modal" href="#" onclick="showModal('{{ challenge}}')">[ Redeploy ]</a>
+                                </span>
+                            </li>
+                            {% endif %}
+                            <li>
+                                {% if challenges[challenge]['deployed'] %}
+                                <a href="/view/{{ address }}/{{ challenge }}" style="color: green">[ View ]</a>
+                                {% else %}
+                                <form action="/deploy/{{ address }}/{{ challenge }}" method="post" class="inline">
+                                    <span style="color: green">
+                                        <a href="#" onclick="this.parentElement.parentElement.submit()">[ Deploy ]</a>
+                                    </span>
+                                </form>
+                                {% endif %}
+                            </li>
+                            {% if challenges[challenge]['deployed'] %}
+                            <li>
+                                <a href="/update/{{address}}/{{ challenge }}">[ Update Status ]</a>
+                            </li>
+                            {% endif %}
                         </span>
-                    </form>
-                    {% endif %}
-                </li>
+                    </ul>
+                </p>
                 {% if challenges[challenge]['deployed'] %}
-                <li>
-                    <a href="/update/{{address}}/{{ challenge }}">[ Update Status ]</a>
-                </li>
+                <p> Deployed at address <b><a
+                        href="https://rinkeby.etherscan.io/address/{{challenges[challenge]['status'][2]}}" class="underline">{{
+                    challenges[challenge]['status'][2] }}</a></b>
+                    <button class="copy btn" title="Copy" data-clipboard-text="{{
+                challenges[challenge]['status'][2] }}"><i class="icon-clipboard"></i></button>
+                </p>
                 {% endif %}
-            </span>
-        </ul>
-        </p>
+                <p style="font-size:18px;"><i>{{ challenges[challenge]['description'] }}</i></p>
+            </div>
+            <div id="{{challenges[challenge]['name']}}" style="display: none; text-align:left;">
+                <pre>{{ challenges[challenge]['code'] }}</pre>
+            </div>
+            <br><br>
             {% if challenges[challenge]['deployed'] %}
-            <p> Deployed at address <b><a
-                    href="https://rinkeby.etherscan.io/address/{{challenges[challenge]['status'][2]}}" class="underline">{{
-                challenges[challenge]['status'][2] }}</a></b>
-                <button class="copy btn" title="Copy" data-clipboard-text="{{
-            challenges[challenge]['status'][2] }}"><i class="icon-clipboard"></i></button>
-            </p>
+            <div id="{{challenge}}" class="my-modal">
+
+                <div class="my-modal-header">
+                    <h2>WARNING</h2>
+                </div>
+                <div class="my-modal-content">
+                    <p>By redeploying this contract, all your progress will be lost!</p>
+                    <span class="close" onclick="hideModal('{{challenge}}')">&times;</span>
+                    <form action="/redeploy/{{address}}/{{challenge}}" id="redeployform" method="post">
+                        <button form="redeployform" type="button" class="btn-primary" onclick="hideModal('{{challenge}}')">Cancel</button>
+                        <button form="redeployform" class="btn-danger" type="submit">Redeploy</button>
+                    </form>
+                </div>
+
+            </div>
             {% endif %}
-            <p style="font-size:18px;"><i>{{ challenges[challenge]['description'] }}</i></p>
-        </div>
-        <div id="{{challenges[challenge]['name']}}" style="display: none; text-align:left;">
-            <pre>{{ challenges[challenge]['code'] }}</pre>
-        </div>
-        <br><br>
-        {% if challenges[challenge]['deployed'] %}
-        <div id="{{challenge}}" class="my-modal">
-
-            <div class="my-modal-header">
-                <h2>WARNING</h2>
-            </div>
-            <div class="my-modal-content">
-                <p>By redeploying this contract, all your progress will be lost!</p>
-                <span class="close" onclick="hideModal('{{challenge}}')">&times;</span>
-                <form action="/redeploy/{{address}}/{{challenge}}" id="redeployform" method="post">
-                    <button form="redeployform" type="button" class="btn-primary" onclick="hideModal('{{challenge}}')">Cancel</button>
-                    <button form="redeployform" class="btn-danger" type="submit">Redeploy</button>
-                </form>
-            </div>
-
-        </div>
-        {% endif %}
-        {% endfor %}
-        <script>
-            function myFunction(x) {
-                var x = document.getElementById(x);
-                if (x.style.display === 'none') {
-                    x.style.display = 'block';
-                } else {
-                    x.style.display = 'none';
+            {% endfor %}
+            <script>
+                function myFunction(x) {
+                    var x = document.getElementById(x);
+                    if (x.style.display === 'none') {
+                        x.style.display = 'block';
+                    } else {
+                        x.style.display = 'none';
+                    }
                 }
-            }
-        </script>
+            </script>
         </div>
     </header>
 </section>
