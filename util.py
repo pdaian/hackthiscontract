@@ -239,7 +239,7 @@ def mark_grading(user, challenge_number):
     #exists(user)
     state_column_name = "c" + str(int(challenge_number)) + "state"
     htcdb = get_db_no_app_context()
-    print("mark grading {} {} {}".format(user, state_column_name))
+    print("mark grading {} {}".format(user, state_column_name))
     cur = htcdb.execute("UPDATE htctable SET {0} = ? WHERE useraddress = ?".format(state_column_name), (constants.STATE_GRADING, user))
     htcdb.commit()
 
