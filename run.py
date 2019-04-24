@@ -143,6 +143,7 @@ def update(address, contract_name):
 @app.route("/redeploy/<string:address>/<string:contract_name>", methods=['POST'])
 @util.check_address_decorator
 def redeploy(address, contract_name):
+    print("Redeploying {}, {}".format(address, contract_name))
     util.erase_challenge_deployed_address_from_db(address, util.get_contract_number(contract_name))
     return redirect(url_for('deploy', _external=True, _scheme='https', _method="POST", address=address, contract=contract_name), code=307)
 
