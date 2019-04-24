@@ -80,6 +80,7 @@ class EasyWeb3:
         contract = self._web3.eth.contract(abi=abi, bytecode=bytecode)
         contract_address = None
         tx_hash = contract.constructor().transact({'from': constants.DEPLOY_FROM_ADDRESS, 'gas': 2000000})
+        print("Deployment constructor TX Hash: {} {} {}".format(contract_name, user_address, str(tx_hash)))
         tx_receipt = self._web3.eth.waitForTransactionReceipt(tx_hash, timeout)
         contract_address = tx_receipt.contractAddress
 
