@@ -69,7 +69,7 @@ def get_grade_thread_status(address, contract_name):
 @app.route("/done/<string:address>/<string:contract>")
 @util.check_address_decorator
 def done(address, contract):
-    print("deploying:\t{} {}".format(address, contract_name))
+    print("deploying:\t{} {}".format(address, contract))
     status = get_deploy_thread_status(address, contract)
 
     if status[1] is not None and status[0] == "deployed":
