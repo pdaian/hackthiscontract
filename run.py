@@ -1,7 +1,7 @@
 import json
 import os
 
-from flask import Flask, render_template, request, redirect, g, url_for
+from flask import Flask, render_template, request, redirect, g, url_for, Response
 
 import config as constants
 import easyweb3
@@ -76,7 +76,7 @@ def done(address, contract):
         print("Status is not none: " + str(status))
         global deployers
         deploy_key = (address, contract)
-        del deployers[deploy_key]
+        del deployers[deploy_key] # TODO race condition?
         util.write_address(address, util.get_contract_number(contract), status[1])
     if status[0]:
         return status[0]
@@ -89,7 +89,11 @@ def done(address, contract):
 def deploy(address, contract):
     status = util.get_status(address, util.get_contract_number(contract))
     if "not started" in status[0].lower():
-        return render_template('deploy.html', deployed=False, address=address, contract=contract)
+        web3_instance = easyweb3.EasyWeb3()
+        if web3_instance.is_valid_address(address):
+            return render_template('deploy.html', deployed=False, address=address, contract=contract)
+        else:
+            return Response("Improper contract address: Check that your contract address conforms to EIP-55", status=400)
     else:
         return redirect(url_for('view', _external=True, _scheme='https', address=address, contract=contract))
 
@@ -135,7 +139,11 @@ def update(address, contract_name):
     contract_addr = status_blob[2].strip()
     status = status_blob[0].lower()
     if "unfinished" in status:
-        return render_template('grade.html', address=address, contract_name=contract_name)
+        web3_instance = easyweb3.EasyWeb3()
+        if web3_instance.is_valid_address(address):
+            return render_template('grade.html', address=address, contract_name=contract_name)
+        else:
+            return Response("Improper contract address: Check that your contract address conforms to EIP-55", status=400)
     else:
         return redirect(url_for('dashboard', _external=True, _scheme='https', address=address))
 
