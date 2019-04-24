@@ -69,7 +69,7 @@ def get_grade_thread_status(address, contract_name):
 @app.route("/done/<string:address>/<string:contract>")
 @util.check_address_decorator
 def done(address, contract):
-    print("Deploying:\t" + address)
+    print("deploying:\t{} {}".format(address, contract_name))
     status = get_deploy_thread_status(address, contract)
 
     if status[1] is not None and status[0] == "deployed":
@@ -109,7 +109,7 @@ def view(address, contract):
 @app.route("/grade/<string:address>/<string:contract_name>")
 @util.check_address_decorator
 def grade(address, contract_name):
-    print("grading:\t" + address)
+    print("grading:\t{} {}".format(address, contract_name))
     status = get_grade_thread_status(address, contract_name)
 
     if status[1] is not None and status[0] == "graded":
