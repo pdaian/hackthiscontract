@@ -225,7 +225,7 @@ def mark_in_progress(user, challenge_number):
     #exists(user)
     state_column_name = "c" + str(int(challenge_number)) + "state"
     htcdb = get_db_no_app_context()
-    print("mark in progress {} {} {}".format(user, state_column_name))
+    print("mark in progress {} {}".format(user, state_column_name))
     cur = htcdb.execute("UPDATE htctable SET {0} = ? WHERE useraddress = ?".format(state_column_name), (constants.STATE_DEPLOYED_IN_PROGRESS, user))
     htcdb.commit()
 
@@ -255,7 +255,7 @@ def mark_finished(user, challenge_name):
     state_column_name = "c" + str(int(challenge_number)) + "state"
     finished_column_name = "c" + str(int(challenge_number)) + "finished"
     htcdb = get_db_no_app_context()
-    print("mark finished {} {} {}".format(user, finished_column_name))
+    print("mark finished {} {}".format(user, finished_column_name))
     cur = htcdb.execute("SELECT {}, score FROM htctable WHERE useraddress = ?".format(finished_column_name),
                         (user, ))
     firstele = cur.fetchone()
