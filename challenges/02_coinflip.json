@@ -1,5 +1,5 @@
 {
     "name": "Coin Flip",
-    "description": "This contract implements a simple coin flip lottery. You job is to violate this lottery so that player 1 wins regardless of any of the flip decision parameters.",
+    "description": "This contract implements a simple coin flip lottery. You job is to violate this lottery so that player 1 wins.",
     "level": "3"
 }
