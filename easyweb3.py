@@ -58,7 +58,7 @@ class EasyWeb3:
         with self._lock:
             return self._status, self._deployed_address
 
-    def deploy_named_solidity_contract(self, name, user_address, timeout=90):
+    def deploy_named_solidity_contract(self, name, user_address, timeout=180):
         """
         Deploys a contract - spins off a thread to deploy the contract
         :param name: The challenge/contract name
@@ -106,7 +106,7 @@ class EasyWeb3:
 
         return contract_address
 
-    def grade_challenge(self, contract_name, user_address, contract_address, timeout=90):
+    def grade_challenge(self, contract_name, user_address, contract_address, timeout=180):
         """
         grades a challenge - spins off a thread to grade a challenge for a user
         :param name: The challenge/contract name
