@@ -32,15 +32,6 @@ class EasyWeb3:
         """
         self._web3.personal.unlockAccount(constants.DEPLOY_FROM_ADDRESS, "")
 
-    def is_valid_address(self, address):
-        """
-        Check an address is properly checksummed
-        """
-        if self._web3.isAddress(address):
-            if self._web3.isChecksumAddress(address):
-                return True
-        return False
-
     def deploy_status(self):
         """
         Return deploy status of the given contract that this EasyWeb3 instance is connected to.

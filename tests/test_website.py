@@ -80,13 +80,6 @@ class HackThisContractTest(unittest.TestCase):
         if os.path.exists(path):
             os.remove(path)
 
-    def test_is_valid_address(self):
-        for a in self.VALID_ADDRESSES:
-            assert util.is_valid_address(a)
-
-        for a in self.INVALID_ADDRESSES:
-            assert not util.is_valid_address(a)
-
     def test_util_get_status(self):
         # Setup
         path = constants.DB_PATH + self.MOCK_USER + "/" + self.MOCK_CHALLENGE
