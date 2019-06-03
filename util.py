@@ -314,26 +314,28 @@ def get_ranking_from_db():
     qresp = query_db("SELECT useraddress, score FROM htctable WHERE score > 0 ORDER BY score DESC", (), False)
     return [(row[0], row[1]) for row in qresp]
 
-def is_valid_address(address):
-    """
-    checks if an address is of the right structure to be an ethereum addresss
-    :param address: the address to check
-    :return:
-    """
-    web3_handle = easyweb3.EasyWeb3()
-    return web3_handle._web3.isAddress(address)
-
-
 def check_address_decorator(fn):
     @wraps(fn)
     def wrapped(*args, **kwargs):
         # Because the address is sometimes in args and sometimes in kwargs
         address = None
+        web3_handle = easyweb3.EasyWeb3()
+        position = None
         if 'address' in kwargs:
             address = kwargs['address']
+            position = True
         else:
             address = args[0]
-        if not is_valid_address(address):
+            position = False
+
+        if web3_handle._web3.isAddress(address):
+            if not web3_handle._web3.isChecksumAddress(address):
+                 newaddress = web3_handle._web3.toChecksumAddress(address)
+                 if position:
+                     kwargs['address'] = newaddress
+                 else:
+                     args[0] = newaddress
+        else:
             return render_template("error.html")
         return fn(*args, **kwargs)
 
